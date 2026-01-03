@@ -1,9 +1,58 @@
 import React, { useState } from 'react';
 import { ALL_TEAMS, POSITIONS } from '../constants';
 import { Player } from '../types';
+import { Star, Award, Users, UserCheck } from 'lucide-react';
+
+// Tier classification
+type PlayerTier = 'Elite' | 'Starter' | 'Solid' | 'Depth';
+
+const getPlayerTier = (ovr: number): PlayerTier => {
+  if (ovr >= 90) return 'Elite';
+  if (ovr >= 80) return 'Starter';
+  if (ovr >= 70) return 'Solid';
+  return 'Depth';
+};
+
+const getTierConfig = (tier: PlayerTier) => {
+  switch (tier) {
+    case 'Elite':
+      return {
+        label: 'Elite',
+        color: 'bg-yellow-500 text-black',
+        icon: Star,
+        borderColor: 'border-yellow-500/30',
+        bgAccent: 'bg-yellow-500/5',
+      };
+    case 'Starter':
+      return {
+        label: 'Starter',
+        color: 'bg-brand-500 text-white',
+        icon: Award,
+        borderColor: 'border-brand-500/30',
+        bgAccent: 'bg-brand-500/5',
+      };
+    case 'Solid':
+      return {
+        label: 'Solid',
+        color: 'bg-blue-500 text-white',
+        icon: UserCheck,
+        borderColor: 'border-blue-500/30',
+        bgAccent: 'bg-blue-500/5',
+      };
+    case 'Depth':
+      return {
+        label: 'Depth',
+        color: 'bg-slate-600 text-white',
+        icon: Users,
+        borderColor: 'border-slate-700',
+        bgAccent: 'bg-transparent',
+      };
+  }
+};
 
 export const Players: React.FC = () => {
   const [positionFilter, setPositionFilter] = useState<string>('ALL');
+  const [tierFilter, setTierFilter] = useState<string>('ALL');
   const [searchTerm, setSearchTerm] = useState('');
 
   // Get all players from all teams
@@ -13,19 +62,56 @@ export const Players: React.FC = () => {
   const filteredPlayers = allPlayers.filter((player) => {
     const matchesPosition = positionFilter === 'ALL' || player.position === positionFilter;
     const matchesSearch = player.name.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesPosition && matchesSearch;
+    const matchesTier = tierFilter === 'ALL' || getPlayerTier(player.ovr) === tierFilter;
+    return matchesPosition && matchesSearch && matchesTier;
   });
 
   // Sort by OVR descending
   const sortedPlayers = [...filteredPlayers].sort((a, b) => b.ovr - a.ovr);
 
+  // Calculate tier distribution
+  const tierCounts = allPlayers.reduce(
+    (acc, player) => {
+      const tier = getPlayerTier(player.ovr);
+      acc[tier]++;
+      return acc;
+    },
+    { Elite: 0, Starter: 0, Solid: 0, Depth: 0 } as Record<PlayerTier, number>
+  );
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <h1 className="text-4xl font-display font-bold text-white mb-8">PLAYERS</h1>
 
+      {/* Tier Distribution Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        {(['Elite', 'Starter', 'Solid', 'Depth'] as PlayerTier[]).map((tier) => {
+          const config = getTierConfig(tier);
+          const Icon = config.icon;
+          return (
+            <div
+              key={tier}
+              className={`bg-slate-800 rounded-lg p-4 border ${config.borderColor} ${config.bgAccent}`}
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <Icon className="text-slate-400" size={20} />
+                <span className="text-slate-400 text-sm font-medium">{tier}</span>
+              </div>
+              <p className="text-2xl font-bold text-white">{tierCounts[tier]}</p>
+              <p className="text-xs text-slate-500 mt-1">
+                {tier === 'Elite' && '90+ OVR'}
+                {tier === 'Starter' && '80-89 OVR'}
+                {tier === 'Solid' && '70-79 OVR'}
+                {tier === 'Depth' && '<70 OVR'}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+
       {/* Filters */}
       <div className="bg-slate-800 rounded-lg p-6 border border-slate-700 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-slate-400 text-sm mb-2">Search Player</label>
             <input
@@ -51,13 +137,27 @@ export const Players: React.FC = () => {
               ))}
             </select>
           </div>
+          <div>
+            <label className="block text-slate-400 text-sm mb-2">Player Tier</label>
+            <select
+              value={tierFilter}
+              onChange={(e) => setTierFilter(e.target.value)}
+              className="w-full px-4 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500"
+            >
+              <option value="ALL">All Tiers</option>
+              <option value="Elite">Elite (90+)</option>
+              <option value="Starter">Starter (80-89)</option>
+              <option value="Solid">Solid (70-79)</option>
+              <option value="Depth">Depth (&lt;70)</option>
+            </select>
+          </div>
         </div>
       </div>
 
       {/* Player Count */}
       <div className="mb-4">
         <p className="text-slate-400">
-          Showing <span className="text-white font-bold">{sortedPlayers.length}</span> players
+          Showing <span className="text-white font-bold">{sortedPlayers.length}</span> of {allPlayers.length} players
         </p>
       </div>
 
@@ -66,47 +166,69 @@ export const Players: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-slate-900 border-b border-slate-700">
+              <tr className="bg-slate-900 border-b-2 border-slate-700">
                 <th className="text-left py-4 px-4 text-slate-400 font-medium">Rank</th>
                 <th className="text-left py-4 px-4 text-slate-400 font-medium">Name</th>
                 <th className="text-left py-4 px-4 text-slate-400 font-medium">Position</th>
                 <th className="text-left py-4 px-4 text-slate-400 font-medium">NFL Team</th>
-                <th className="text-left py-4 px-4 text-slate-400 font-medium">OVR</th>
+                <th className="text-left py-4 px-4 text-slate-400 font-medium">Rating</th>
+                <th className="text-left py-4 px-4 text-slate-400 font-medium">Tier</th>
                 <th className="text-left py-4 px-4 text-slate-400 font-medium">Draft</th>
               </tr>
             </thead>
             <tbody>
-              {sortedPlayers.map((player, index) => (
-                <tr
-                  key={`${player.id}-${index}`}
-                  className="border-b border-slate-800 hover:bg-slate-700/50 transition-colors"
-                >
-                  <td className="py-3 px-4 text-slate-400">#{index + 1}</td>
-                  <td className="py-3 px-4 text-white font-medium">{player.name}</td>
-                  <td className="py-3 px-4">
-                    <span className="px-2 py-1 bg-slate-900 text-slate-300 rounded text-sm">
-                      {player.position}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 text-slate-300">{player.team}</td>
-                  <td className="py-3 px-4">
-                    <span
-                      className={`inline-block px-3 py-1 rounded font-bold ${
-                        player.ovr >= 90
-                          ? 'bg-yellow-500 text-black'
-                          : player.ovr >= 80
-                          ? 'bg-brand-500 text-white'
-                          : player.ovr >= 70
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-slate-600 text-white'
-                      }`}
-                    >
-                      {player.ovr}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 text-slate-300 text-sm">{player.draftRound}</td>
-                </tr>
-              ))}
+              {sortedPlayers.map((player, index) => {
+                const tier = getPlayerTier(player.ovr);
+                const tierConfig = getTierConfig(tier);
+                const TierIcon = tierConfig.icon;
+                const isTopTier = tier === 'Elite' || tier === 'Starter';
+
+                return (
+                  <tr
+                    key={`${player.id}-${index}`}
+                    className={`border-b border-slate-800 hover:bg-slate-700/50 transition-colors ${
+                      tier === 'Elite' ? 'bg-yellow-500/5' : tierConfig.bgAccent
+                    }`}
+                  >
+                    <td className="py-4 px-4">
+                      <span
+                        className={`text-sm font-medium ${
+                          index < 3 ? 'text-yellow-500' : 'text-slate-400'
+                        }`}
+                      >
+                        #{index + 1}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span
+                        className={`font-medium ${
+                          isTopTier ? 'text-white text-base' : 'text-slate-300'
+                        }`}
+                      >
+                        {player.name}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span className="px-2 py-1 bg-slate-900 text-slate-300 rounded text-sm font-medium">
+                        {player.position}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4 text-slate-300 text-sm">{player.team}</td>
+                    <td className="py-4 px-4">
+                      <span className={`inline-block px-3 py-1.5 rounded-lg font-bold text-sm ${tierConfig.color}`}>
+                        {player.ovr}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center gap-2">
+                        <TierIcon size={16} className="text-slate-500" />
+                        <span className="text-slate-300 text-sm font-medium">{tier}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4 text-slate-400 text-sm">{player.draftRound}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
