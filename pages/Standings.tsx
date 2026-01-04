@@ -104,7 +104,8 @@ export const Standings: React.FC = () => {
 
       {/* Standings Table */}
       <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
-        <table className="w-full">
+        <div className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
+          <table className="w-full min-w-max">
           <thead>
             <tr className="bg-slate-900 border-b-2 border-slate-700">
               <th className="text-left py-4 px-6 text-slate-400 font-medium">Rank</th>
@@ -362,6 +363,7 @@ export const Standings: React.FC = () => {
             })}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* League Statistics */}

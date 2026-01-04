@@ -266,8 +266,8 @@ export const MyTeam: React.FC = () => {
         {groupedRoster.map((positionGroup) => (
           <div key={positionGroup.position} className="bg-slate-800 rounded-lg p-6 border border-slate-700">
             <h2 className="text-2xl font-display font-bold text-white mb-4">{positionGroup.label.toUpperCase()}</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
+            <div className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
+              <table className="w-full min-w-max">
                 <thead>
                   <tr className="border-b border-slate-700">
                     <th className="text-left py-3 px-4 text-slate-400 font-medium">Name</th>
