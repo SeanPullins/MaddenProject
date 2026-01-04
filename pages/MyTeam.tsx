@@ -4,7 +4,7 @@ import { Team, Player } from '../types';
 import { TeamLogo } from '../components/TeamLogo';
 import { PlayerCard } from '../components/PlayerCard';
 import { FormerPlayersPanel } from '../components/FormerPlayersPanel';
-import { UserMinus, Target } from 'lucide-react';
+import { UserMinus, Target, Star, Shield, TrendingUp, Info } from 'lucide-react';
 import { getTeamColors } from '../utils/teamColors';
 import { calculateLeagueScores } from '../utils/leagueScoring';
 
@@ -40,6 +40,7 @@ export const MyTeam: React.FC = () => {
 
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [showFormerPlayers, setShowFormerPlayers] = useState<boolean>(false);
+  const [hoveredScore, setHoveredScore] = useState<boolean>(false);
 
   // Persist team selection to localStorage
   useEffect(() => {
@@ -137,15 +138,16 @@ export const MyTeam: React.FC = () => {
       </div>
 
       {/* Team Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-          <p className="text-slate-400 text-sm mb-1">Record</p>
-          <p className="text-2xl font-bold text-white">{team.record}</p>
-        </div>
-        <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div
+          className="bg-slate-800 rounded-lg p-6 border border-slate-700 relative"
+          onMouseEnter={() => setHoveredScore(true)}
+          onMouseLeave={() => setHoveredScore(false)}
+        >
           <div className="flex items-center gap-2 mb-1">
             <Target size={16} className="text-brand-500" />
             <p className="text-slate-400 text-sm">League Score</p>
+            <Info size={12} className="text-slate-500" />
           </div>
           {teamScore ? (
             <div>
@@ -161,7 +163,77 @@ export const MyTeam: React.FC = () => {
           ) : (
             <p className="text-2xl font-bold text-white">-</p>
           )}
+
+          {/* Hover Tooltip */}
+          {hoveredScore && teamScore && (
+            <div className="absolute left-0 top-full mt-2 z-50 w-80">
+              <div className="bg-slate-900 rounded-lg shadow-2xl border border-slate-700 p-4">
+                <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-700">
+                  <Target size={14} className="text-brand-500" />
+                  <h4 className="text-white font-bold text-xs">Score Breakdown</h4>
+                </div>
+
+                <div className="space-y-2">
+                  {/* Positional Leaders */}
+                  <div className="flex items-start gap-2">
+                    <Star className="text-yellow-500 flex-shrink-0 mt-0.5" size={12} />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-300 text-xs font-semibold">
+                          Positional Leaders
+                        </span>
+                        <span className="text-brand-500 font-bold text-xs">
+                          {teamScore.breakdown.positionalLeaders.toFixed(1)} pts
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Depth Bonus */}
+                  <div className="flex items-start gap-2">
+                    <Shield className="text-blue-500 flex-shrink-0 mt-0.5" size={12} />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-300 text-xs font-semibold">
+                          Depth Bonus
+                        </span>
+                        <span className="text-brand-500 font-bold text-xs">
+                          {teamScore.breakdown.depthBonus.toFixed(1)} pts
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Extra Starters */}
+                  <div className="flex items-start gap-2">
+                    <TrendingUp className="text-green-500 flex-shrink-0 mt-0.5" size={12} />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-300 text-xs font-semibold">
+                          Extra Starters
+                        </span>
+                        <span className="text-brand-500 font-bold text-xs">
+                          {teamScore.breakdown.extraStarters.toFixed(1)} pts
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Total */}
+                  <div className="pt-2 border-t border-slate-700">
+                    <div className="flex items-center justify-between">
+                      <span className="text-white text-xs font-bold">Total</span>
+                      <span className="text-brand-500 text-sm font-bold">
+                        {teamScore.totalScore.toFixed(1)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
+
         <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
           <p className="text-slate-400 text-sm mb-1">Active Roster</p>
           <p className="text-2xl font-bold text-white">{team.roster.length}</p>
