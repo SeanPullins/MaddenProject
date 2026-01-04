@@ -7,6 +7,17 @@ import { Sparkles, TrendingUp, TrendingDown, Target, AlertCircle } from 'lucide-
 const OFFENSIVE_POSITIONS = ['QB', 'RB', 'WR', 'TE', 'OL', 'OT', 'OG', 'C'];
 const DEFENSIVE_POSITIONS = ['ED', 'DT', 'LB', 'CB', 'S'];
 
+// Helper function to simplify roster data before sending to API
+const simplifyRoster = (players: Player[]) => {
+  if (!Array.isArray(players)) return "No roster data available.";
+  return players.map(p => {
+    const isStarter = p.depthOrder === 1 ? "(Starter)" : "";
+    const isExtra = p.draftRound?.includes('$') ? "($)" : "";
+    // ONLY send name, pos, ovr, and status. Drop everything else.
+    return `${p.name}: ${p.position} - ${p.ovr} OVR ${isStarter} ${isExtra}`;
+  }).join("\n");
+};
+
 export const AIEvaluation: React.FC = () => {
   const [selectedTeam, setSelectedTeam] = useState<Team>(ALL_TEAMS[0]);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,69 +33,15 @@ export const AIEvaluation: React.FC = () => {
   };
 
   const buildPrompt = (team: Team): string => {
-    const offensivePlayers = getOffensivePlayers(team);
-    const defensivePlayers = getDefensivePlayers(team);
+    // Use simplified roster data to reduce payload size
+    const slimRoster = simplifyRoster(team.roster);
 
-    const offenseByPosition: { [key: string]: Player[] } = {};
-    offensivePlayers.forEach(player => {
-      if (!offenseByPosition[player.position]) {
-        offenseByPosition[player.position] = [];
-      }
-      offenseByPosition[player.position].push(player);
-    });
+    return `Team: ${team.name} (${team.owner})
 
-    const defenseByPosition: { [key: string]: Player[] } = {};
-    defensivePlayers.forEach(player => {
-      if (!defenseByPosition[player.position]) {
-        defenseByPosition[player.position] = [];
-      }
-      defenseByPosition[player.position].push(player);
-    });
+ROSTER:
+${slimRoster}
 
-    const offenseText = Object.entries(offenseByPosition)
-      .map(([pos, players]) => {
-        const playerList = players.map(p => `${p.name} (${p.ovr})`).join(', ');
-        return `${pos}: ${playerList}`;
-      })
-      .join('\n');
-
-    const defenseText = Object.entries(defenseByPosition)
-      .map(([pos, players]) => {
-        const playerList = players.map(p => `${p.name} (${p.ovr})`).join(', ');
-        return `${pos}: ${playerList}`;
-      })
-      .join('\n');
-
-    return `You are an expert Madden NFL fantasy football analyst. Analyze the following team and provide detailed strategic insights.
-
-Team: ${team.name}
-Owner: ${team.owner}
-Record: ${team.record}
-
-OFFENSIVE ROSTER:
-${offenseText}
-
-DEFENSIVE ROSTER:
-${defenseText}
-
-Please provide a comprehensive analysis in the following format:
-
-## Roster Overview
-[Provide a high-level summary of the team's composition, strengths, and weaknesses]
-
-## Strengths
-[List and explain 3-5 key strengths of this roster]
-
-## Weaknesses
-[List and explain 3-5 key weaknesses or areas of concern]
-
-## Draft / Trade Suggestions
-[Provide specific recommendations for positions to target in the draft or via trade]
-
-## Immediate Actions
-[List 3-5 specific, actionable steps the owner should take to improve this team]
-
-Focus on Madden ratings (OVR), positional depth, and strategic fit. Be specific and actionable.`;
+Identify scoring opportunities for League Year Winner.`;
   };
 
   const runAIEvaluation = async () => {
@@ -142,28 +99,14 @@ Focus on Madden ratings (OVR), positional depth, and strategic fit. Be specific 
   };
 
   const parseAIResponse = (response: string) => {
-    const sections = {
-      overview: '',
+    // Since we're getting brief bullet points, just return the raw response
+    return {
+      overview: response,
       strengths: '',
       weaknesses: '',
       suggestions: '',
       actions: '',
     };
-
-    // Simple parser - split by headers
-    const overviewMatch = response.match(/## Roster Overview\s*([\s\S]*?)(?=##|$)/);
-    const strengthsMatch = response.match(/## Strengths\s*([\s\S]*?)(?=##|$)/);
-    const weaknessesMatch = response.match(/## Weaknesses\s*([\s\S]*?)(?=##|$)/);
-    const suggestionsMatch = response.match(/## Draft \/ Trade Suggestions\s*([\s\S]*?)(?=##|$)/);
-    const actionsMatch = response.match(/## Immediate Actions\s*([\s\S]*?)(?=##|$)/);
-
-    if (overviewMatch) sections.overview = overviewMatch[1].trim();
-    if (strengthsMatch) sections.strengths = strengthsMatch[1].trim();
-    if (weaknessesMatch) sections.weaknesses = weaknessesMatch[1].trim();
-    if (suggestionsMatch) sections.suggestions = suggestionsMatch[1].trim();
-    if (actionsMatch) sections.actions = actionsMatch[1].trim();
-
-    return sections;
   };
 
   const sections = aiResponse ? parseAIResponse(aiResponse) : null;
