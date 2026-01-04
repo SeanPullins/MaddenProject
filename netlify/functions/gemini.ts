@@ -1,21 +1,20 @@
+import type { Handler } from '@netlify/functions';
 import { GoogleGenAI } from '@google/genai';
 
-interface RequestBody {
-  prompt: string;
-}
-
-export const handler = async (event: any) => {
-  // Only allow POST requests
+export const handler: Handler = async (event) => {
+  // ✅ Allow POST only
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      body: JSON.stringify({ error: 'Method not allowed' }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ error: 'Method Not Allowed' }),
     };
   }
 
   try {
-    // Parse request body
-    const { prompt }: RequestBody = JSON.parse(event.body || '{}');
+    const { prompt } = JSON.parse(event.body || '{}');
 
     if (!prompt) {
       return {
@@ -24,46 +23,36 @@ export const handler = async (event: any) => {
       };
     }
 
-    // Get API key from environment variable
     const apiKey = process.env.GEMINI_API_KEY;
-
     if (!apiKey) {
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: 'API key not configured' }),
+        body: JSON.stringify({ error: 'Missing GEMINI_API_KEY' }),
       };
     }
 
-    // Initialize Gemini client
     const ai = new GoogleGenAI({ apiKey });
 
-    // Generate content using the models API
     const result = await ai.models.generateContent({
       model: 'gemini-2.0-flash-exp',
       contents: prompt,
     });
-
-    // Extract text from response
-    const text = result.text;
-
-    if (!text) {
-      throw new Error('No text content in response');
-    }
 
     return {
       statusCode: 200,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ response: text }),
+      body: JSON.stringify({
+        text: result.text,
+      }),
     };
-  } catch (error: any) {
-    console.error('Gemini API error:', error);
+  } catch (err: any) {
+    console.error('Gemini function error:', err);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: 'Failed to generate AI response',
-        details: error.message
+        error: err.message || 'Internal Server Error',
       }),
     };
   }
