@@ -5,7 +5,7 @@ const POSITIONS = ['QB', 'RB', 'WR', 'TE', 'OL', 'ED', 'DT', 'LB', 'CB', 'S'];
 
 export interface PositionScore {
   position: string;
-  starterOvr: number;
+  playerOvr: number;
   rank: number;
   points: number;
 }
@@ -32,17 +32,20 @@ export interface TeamScore {
 }
 
 /**
- * Get the highest-rated starter (depthOrder === 1) at a position for a team
+ * Get the highest-rated player at a position for a team (any active player)
+ * CORRECTED: Now looks at ALL active players, not just starters
  */
-const getTopStarterAtPosition = (team: Team, position: string): Player | null => {
-  const starters = team.roster.filter(
-    (p) => p.position === position && p.status === 'ACTIVE' && p.depthOrder === 1
+const getTopPlayerAtPosition = (team: Team, position: string): Player | null => {
+  const playersAtPosition = team.roster.filter(
+    (p) => p.position === position && p.status === 'ACTIVE'
   );
 
-  if (starters.length === 0) return null;
+  if (playersAtPosition.length === 0) return null;
 
-  // Return highest OVR starter
-  return starters.reduce((best, current) => (current.ovr > best.ovr ? current : best));
+  // Return highest OVR player at this position
+  return playersAtPosition.reduce((best, current) =>
+    (current.ovr > best.ovr ? current : best)
+  );
 };
 
 /**
@@ -63,8 +66,8 @@ const getTopDepthAtPosition = (team: Team, position: string): Player | null => {
 };
 
 /**
- * Count extra starters marked with special status
- * Note: Currently checking for players with depthOrder === 1 beyond typical starter count
+ * Count extra starters beyond typical lineup
+ * Players with depthOrder === 1 beyond standard formation get 0.5 pts each
  */
 const getExtraStartersCount = (team: Team): number => {
   // Count starters at each position
@@ -104,71 +107,82 @@ const getExtraStartersCount = (team: Team): number => {
 
 /**
  * Calculate league scores for all teams
+ * CORRECTED SCORING LOGIC:
+ * 1. Positional Leaders: Rank teams by HIGHEST OVR PLAYER at each position
+ *    - 1st: 5 pts, 2nd: 3 pts, 3rd: 2 pts, rest: 1 pt
+ *    - QB Bonus: +2 pts (so QB: 7/5/3/1)
+ * 2. Depth Bonus: Best non-starter at each position gets +1 pt
+ * 3. Extra Starters: Players marked as starters beyond typical lineup get +0.5 pts each
  */
 export const calculateLeagueScores = (teams: Team[]): TeamScore[] => {
   const teamScores: TeamScore[] = [];
 
-  // Section 1: Positional Leaders
+  // Initialize team score entries
+  teams.forEach((team) => {
+    teamScores.push({
+      teamId: team.id,
+      teamName: team.name,
+      owner: team.owner,
+      positionScores: [],
+      depthScores: [],
+      extraStartersBonus: 0,
+      totalScore: 0,
+      breakdown: {
+        positionalLeaders: 0,
+        depthBonus: 0,
+        extraStarters: 0,
+      },
+    });
+  });
+
+  // Section 1: Positional Leaders (CORRECTED - now uses ALL active players)
   POSITIONS.forEach((position) => {
-    // Get top starter at this position for each team
-    const teamStarters = teams.map((team) => ({
+    // Get top player at this position for each team (ANY active player, not just starters)
+    const teamPlayers = teams.map((team) => ({
       team,
-      player: getTopStarterAtPosition(team, position),
+      player: getTopPlayerAtPosition(team, position),
     }));
 
-    // Filter out teams with no starter at this position
-    const validStarters = teamStarters.filter((ts) => ts.player !== null);
+    // Filter out teams with no player at this position
+    const validPlayers = teamPlayers.filter((tp) => tp.player !== null);
 
-    // Sort by OVR descending
-    validStarters.sort((a, b) => b.player!.ovr - a.player!.ovr);
+    if (validPlayers.length === 0) return;
+
+    // Sort by OVR descending (highest to lowest)
+    validPlayers.sort((a, b) => b.player!.ovr - a.player!.ovr);
 
     // Award points based on rank
-    validStarters.forEach((ts, index) => {
+    validPlayers.forEach((tp, index) => {
       const rank = index + 1;
       let points = 1; // Default for rest
 
-      // Base points
+      // Base points based on rank
       if (rank === 1) points = 5;
       else if (rank === 2) points = 3;
       else if (rank === 3) points = 2;
 
-      // QB bonus
+      // QB bonus: +2 additional points
       if (position === 'QB') {
-        if (rank === 1) points = 7;
-        else if (rank === 2) points = 5;
-        else if (rank === 3) points = 3;
+        if (rank === 1) points = 7;      // 5 + 2
+        else if (rank === 2) points = 5;  // 3 + 2
+        else if (rank === 3) points = 3;  // 2 + 2
+        // rest stays 1 (no QB bonus for 4th+)
       }
 
-      // Find or create team score entry
-      let teamScore = teamScores.find((ts) => ts.teamId === ts.team.id);
-      if (!teamScore) {
-        teamScore = {
-          teamId: ts.team.id,
-          teamName: ts.team.name,
-          owner: ts.team.owner,
-          positionScores: [],
-          depthScores: [],
-          extraStartersBonus: 0,
-          totalScore: 0,
-          breakdown: {
-            positionalLeaders: 0,
-            depthBonus: 0,
-            extraStarters: 0,
-          },
-        };
-        teamScores.push(teamScore);
+      // Find team score entry and add position score
+      const teamScore = teamScores.find((ts) => ts.teamId === tp.team.id);
+      if (teamScore) {
+        teamScore.positionScores.push({
+          position,
+          playerOvr: tp.player!.ovr,
+          rank,
+          points,
+        });
       }
-
-      teamScore.positionScores.push({
-        position,
-        starterOvr: ts.player!.ovr,
-        rank,
-        points,
-      });
     });
   });
 
-  // Section 2: Depth Bonus
+  // Section 2: Depth Bonus (best non-starter at each position gets +1 pt)
   POSITIONS.forEach((position) => {
     // Get top depth player at this position for each team
     const teamDepth = teams.map((team) => ({
@@ -181,12 +195,12 @@ export const calculateLeagueScores = (teams: Team[]): TeamScore[] => {
 
     if (validDepth.length === 0) return;
 
-    // Find the highest OVR depth player
+    // Find the highest OVR depth player across all teams
     const bestDepth = validDepth.reduce((best, current) =>
       current.player!.ovr > best.player!.ovr ? current : best
     );
 
-    // Award 1 point to team with best depth
+    // Award 1 point to team with best depth at this position
     const teamScore = teamScores.find((ts) => ts.teamId === bestDepth.team.id);
     if (teamScore) {
       teamScore.depthScores.push({
@@ -197,7 +211,7 @@ export const calculateLeagueScores = (teams: Team[]): TeamScore[] => {
     }
   });
 
-  // Section 3: Extra Starters Bonus
+  // Section 3: Extra Starters Bonus (0.5 pts per extra starter)
   teams.forEach((team) => {
     const extraCount = getExtraStartersCount(team);
     const extraPoints = extraCount * 0.5;
