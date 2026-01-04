@@ -104,13 +104,31 @@ Focus on Madden ratings (OVR), positional depth, and strategic fit. Be specific 
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to get AI response');
+        // Log response details for debugging
+        const responseText = await response.text();
+        console.error('Gemini function error response:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: responseText
+        });
+
+        // Try to parse error message from JSON response
+        let errorMessage = 'Failed to get AI response';
+        try {
+          const errorData = JSON.parse(responseText);
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          // If not JSON, use the raw text
+          errorMessage = responseText || errorMessage;
+        }
+
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
 
       if (!data.text) {
+        console.error('Missing text in response:', data);
         throw new Error('No text content in AI response');
       }
 
