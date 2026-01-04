@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Page } from '../types';
 import { ALL_TEAMS } from '../constants';
-import { TrendingUp, Users, Trophy, Search, GitCompare, Award, ArrowRight } from 'lucide-react';
+import { TrendingUp, Users, Trophy, Search, GitCompare, Award, ArrowRight, Target } from 'lucide-react';
 import { TeamLogo } from '../components/TeamLogo';
+import { calculateLeagueScores } from '../utils/leagueScoring';
 
 interface DashboardProps {
   onNavigate: (page: Page) => void;
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
+  // Calculate league scores
+  const leagueScores = useMemo(() => {
+    try {
+      return calculateLeagueScores(ALL_TEAMS);
+    } catch (error) {
+      console.error('Failed to calculate league scores:', error);
+      return [];
+    }
+  }, []);
+
+  const getTeamScore = (teamId: string) => {
+    const score = leagueScores.find(ts => ts.teamId === teamId);
+    return score?.totalScore.toFixed(1) || '0.0';
+  };
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <h1 className="text-4xl font-display font-bold text-white mb-4">
@@ -139,11 +155,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                   <p className="text-sm text-slate-400">{team.owner}</p>
                 </div>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Record:</span>
-                <span className="text-white font-medium">{team.record}</span>
+              <div className="flex justify-between items-center text-sm">
+                <div className="flex items-center gap-1 text-slate-400">
+                  <Target size={12} className="text-brand-500" />
+                  <span>League Score:</span>
+                </div>
+                <span className="text-brand-500 font-bold">{getTeamScore(team.id)}</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm mt-1">
                 <span className="text-slate-400">Roster:</span>
                 <span className="text-white font-medium">{team.roster.length} players</span>
               </div>
