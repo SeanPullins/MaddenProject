@@ -203,8 +203,8 @@ export const Drafts: React.FC = () => {
   // Clean up cell content by removing arrow icons and numeric prefixes
   const cleanCellContent = (content: string): string => {
     return content
-      // Remove down arrow icon (▼)
-      .replace(/▼\s*/g, '')
+      // Remove all arrow characters (▼, ▲, →, ←, ↑, ↓, ↗, ↘, ↖, ↙)
+      .replace(/[▼▲→←↑↓↗↘↖↙➔➜⬆⬇⬅➡]/g, '')
       // Remove numeric prefixes like "1)", "2)", "3)", etc.
       .replace(/^\s*\d+\)\s*/g, '')
       .trim();
@@ -219,17 +219,14 @@ export const Drafts: React.FC = () => {
     const playerName = extractPlayerName(cell);
 
     let cellClass = '';
-    let icon = null;
 
     if (cellIndex >= 3 && playerName) {
       const evaluation = evaluatePick(round, playerName);
 
       if (evaluation.type === 'steal') {
         cellClass = 'bg-brand-500/10 text-brand-500 font-medium';
-        icon = <TrendingUp className="inline-block mr-1" size={14} />;
       } else if (evaluation.type === 'bust') {
         cellClass = 'bg-red-500/10 text-red-400 font-medium';
-        icon = <TrendingDown className="inline-block mr-1" size={14} />;
       }
     }
 
@@ -240,7 +237,6 @@ export const Drafts: React.FC = () => {
       displayContent = displayContent.replace('$', '');
       return (
         <span className={cellClass}>
-          {icon}
           {displayContent}
           <span className="text-yellow-500 font-bold ml-1">$</span>
         </span>
@@ -249,7 +245,6 @@ export const Drafts: React.FC = () => {
 
     return (
       <span className={cellClass}>
-        {icon}
         {displayContent}
       </span>
     );
