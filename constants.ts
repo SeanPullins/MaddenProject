@@ -27,7 +27,7 @@ const createPlayer = (id: string, name: string, pos: string, ovr: number, team: 
 // Parsed Roster Data for Cruise Ship Crusaders
 const ROSTER_CSC: Player[] = [
     // QB
-    createPlayer('qb1', 'Clayton Tune', 'QB', 50, 'ARZ', '4th', '2027', 1),
+    createPlayer('qb1', 'Clayton Tune', 'QB', 50, 'GB', '4th', '2027', 1),
     
     // RB
     createPlayer('rb1', 'Devin Neal', 'RB', 72, 'NO', '5th', '2029', 1),
@@ -112,7 +112,7 @@ const PRACTICE_SQUAD_CSC: Player[] = [
     createPlayer('ps4', 'Atonio Mafi', 'OG', 0, 'NE', '4th', '2027', 9, 'PRACTICE_SQUAD'),
     createPlayer('ps5', 'Joshua Gray', 'OG', 0, 'ATL', 'UN', '2029', 9, 'PRACTICE_SQUAD'),
     createPlayer('ps6', 'Brenden Jaimes', 'OT', 0, 'NE', '5th', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('ps7', 'Carl Lawson', 'ED', 0, 'RETRIED', 'FA 2021', '2026', 9, 'PRACTICE_SQUAD'),
+    createPlayer('ps7', 'Carl Lawson', 'ED', 0, 'RETIRED', 'FA 2021', '2026', 9, 'PRACTICE_SQUAD'),
     createPlayer('ps8', 'Chris Paul Jr', 'LB', 0, 'SEA', '5th', '2029', 9, 'PRACTICE_SQUAD'),
     createPlayer('ps9', 'Desmond King', 'CB', 0, 'HOU', 'FA 2021', '2026', 9, 'PRACTICE_SQUAD'),
     createPlayer('ps10', 'JC Jackson', 'CB', 0, 'RETIRED', 'FA 2022', '2027', 9, 'PRACTICE_SQUAD'),
@@ -323,7 +323,7 @@ const ROSTER_LEGENDS: Player[] = [
     // DT
     createPlayer('ldt1', 'Gervon Dexter Sr', 'DT', 79, 'CHI', '2nd', '2027', 1),
     createPlayer('ldt2', 'Travis Jones', 'DT', 79, 'BAL', '3rd', '2026', 1),
-    createPlayer('ldt3', 'JJ Pegues', 'DT', 67, 'LAS', '5th', '2029', 2),
+    createPlayer('ldt3', 'JJ Pegues', 'DT', 67, 'LV', '5th', '2029', 2),
     createPlayer('ldt4', 'Tyrion Ingram-Dawkins', 'DT', 67, 'Unknown', '4th', '2029', 2),
 
     // LB
