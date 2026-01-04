@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { ALL_TEAMS } from '../constants';
 import { Player, Team } from '../types';
 import { TrendingUp, TrendingDown, Minus, AlertCircle, Users, User, Shield, Zap, Info } from 'lucide-react';
+import { PlayerCard } from '../components/PlayerCard';
 
 type ComparisonMode = 'player-vs-player' | 'team-vs-team';
 type TeamComparisonType = 'offense-vs-defense' | 'offense-vs-offense' | 'defense-vs-defense';
@@ -30,6 +31,9 @@ export const PlayerComparison: React.FC = () => {
   const [teamComparisonType, setTeamComparisonType] = useState<TeamComparisonType>('offense-vs-defense');
   const [offensiveFormation, setOffensiveFormation] = useState<Formation>(OFFENSIVE_FORMATIONS[0]);
   const [defensiveFormation, setDefensiveFormation] = useState<Formation>(DEFENSIVE_FORMATIONS[0]);
+
+  // Player card modal state
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   // Get players by position group
   const getOffensivePlayers = (team: Team): Player[] => {
@@ -249,9 +253,12 @@ export const PlayerComparison: React.FC = () => {
               {[player1, player2].map((player, playerIndex) => (
                 <div
                   key={player.id}
-                  className="bg-slate-800 rounded-lg p-6 border border-slate-700"
+                  className="bg-slate-800 rounded-lg p-6 border border-slate-700 relative"
                 >
-                  <div className="flex items-center gap-4 mb-6">
+                  <div
+                    className="flex items-center gap-4 mb-6 cursor-pointer hover:bg-slate-700/30 -m-2 p-2 rounded-lg transition-colors"
+                    onClick={() => setSelectedPlayer(player)}
+                  >
                     <img
                       src={player.imageUrl}
                       alt={player.name}
@@ -670,6 +677,14 @@ export const PlayerComparison: React.FC = () => {
             )}
           </div>
         </>
+      )}
+
+      {/* Player Card Modal */}
+      {selectedPlayer && (
+        <PlayerCard
+          player={selectedPlayer}
+          onClose={() => setSelectedPlayer(null)}
+        />
       )}
     </div>
   );

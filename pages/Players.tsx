@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ALL_TEAMS, POSITIONS } from '../constants';
 import { Player } from '../types';
 import { Star, Award, Users, UserCheck } from 'lucide-react';
+import { PlayerCard } from '../components/PlayerCard';
 
 // Tier classification
 type PlayerTier = 'Elite' | 'Starter' | 'Solid' | 'Depth';
@@ -54,6 +55,7 @@ export const Players: React.FC = () => {
   const [positionFilter, setPositionFilter] = useState<string>('ALL');
   const [tierFilter, setTierFilter] = useState<string>('ALL');
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   // Get all players from all teams
   const allPlayers: Player[] = ALL_TEAMS.flatMap((team) => team.roster);
@@ -186,7 +188,8 @@ export const Players: React.FC = () => {
                 return (
                   <tr
                     key={`${player.id}-${index}`}
-                    className={`border-b border-slate-800 hover:bg-slate-700/50 transition-colors ${
+                    onClick={() => setSelectedPlayer(player)}
+                    className={`border-b border-slate-800 hover:bg-slate-700/50 transition-colors cursor-pointer ${
                       tier === 'Elite' ? 'bg-yellow-500/5' : tierConfig.bgAccent
                     }`}
                   >
@@ -233,6 +236,14 @@ export const Players: React.FC = () => {
           </table>
         </div>
       </div>
+
+      {/* Player Card Modal */}
+      {selectedPlayer && (
+        <PlayerCard
+          player={selectedPlayer}
+          onClose={() => setSelectedPlayer(null)}
+        />
+      )}
     </div>
   );
 };
