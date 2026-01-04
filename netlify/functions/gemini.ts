@@ -1,5 +1,5 @@
 import type { Handler } from '@netlify/functions';
-// Reverting to the package you definitely have installed
+// We use the SDK that is ALREADY in your package.json
 import { GoogleGenAI } from '@google/genai';
 
 export const handler: Handler = async (event) => {
@@ -31,22 +31,21 @@ export const handler: Handler = async (event) => {
 
     const ai = new GoogleGenAI({ apiKey });
 
-    // FIX: Use the explicit version 'gemini-1.5-flash-001'
-    // This resolves the 404 error on the Beta SDK you are using
+    // FIX 1: Use 'gemini-1.5-flash-001'
+    // The specific version number bypasses the alias issues causing the 404 on this SDK.
     const result = await ai.models.generateContent({
       model: 'gemini-1.5-flash-001', 
       contents: prompt,
     });
 
-    // Handle the response text safely for the Beta SDK
-    // The Beta SDK returns a result object, we check for text() method or fall back to properties
+    // FIX 2: Safely extract text for this specific SDK
+    // The @google/genai SDK response structure can vary, this covers all bases.
     let responseText = "";
-    if (typeof result.text === 'function') {
+    if (result && typeof result.text === 'function') {
         responseText = result.text();
-    } else if (result.text) {
+    } else if (result && result.text) {
         responseText = result.text;
     } else {
-        // Deep fallback if the structure is raw
         responseText = result?.candidates?.[0]?.content?.parts?.[0]?.text || "";
     }
 
