@@ -42,11 +42,11 @@ const ROSTER_CSC: Player[] = [
     createPlayer('wr3', 'Khalil Shakir', 'WR', 82, 'BUF', '4c', '2026', 1),
     createPlayer('wr4', 'Skyy Moore', 'WR', 72, 'KC', '2nd', '2026', 2),
     createPlayer('wr5', 'Jayden Higgins', 'WR', 75, 'Unknown', '1st', '2029', 1),
-    createPlayer('wr6', 'Isiah Bond', 'WR', 69, 'Unknown', '7th', '2029', 2),
-    
+    createPlayer('wr6', 'Isaiah Bond', 'WR', 69, 'CLE', '7th', '2029', 2),
+
     // TE
     createPlayer('te1', 'Noah Gray', 'TE', 75, 'KC', '4th', '2025', 1),
-    createPlayer('te2', 'Gunna Helm', 'TE', 70, 'Unknown', '3rd', '2029', 2),
+    createPlayer('te2', 'Gunnar Helm', 'TE', 70, 'TEN', '3rd', '2029', 2),
     createPlayer('te3', 'Ben Sims', 'TE', 62, 'MIN', 'UN', '2027', 3),
     createPlayer('te4', 'Chig Okonkwo', 'TE', 75, 'TEN', '4c', '2026', 1),
     createPlayer('te5', 'Charlie Kolar', 'TE', 68, 'BAL', '4th', '2026', 2),
@@ -54,7 +54,7 @@ const ROSTER_CSC: Player[] = [
     
     // OL
     createPlayer('ol1', 'Rashawn Slater', 'OT', 93, 'LAC', '1st', '2025', 1),
-    createPlayer('ol2', 'KT Leveston', 'OT', 67, 'LAR', '7th', '2028', 2),
+    createPlayer('ol2', 'KT Levingston', 'OG', 67, 'CLE', '7th', '2028', 2),
     createPlayer('ol3', 'Mason McCormick', 'OG', 75, 'PIT', '4th', '2028', 1),
     createPlayer('ol4', 'Robert Jones', 'OG', 70, 'MIA', 'UN', '2025', 2),
     createPlayer('ol5', 'Creed Humphrey', 'C', 95, 'KC', '2nd', '2025', 1),
@@ -678,7 +678,7 @@ export const MOCK_PLAYER_1 = ROSTER_CSC[0];
 export const MOCK_PLAYER_2 = ROSTER_CSC[6];
 
 // RAW DRAFT CSV DATA
-export const DRAFT_CSV = `RD,#,Order,Bullard ,Kurt,Rugg,Dusty,Foss,Key
+export const DRAFT_CSV = `RD,#,Order,Bullard,Kurt,Rugg,Dusty,Foss,Key
 2026,,,,,,,,&& Wasn’t Available at this pick
 ,,,,,,,,
 ,,,,,,,,### Took extra player
@@ -695,7 +695,7 @@ export const DRAFT_CSV = `RD,#,Order,Bullard ,Kurt,Rugg,Dusty,Foss,Key
 3,85,"4,3,2,1,5",ED Josaiah Stewart,OG Emery Jones,S Xavier Watts (1),C Jared Wilson (1),OT Charles Grant,
 3,C,"4, 3,2,5,1",DT CJ West,,S Lathan Ransom (1),RB Cam Skattebo (1),RB Bhaysaul Tuten,
 3,102  CE,"3,2,1,5,4",DT Joshua Farmer,LB Cody Simon,OG Miles Frazier,WR Jalen Royals,ED Jack Sawyer,
-3,CET,,TE Gunna Helm (1),,,,,
+3,CET,,TE Gunnar Helm (1),,,,,
 4,123,"2,1,5,4,3",QB Shedeur Sanders (1),S Malachi Moore (1),DT Tyrion Ingram-Dawkins,WR Elic Ayomanor (1),WR Jaylin Lane (1),
 4,138  C,"5, 1, 4, ",RB DJ Giddens,ED Bradyn Swinson,,,DT Rylie Mills,
 5,159,"1,5,4,3,2",OG Jackson Slater,,DT JJ Pegues,LB Smael Mondon,TE Mitchell Evans  (1),
@@ -703,7 +703,7 @@ export const DRAFT_CSV = `RD,#,Order,Bullard ,Kurt,Rugg,Dusty,Foss,Key
 5,176  C,"2,1,3,5,4, ",RB Devin Neal,CB Marcus Harris,OT Myles Hinton,QB Will Howard,S Jaylen Reed,
 6,197,"5,4,3,2,1",DT Aeneas Peebles,OT Camerone Williams,OT Chase Lundt,S RJ Mickens $,LB Kobe King,
 6,216  C,1,,,,,RB Brashard Smith,
-7,237,"4,3,2,1,5",WR Isiah Bond,ED Jared Ivey,OG Garrett Dellinger,TE Moliki Matavao,DT Zeek Biggers,
+7,237,"4,3,2,1,5",WR Isaiah Bond,ED Jared Ivey,OG Garrett Dellinger,TE Moliki Matavao,DT Zeek Biggers,
 7,257 C,1,,,,,WR Elijah Badger,
 UN,258,"3,2,1,5,4",LB Shaun Dolac,OT Logan Brown,LB Jay Higgins,S Tommi Hill,ED Jah Joyner,
 UN,,"2,1,5,4,3",CB Cobee Bryant,S JJ Roberts,C Willie Lampkin,C Seth McLaughlin,CB Zy Alexander,
@@ -727,7 +727,7 @@ UN,,"1,5,4,3,2",OG Joshua Gray,TE Jake Briningstool,OG Luke Kandra,OG Joe Huber,
 5,C 176,"4,1",,,,WR Johnny Wilson Phi (1),RB Kimani Vidal Lac (1),
 6,186," 5,4,3,2,1",TE Tanner McLachlan Cin,CB Dj James Sea,LB Nathaniel Watson Cle,DT Tyler Davis Lar,DT Khristian Boyd No,
 6,C 220,"3,1,4",,DT Leonard Taylor Nyj,,WR Brendan Rice Lac,ED Gabriel Murphy Min,
-7,230,"4,3,2,1,5",OG KT Leveston Lar $,DT Levi Drake Rodriguez Min,QB Michael Pratt Gb,LB Curtis Jacobs Kc,TE Jaheim Bell Ne,
+7,230,"4,3,2,1,5",OG KT Levingston Cle $,DT Levi Drake Rodriguez Min,QB Michael Pratt Gb,LB Curtis Jacobs Kc,TE Jaheim Bell Ne,
 7,C 257,"4,1",,,,OG Javion Cohen Cle,CB Dwight McGlothern Min,
 UN,258," 3,2,1,5,4",OT Garret Greenfield Sea,TE Dallin Holker No, ,ED Trajan Jeffcoat,DT Gabe Hall Phi,
 UN,258,"2,1,5,4,3",OT Frank Crum Den,RB Blake Watson Den, ,DT Fabien Lovett Kc,C Charles Turner Ne,
