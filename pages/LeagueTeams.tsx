@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ALL_TEAMS } from '../constants';
+import { TeamLogo } from '../components/TeamLogo';
 
 export const LeagueTeams: React.FC = () => {
   const [selectedTeam, setSelectedTeam] = useState(ALL_TEAMS[0]);
@@ -25,7 +26,7 @@ export const LeagueTeams: React.FC = () => {
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <img src={team.avatarUrl} alt={team.name} className="w-10 h-10 rounded-full" />
+                    <TeamLogo src={team.avatarUrl} alt={team.name} size="md" />
                     <div>
                       <p className="font-bold">{team.name}</p>
                       <p className="text-sm opacity-80">{team.record}</p>
@@ -41,10 +42,10 @@ export const LeagueTeams: React.FC = () => {
         <div className="lg:col-span-2">
           <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
             <div className="flex items-center gap-4 mb-6">
-              <img
+              <TeamLogo
                 src={selectedTeam.avatarUrl}
                 alt={selectedTeam.name}
-                className="w-16 h-16 rounded-full"
+                size="xl"
               />
               <div>
                 <h2 className="text-3xl font-display font-bold text-white">

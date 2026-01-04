@@ -1,5 +1,6 @@
 import React from 'react';
 import { CRUISE_SHIP_CRUSADERS } from '../constants';
+import { TeamLogo } from '../components/TeamLogo';
 
 export const MyTeam: React.FC = () => {
   const team = CRUISE_SHIP_CRUSADERS;
@@ -7,7 +8,7 @@ export const MyTeam: React.FC = () => {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex items-center gap-4 mb-8">
-        <img src={team.avatarUrl} alt={team.name} className="w-20 h-20 rounded-full" />
+        <TeamLogo src={team.avatarUrl} alt={team.name} size="xl" />
         <div>
           <h1 className="text-4xl font-display font-bold text-white">{team.name}</h1>
           <p className="text-slate-400">Owner: {team.owner}</p>
