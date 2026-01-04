@@ -1,8 +1,8 @@
 import type { Handler } from '@netlify/functions';
-import { GoogleGenAI } from '@google/genai';
+// CHANGE 1: Use the stable SDK import
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export const handler: Handler = async (event) => {
-  // Allow POST only
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
@@ -29,23 +29,24 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    // Initialize the new SDK
-    const ai = new GoogleGenAI({ apiKey });
+    // CHANGE 2: Initialize the stable client
+    const genAI = new GoogleGenerativeAI(apiKey);
 
-    // Call the API with the correct model name
-    const result = await ai.models.generateContent({
-      model: 'gemini-1.5-flash', // Updated to currently supported model
-      contents: prompt,
-    });
+    // CHANGE 3: Get the specific model instance
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-    // Extract text (Note: .text() is a function in the SDK)
-    const responseText = result.text();
+    // CHANGE 4: Generate content
+    const result = await model.generateContent(prompt);
+    
+    // CHANGE 5: Await the response and extract text
+    const response = await result.response;
+    const text = response.text();
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        text: responseText,
+        text: text,
       }),
     };
   } catch (err: any) {
@@ -53,7 +54,9 @@ export const handler: Handler = async (event) => {
     return {
       statusCode: 500,
       body: JSON.stringify({
+        // Log the full error to help debugging if this persists
         error: err.message || 'Internal Server Error',
+        details: err.toString()
       }),
     };
   }
