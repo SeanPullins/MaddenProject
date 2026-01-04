@@ -1,6 +1,7 @@
 import React from 'react';
 import { ALL_TEAMS } from '../constants';
 import { Trophy, Medal, TrendingUp, TrendingDown, Award, Users } from 'lucide-react';
+import { TeamLogo } from '../components/TeamLogo';
 
 export const Standings: React.FC = () => {
   // Sort teams by record (simplified - assumes W-L format like "10-4")
@@ -107,12 +108,11 @@ export const Standings: React.FC = () => {
                   </td>
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
-                      <img
+                      <TeamLogo
                         src={team.avatarUrl}
                         alt={team.name}
-                        className={`w-10 h-10 rounded-full ${
-                          isChampion ? 'ring-2 ring-yellow-500' : ''
-                        }`}
+                        size="md"
+                        className={isChampion ? 'ring-2 ring-yellow-500' : ''}
                       />
                       <span className={`font-bold ${
                         isChampion || rank <= 3 ? 'text-white text-base' : 'text-slate-200'

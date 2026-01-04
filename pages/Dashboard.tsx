@@ -2,6 +2,7 @@ import React from 'react';
 import { Page } from '../types';
 import { ALL_TEAMS } from '../constants';
 import { TrendingUp, Users, Trophy, Search, GitCompare, Award, ArrowRight } from 'lucide-react';
+import { TeamLogo } from '../components/TeamLogo';
 
 interface DashboardProps {
   onNavigate: (page: Page) => void;
@@ -128,10 +129,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
               onClick={() => onNavigate(Page.TEAMS)}
             >
               <div className="flex items-center gap-3 mb-2">
-                <img
+                <TeamLogo
                   src={team.avatarUrl}
                   alt={team.name}
-                  className="w-12 h-12 rounded-full"
+                  size="lg"
                 />
                 <div>
                   <h3 className="font-bold text-white">{team.name}</h3>

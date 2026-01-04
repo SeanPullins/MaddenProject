@@ -605,7 +605,7 @@ export const CRUISE_SHIP_CRUSADERS: Team = {
   id: 'csc',
   name: 'Cruise Ship Crusaders',
   owner: 'Bullard',
-  avatarUrl: 'https://ui-avatars.com/api/?name=Crusaders&background=0284c7&color=fff&length=1',
+  avatarUrl: '/teams/Cruise Ship Crusaders Logo 2025 1.png',
   record: '0-0',
   tagsSaved: 2,
   roster: ROSTER_CSC,
@@ -617,7 +617,7 @@ export const KEY_WEST_KILLAS: Team = {
   id: 'kwk',
   name: 'Key West Killas',
   owner: 'Kurt',
-  avatarUrl: 'https://ui-avatars.com/api/?name=Killas&background=f59e0b&color=fff&length=1', // Orange/Amber theme
+  avatarUrl: '/teams/Key West Killas Logo 2025 1.png',
   record: '0-0',
   tagsSaved: 2,
   roster: ROSTER_KILLAS,
@@ -629,7 +629,7 @@ export const NEW_LEXINGTON_LEGENDS: Team = {
   id: 'nll',
   name: 'New Lexington Legends',
   owner: 'Rugg',
-  avatarUrl: 'https://ui-avatars.com/api/?name=Legends&background=7c3aed&color=fff&length=1', // Purple theme
+  avatarUrl: '/teams/New Lexington Legends Logo 2025 1.png',
   record: '0-0',
   tagsSaved: 0,
   roster: ROSTER_LEGENDS,
@@ -641,7 +641,7 @@ export const DUSTY_TEAM: Team = {
     id: 'dusty',
     name: 'Port Charlotte Pythons',
     owner: 'Dusty',
-    avatarUrl: 'https://ui-avatars.com/api/?name=Pythons&background=b91c1c&color=fff&length=1', // Red theme
+    avatarUrl: '/teams/Port Charlotte Pythons Logo 2025 1.png',
     record: '0-0',
     tagsSaved: 0,
     roster: ROSTER_DUSTY,
@@ -653,7 +653,7 @@ export const ROAD_WARRIORS: Team = {
     id: 'trw',
     name: 'Team Road Warriors',
     owner: 'Foss',
-    avatarUrl: 'https://ui-avatars.com/api/?name=Warriors&background=57534e&color=fff&length=1', // Stone theme
+    avatarUrl: '/teams/Road Warriors Logo 2025 1.png',
     record: '0-0',
     tagsSaved: 0,
     roster: ROSTER_FOSS,
