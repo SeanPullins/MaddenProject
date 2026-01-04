@@ -30,9 +30,9 @@ const ROSTER_CSC: Player[] = [
     createPlayer('qb1', 'Clayton Tune', 'QB', 50, 'ARZ', '4th', '2027', 1),
     
     // RB
-    createPlayer('rb1', 'Devin Neal', 'RB', 72, 'Unknown', '5th', '2029', 1),
+    createPlayer('rb1', 'Devin Neal', 'RB', 72, 'NO', '5th', '2029', 1),
     createPlayer('rb2', 'Roschon Johnson', 'RB', 71, 'CHI', '4th', '2027', 2),
-    createPlayer('rb3', 'Dj Giddens', 'RB', 70, 'Unknown', '4th', '2029', 3),
+    createPlayer('rb3', 'Dj Giddens', 'RB', 70, 'IND', '4th', '2029', 3),
     createPlayer('rb4', 'Rasheen Ali', 'RB', 69, 'BAL', '5th', '2028', 4),
     createPlayer('rb5', 'Sean Tucker', 'RB', 70, 'TB', 'UN', '2027', 5),
     
@@ -41,7 +41,7 @@ const ROSTER_CSC: Player[] = [
     createPlayer('wr2', 'Adonai Mitchell', 'WR', 75, 'IND', '2nd', '2028', 2),
     createPlayer('wr3', 'Khalil Shakir', 'WR', 82, 'BUF', '4c', '2026', 1),
     createPlayer('wr4', 'Skyy Moore', 'WR', 72, 'KC', '2nd', '2026', 2),
-    createPlayer('wr5', 'Jayden Higgins', 'WR', 75, 'Unknown', '1st', '2029', 1),
+    createPlayer('wr5', 'Jayden Higgins', 'WR', 75, 'HOU', '1st', '2029', 1),
     createPlayer('wr6', 'Isaiah Bond', 'WR', 69, 'CLE', '7th', '2029', 2),
 
     // TE
@@ -60,7 +60,7 @@ const ROSTER_CSC: Player[] = [
     createPlayer('ol5', 'Creed Humphrey', 'C', 95, 'KC', '2nd', '2025', 1),
     createPlayer('ol6', 'Luke Wypler', 'C', 66, 'CLE', '5th', '2027', 2),
     createPlayer('ol7', 'Chris Paul', 'OG', 74, 'WSH', '7th', '2026', 1),
-    createPlayer('ol8', 'Jackson Slater', 'OG', 68, 'Unknown', '5th', '2029', 2),
+    createPlayer('ol8', 'Jackson Slater', 'OG', 68, 'TEN', '5th', '2029', 2),
     createPlayer('ol9', 'Andrew Thomas', 'OT', 92, 'NYG', 'FA 2024', '2029', 1),
     createPlayer('ol10', 'Frank Crum', 'OT', 63, 'DEN', 'UN', '2028', 2),
 
@@ -69,15 +69,15 @@ const ROSTER_CSC: Player[] = [
     createPlayer('ed2', 'Laiatu Latu', 'ED', 79, 'IND', '1st', '2028', 2),
     createPlayer('ed3', 'Isaiah McGuire', 'ED', 72, 'CLE', '3rd', '2027', 3),
     createPlayer('ed4', 'Josh Sweat', 'ED', 84, 'PHI', 'FA 2022', '2027', 1),
-    createPlayer('ed5', 'Mike Green', 'ED', 75, 'Unknown', '2nd', '2029', 2),
+    createPlayer('ed5', 'Mike Green', 'ED', 75, 'BAL', '2nd', '2029', 2),
     createPlayer('ed6', 'Xavier Thomas', 'ED', 0, 'ARZ', '4th', '2028', 3),
 
     // DT
     createPlayer('dt1', 'Grady Jarrett', 'DT', 80, 'ATL', 'Legend', '2029', 1),
-    createPlayer('dt2', 'Joshua Farmer', 'DT', 71, 'Unknown', '3rd', '2029', 2),
-    createPlayer('dt3', 'Aeneas Peebles', 'DT', 68, 'Unknown', '6th', '2029', 3),
+    createPlayer('dt2', 'Joshua Farmer', 'DT', 71, 'NE', '3rd', '2029', 2),
+    createPlayer('dt3', 'Aeneas Peebles', 'DT', 68, 'BAL', '6th', '2029', 3),
     createPlayer('dt4', 'Javon Hargrave', 'DT', 80, 'SF', 'FA 2020', '2025', 1),
-    createPlayer('dt5', 'CJ West', 'DT', 68, 'Unknown', '3rd', '2029', 2),
+    createPlayer('dt5', 'CJ West', 'DT', 68, 'SF', '3rd', '2029', 2),
     createPlayer('dt6', 'Desjuan Johnson', 'DT', 63, 'LAR', '7th', '2027', 3),
     createPlayer('dt7', 'Keeanu Benton', 'DT', 76, 'PIT', '2nd', '2027', 1),
 
@@ -87,15 +87,15 @@ const ROSTER_CSC: Player[] = [
     createPlayer('lb3', 'Damone Clark', 'LB', 71, 'DAL', '5th', '2026', 3),
     createPlayer('lb4', 'Nakobe Dean', 'LB', 78, 'PHI', '3rd', '2026', 1),
     createPlayer('lb5', 'Derrick Barnes', 'LB', 74, 'DET', '3rd', '2025', 2),
-    createPlayer('lb6', 'Shaun Dolac', 'LB', 69, 'Unknown', 'UN', '2029', 3),
+    createPlayer('lb6', 'Shaun Dolac', 'LB', 69, 'LAR', 'UN', '2029', 3),
 
     // CB
     createPlayer('cb1', 'Christian Gonzalez', 'CB', 96, 'NE', '1st', '2027', 1),
     createPlayer('cb2', 'Cam Hart', 'CB', 73, 'LAC', '4th', '2028', 2),
-    createPlayer('cb3', 'Cobee Bryant', 'CB', 65, 'Unknown', 'UN', '2029', 3),
+    createPlayer('cb3', 'Cobee Bryant', 'CB', 65, 'SEA', 'UN', '2029', 3),
     createPlayer('cb4', 'Jarvis Brownlee', 'CB', 75, 'TEN', '4th', '2028', 1),
     createPlayer('cb5', 'Bo Melton', 'CB', 68, 'SEA', '6c', '2026', 2),
-    createPlayer('cb6', 'Benjamin Morrison', 'CB', 75, 'Unknown', '2nd', '2029', 1),
+    createPlayer('cb6', 'Benjamin Morrison', 'CB', 75, 'TB', '2nd', '2029', 1),
     createPlayer('cb7', 'Tre Brown', 'CB', 50, 'SEA', '4th', '2025', 2),
 
     // S
