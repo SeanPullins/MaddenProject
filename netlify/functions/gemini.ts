@@ -12,13 +12,11 @@ export const handler: Handler = async (event) => {
   }
 
   try {
-    const body = JSON.parse(event.body || '{}');
-    const prompt = body.prompt;
+    const { prompt } = JSON.parse(event.body || '{}');
 
     if (!prompt) {
       return {
         statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ error: 'Prompt is required' }),
       };
     }
@@ -27,18 +25,14 @@ export const handler: Handler = async (event) => {
     if (!apiKey) {
       return {
         statusCode: 500,
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ error: 'Missing GEMINI_API_KEY' }),
       };
     }
 
-    const ai = new GoogleGenAI({
-      apiKey,
-      apiVersion: 'v1',
-    });
+    const ai = new GoogleGenAI({ apiKey });
 
     const result = await ai.models.generateContent({
-      model: 'gemini-1.5-pro', // ✅ THIS IS THE FIX
+      model: 'gemini-pro', // ✅ CORRECT MODEL
       contents: prompt,
     });
 
@@ -51,12 +45,10 @@ export const handler: Handler = async (event) => {
     };
   } catch (err: any) {
     console.error('Gemini function error:', err);
-
     return {
       statusCode: 500,
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        error: err?.message || 'Internal Server Error',
+        error: err.message || 'Internal Server Error',
       }),
     };
   }
