@@ -4,11 +4,18 @@ import { TrendingUp, TrendingDown, AlertCircle, Award } from 'lucide-react';
 
 export const Drafts: React.FC = () => {
   const [roundFilter, setRoundFilter] = useState<string>('ALL');
+  const [userFilter, setUserFilter] = useState<string>('ALL');
 
   // Parse CSV data
   const lines = DRAFT_CSV.trim().split('\n');
   const headers = lines[0].split(',');
   const allRows = lines.slice(1).map((line) => line.split(','));
+
+  // User/team options from headers (columns 3-7)
+  const userOptions = headers.slice(3, 8).map((name, idx) => ({
+    value: String(idx + 3),
+    label: name.trim() || `Team ${idx + 1}`
+  }));
 
   // Get all players from all teams for OVR lookup
   const allPlayers = useMemo(() => {
@@ -117,7 +124,7 @@ export const Drafts: React.FC = () => {
       </div>
 
       {/* Filter and Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
           <label className="block text-slate-400 text-sm mb-2">Filter by Round</label>
           <select
@@ -134,6 +141,20 @@ export const Drafts: React.FC = () => {
             <option value="6">Round 6</option>
             <option value="7">Round 7</option>
             <option value="UN">Undrafted (UN)</option>
+          </select>
+        </div>
+
+        <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
+          <label className="block text-slate-400 text-sm mb-2">Filter by User</label>
+          <select
+            value={userFilter}
+            onChange={(e) => setUserFilter(e.target.value)}
+            className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500"
+          >
+            <option value="ALL">All Users</option>
+            {userOptions.map(opt => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
           </select>
         </div>
 
@@ -172,11 +193,17 @@ export const Drafts: React.FC = () => {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-700">
-                {headers.map((header, index) => (
-                  <th key={index} className="text-left py-3 px-3 text-slate-400 font-medium whitespace-nowrap">
-                    {header}
-                  </th>
-                ))}
+                {headers.map((header, index) => {
+                  // Show all columns if "All Users", otherwise only show RD, #, Order, and selected user
+                  const shouldShow = userFilter === 'ALL' || index < 3 || index === parseInt(userFilter);
+                  if (!shouldShow) return null;
+
+                  return (
+                    <th key={index} className="text-left py-3 px-3 text-slate-400 font-medium whitespace-nowrap">
+                      {header}
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
@@ -186,6 +213,10 @@ export const Drafts: React.FC = () => {
                 return (
                   <tr key={rowIndex} className="border-b border-slate-800 hover:bg-slate-700/50">
                     {row.map((cell, cellIndex) => {
+                      // Show all columns if "All Users", otherwise only show RD, #, Order, and selected user
+                      const shouldShow = userFilter === 'ALL' || cellIndex < 3 || cellIndex === parseInt(userFilter);
+                      if (!shouldShow) return null;
+
                       // Evaluate picks in team columns (skip RD, #, Order)
                       let cellClass = 'py-2 px-3 text-slate-300 whitespace-nowrap';
                       let icon = null;

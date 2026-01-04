@@ -17,8 +17,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
       {/* Intro */}
       <p className="text-slate-300 text-lg mb-8 max-w-3xl">
-        Welcome to <span className="text-brand-500 font-bold">FanLeague</span> — a premium fantasy football platform
-        powered by <span className="text-brand-500 font-semibold">Madden NFL ratings and attributes</span>.
+        Welcome to <span className="text-brand-500 font-bold">FanLeague — Where the Best GM Meets Madden</span>.
+        A premium fantasy football platform powered by <span className="text-brand-500 font-semibold">Madden NFL ratings and attributes</span>.
         Manage your franchise, track player performance, analyze draft success, and compete in a league
         where player value is driven by real Madden game data.
       </p>
