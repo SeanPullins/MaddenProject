@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { DRAFT_CSV, ALL_TEAMS } from '../constants';
 import { TrendingUp, TrendingDown, AlertCircle, Award, Search, Filter } from 'lucide-react';
+import { PlayerCard } from '../components/PlayerCard';
+import { Player } from '../types';
 
 export const Drafts: React.FC = () => {
   const [yearFilter, setYearFilter] = useState<string>('ALL');
@@ -10,6 +12,7 @@ export const Drafts: React.FC = () => {
   const [playerSearch, setPlayerSearch] = useState<string>('');
   const [showHitsOnly, setShowHitsOnly] = useState<boolean>(false);
   const [showTrades, setShowTrades] = useState<boolean>(true);
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   // Parse CSV line respecting quoted fields
   const parseCSVLine = (line: string): string[] => {
@@ -103,13 +106,18 @@ export const Drafts: React.FC = () => {
     return row.some(cell => cell && cell.toLowerCase().includes('trade'));
   };
 
+  // Check if row contains "Order is" and should be hidden
+  const isOrderRow = (row: string[]): boolean => {
+    return row.some(cell => cell && cell.includes('Order is'));
+  };
+
   // Check if row is a year marker or metadata row
   const isMetadataRow = (row: string[]): boolean => {
     const firstCell = row[0];
     // Year rows, empty rows, or rows with special markers
     if (!firstCell || firstCell.trim() === '') return true;
     if (/^\d{4}$/.test(firstCell.trim())) return true;
-    if (row.some(cell => cell && (cell.includes('Order is') || cell.includes('&&') || cell.includes('###')))) return true;
+    if (row.some(cell => cell && (cell.includes('&&') || cell.includes('###')))) return true;
     return false;
   };
 
@@ -232,7 +240,16 @@ export const Drafts: React.FC = () => {
       .trim();
   };
 
-  // Render cell with proper styling
+  // Find player in roster by name
+  const findPlayerByName = (name: string): Player | null => {
+    if (!name) return null;
+    return allPlayers.find((p) =>
+      p.name.toLowerCase().includes(name.toLowerCase()) ||
+      name.toLowerCase().includes(p.name.toLowerCase())
+    ) || null;
+  };
+
+  // Render cell with proper styling and clickable player names
   const renderCell = (cell: string, cellIndex: number, round: string) => {
     if (!cell || cell.trim() === '') return '-';
 
@@ -254,11 +271,28 @@ export const Drafts: React.FC = () => {
 
     // Format the cell content - remove arrows and numeric prefixes
     let displayContent = cleanCellContent(cell);
+
+    // Make player names clickable (only in player columns, not RD/#/Order)
+    const handleClick = () => {
+      if (cellIndex >= 3 && playerName) {
+        const player = findPlayerByName(playerName);
+        if (player) {
+          setSelectedPlayer(player);
+        }
+      }
+    };
+
+    const isClickable = cellIndex >= 3 && playerName && findPlayerByName(playerName);
+    const clickableClass = isClickable ? 'cursor-pointer hover:underline' : '';
+
     if (hasHit) {
       // Highlight $ symbol in gold
       displayContent = displayContent.replace('$', '');
       return (
-        <span className={cellClass}>
+        <span
+          className={`${cellClass} ${clickableClass}`}
+          onClick={handleClick}
+        >
           {displayContent}
           <span className="text-yellow-500 font-bold ml-1">$</span>
         </span>
@@ -266,7 +300,10 @@ export const Drafts: React.FC = () => {
     }
 
     return (
-      <span className={cellClass}>
+      <span
+        className={`${cellClass} ${clickableClass}`}
+        onClick={handleClick}
+      >
         {displayContent}
       </span>
     );
@@ -502,6 +539,9 @@ export const Drafts: React.FC = () => {
             </thead>
             <tbody>
               {filteredRows.map(({ row, index: originalIndex }, displayIndex) => {
+                // Skip "Order is" rows entirely
+                if (isOrderRow(row)) return null;
+
                 const round = row[0];
                 const isTradeRow = isTrade(row);
                 const isMetadata = isMetadataRow(row);
@@ -545,6 +585,11 @@ export const Drafts: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Player Card Modal */}
+      {selectedPlayer && (
+        <PlayerCard player={selectedPlayer} onClose={() => setSelectedPlayer(null)} />
+      )}
     </div>
   );
 };
