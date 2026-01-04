@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ALL_TEAMS } from '../constants';
-import { Team } from '../types';
+import { Team, Player } from '../types';
 import { TeamLogo } from '../components/TeamLogo';
+import { PlayerCard } from '../components/PlayerCard';
 
 const SELECTED_TEAM_KEY = 'fanleague_selected_team_id';
 
@@ -15,6 +16,8 @@ export const MyTeam: React.FC = () => {
     }
     return ALL_TEAMS[0];
   });
+
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   // Persist team selection to localStorage
   useEffect(() => {
@@ -86,7 +89,11 @@ export const MyTeam: React.FC = () => {
             </thead>
             <tbody>
               {team.roster.map((player) => (
-                <tr key={player.id} className="border-b border-slate-800 hover:bg-slate-700/50">
+                <tr
+                  key={player.id}
+                  onClick={() => setSelectedPlayer(player)}
+                  className="border-b border-slate-800 hover:bg-slate-700/50 cursor-pointer transition-colors"
+                >
                   <td className="py-3 px-4 text-white">{player.name}</td>
                   <td className="py-3 px-4 text-slate-300">{player.position}</td>
                   <td className="py-3 px-4 text-slate-300">{player.team}</td>
@@ -108,7 +115,11 @@ export const MyTeam: React.FC = () => {
         <h2 className="text-2xl font-display font-bold text-white mb-4">PRACTICE SQUAD</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {team.practiceSquad.map((player) => (
-            <div key={player.id} className="bg-slate-900 rounded p-3 border border-slate-700">
+            <div
+              key={player.id}
+              onClick={() => setSelectedPlayer(player)}
+              className="bg-slate-900 rounded p-3 border border-slate-700 cursor-pointer hover:bg-slate-700/50 transition-colors"
+            >
               <p className="text-white font-medium">{player.name}</p>
               <p className="text-slate-400 text-sm">
                 {player.position} • {player.team}
@@ -117,6 +128,14 @@ export const MyTeam: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Player Card Modal */}
+      {selectedPlayer && (
+        <PlayerCard
+          player={selectedPlayer}
+          onClose={() => setSelectedPlayer(null)}
+        />
+      )}
     </div>
   );
 };
