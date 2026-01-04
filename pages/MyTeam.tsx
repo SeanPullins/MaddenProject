@@ -53,8 +53,15 @@ export const MyTeam: React.FC = () => {
     }
   };
 
-  // Calculate league scores and get current team's score
-  const leagueScores = useMemo(() => calculateLeagueScores(ALL_TEAMS), []);
+  // Calculate league scores and get current team's score (safely)
+  const leagueScores = useMemo(() => {
+    try {
+      return calculateLeagueScores(ALL_TEAMS);
+    } catch (error) {
+      console.error('Failed to calculate league scores:', error);
+      return [];
+    }
+  }, []);
   const teamScore = useMemo(() =>
     leagueScores.find(ts => ts.teamId === team.id),
     [leagueScores, team.id]
