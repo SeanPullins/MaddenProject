@@ -11,10 +11,32 @@ export const Drafts: React.FC = () => {
   const [showHitsOnly, setShowHitsOnly] = useState<boolean>(false);
   const [showTrades, setShowTrades] = useState<boolean>(true);
 
-  // Parse CSV data
+  // Parse CSV line respecting quoted fields
+  const parseCSVLine = (line: string): string[] => {
+    const result: string[] = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        result.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    result.push(current); // Add the last field
+    return result;
+  };
+
+  // Parse CSV data with proper quote handling
   const lines = DRAFT_CSV.trim().split('\n');
-  const headers = lines[0].split(',');
-  const allRows = lines.slice(1).map((line) => line.split(','));
+  const headers = parseCSVLine(lines[0]);
+  const allRows = lines.slice(1).map((line) => parseCSVLine(line));
 
   // User/team options from headers (columns 3-7)
   const userOptions = headers.slice(3, 8).map((name, idx) => ({
