@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { ALL_TEAMS } from '../constants';
 import { TeamLogo } from '../components/TeamLogo';
+import { FormerPlayersPanel } from '../components/FormerPlayersPanel';
+import { UserMinus } from 'lucide-react';
+import { getTeamColors } from '../utils/teamColors';
 
 export const LeagueTeams: React.FC = () => {
   const [selectedTeam, setSelectedTeam] = useState(ALL_TEAMS[0]);
+  const [showFormerPlayers, setShowFormerPlayers] = useState<boolean>(false);
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -75,6 +79,19 @@ export const LeagueTeams: React.FC = () => {
               </div>
             </div>
 
+            {/* Former Players Button */}
+            {selectedTeam.formerPlayers && selectedTeam.formerPlayers.length > 0 && (
+              <div className="mb-6">
+                <button
+                  onClick={() => setShowFormerPlayers(true)}
+                  className="flex items-center gap-2 px-4 py-3 bg-slate-900 hover:bg-slate-700 border border-slate-700 hover:border-brand-500 rounded-lg text-white font-medium transition-colors"
+                >
+                  <UserMinus size={20} />
+                  Former Players ({selectedTeam.formerPlayers.length})
+                </button>
+              </div>
+            )}
+
             <h3 className="text-xl font-display font-bold text-white mb-3">TOP PLAYERS</h3>
             <div className="space-y-2">
               {selectedTeam.roster
@@ -100,6 +117,16 @@ export const LeagueTeams: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Former Players Panel */}
+      {showFormerPlayers && (
+        <FormerPlayersPanel
+          teamName={selectedTeam.name}
+          formerPlayers={selectedTeam.formerPlayers}
+          onClose={() => setShowFormerPlayers(false)}
+          teamColor={getTeamColors(selectedTeam.owner.substring(0, 3).toUpperCase()).primary}
+        />
+      )}
     </div>
   );
 };
