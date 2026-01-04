@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/genai';
+import { GoogleGenAI } from '@google/genai';
 
 interface RequestBody {
   prompt: string;
@@ -34,14 +34,21 @@ export const handler = async (event: any) => {
       };
     }
 
-    // Initialize Gemini
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    // Initialize Gemini client
+    const ai = new GoogleGenAI({ apiKey });
 
-    // Generate content
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    // Generate content using the models API
+    const result = await ai.models.generateContent({
+      model: 'gemini-2.0-flash-exp',
+      contents: prompt,
+    });
+
+    // Extract text from response
+    const text = result.text;
+
+    if (!text) {
+      throw new Error('No text content in response');
+    }
 
     return {
       statusCode: 200,
