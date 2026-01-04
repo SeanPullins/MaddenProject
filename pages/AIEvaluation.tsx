@@ -109,7 +109,12 @@ Focus on Madden ratings (OVR), positional depth, and strategic fit. Be specific 
       }
 
       const data = await response.json();
-      setAiResponse(data.response);
+
+      if (!data.text) {
+        throw new Error('No text content in AI response');
+      }
+
+      setAiResponse(data.text);
     } catch (err: any) {
       console.error('AI Evaluation error:', err);
       setError(err.message || 'Failed to generate AI evaluation. Please try again.');
