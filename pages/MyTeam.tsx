@@ -1,12 +1,51 @@
-import React from 'react';
-import { CRUISE_SHIP_CRUSADERS } from '../constants';
+import React, { useState, useEffect } from 'react';
+import { ALL_TEAMS } from '../constants';
+import { Team } from '../types';
 import { TeamLogo } from '../components/TeamLogo';
 
+const SELECTED_TEAM_KEY = 'fanleague_selected_team_id';
+
 export const MyTeam: React.FC = () => {
-  const team = CRUISE_SHIP_CRUSADERS;
+  // Load saved team from localStorage or default to first team
+  const [team, setTeam] = useState<Team>(() => {
+    const savedTeamId = localStorage.getItem(SELECTED_TEAM_KEY);
+    if (savedTeamId) {
+      const savedTeam = ALL_TEAMS.find(t => t.id === savedTeamId);
+      if (savedTeam) return savedTeam;
+    }
+    return ALL_TEAMS[0];
+  });
+
+  // Persist team selection to localStorage
+  useEffect(() => {
+    localStorage.setItem(SELECTED_TEAM_KEY, team.id);
+  }, [team]);
+
+  const handleTeamChange = (teamId: string) => {
+    const selectedTeam = ALL_TEAMS.find(t => t.id === teamId);
+    if (selectedTeam) {
+      setTeam(selectedTeam);
+    }
+  };
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
+      {/* Team Selector */}
+      <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 mb-6">
+        <label className="block text-slate-400 text-sm mb-2 font-medium">Select Your Team</label>
+        <select
+          value={team.id}
+          onChange={(e) => handleTeamChange(e.target.value)}
+          className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500 text-lg"
+        >
+          {ALL_TEAMS.map(t => (
+            <option key={t.id} value={t.id}>
+              {t.name} ({t.owner})
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="flex items-center gap-4 mb-8">
         <TeamLogo src={team.avatarUrl} alt={team.name} size="xl" />
         <div>
