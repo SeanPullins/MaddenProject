@@ -200,6 +200,16 @@ export const Drafts: React.FC = () => {
     return Array.from(years).sort().reverse();
   }, [yearMap]);
 
+  // Clean up cell content by removing arrow icons and numeric prefixes
+  const cleanCellContent = (content: string): string => {
+    return content
+      // Remove down arrow icon (▼)
+      .replace(/▼\s*/g, '')
+      // Remove numeric prefixes like "1)", "2)", "3)", etc.
+      .replace(/^\s*\d+\)\s*/g, '')
+      .trim();
+  };
+
   // Render cell with proper styling
   const renderCell = (cell: string, cellIndex: number, round: string) => {
     if (!cell || cell.trim() === '') return '-';
@@ -223,11 +233,11 @@ export const Drafts: React.FC = () => {
       }
     }
 
-    // Format the cell content
-    let displayContent = cell;
+    // Format the cell content - remove arrows and numeric prefixes
+    let displayContent = cleanCellContent(cell);
     if (hasHit) {
       // Highlight $ symbol in gold
-      displayContent = cell.replace('$', '');
+      displayContent = displayContent.replace('$', '');
       return (
         <span className={cellClass}>
           {icon}
