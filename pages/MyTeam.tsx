@@ -3,6 +3,9 @@ import { ALL_TEAMS } from '../constants';
 import { Team, Player } from '../types';
 import { TeamLogo } from '../components/TeamLogo';
 import { PlayerCard } from '../components/PlayerCard';
+import { FormerPlayersPanel } from '../components/FormerPlayersPanel';
+import { UserMinus } from 'lucide-react';
+import { getTeamColors } from '../utils/teamColors';
 
 const SELECTED_TEAM_KEY = 'fanleague_selected_team_id';
 
@@ -35,6 +38,7 @@ export const MyTeam: React.FC = () => {
   });
 
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+  const [showFormerPlayers, setShowFormerPlayers] = useState<boolean>(false);
 
   // Persist team selection to localStorage
   useEffect(() => {
@@ -114,7 +118,7 @@ export const MyTeam: React.FC = () => {
       </div>
 
       {/* Team Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
           <p className="text-slate-400 text-sm mb-1">Record</p>
           <p className="text-2xl font-bold text-white">{team.record}</p>
@@ -128,6 +132,19 @@ export const MyTeam: React.FC = () => {
           <p className="text-2xl font-bold text-white">{team.practiceSquad.length}</p>
         </div>
       </div>
+
+      {/* Former Players Button */}
+      {team.formerPlayers && team.formerPlayers.length > 0 && (
+        <div className="mb-8">
+          <button
+            onClick={() => setShowFormerPlayers(true)}
+            className="flex items-center gap-2 px-4 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-brand-500 rounded-lg text-white font-medium transition-colors"
+          >
+            <UserMinus size={20} />
+            Former Players ({team.formerPlayers.length})
+          </button>
+        </div>
+      )}
 
       {/* Roster by Position */}
       <div className="space-y-6">
@@ -175,6 +192,16 @@ export const MyTeam: React.FC = () => {
         <PlayerCard
           player={selectedPlayer}
           onClose={() => setSelectedPlayer(null)}
+        />
+      )}
+
+      {/* Former Players Panel */}
+      {showFormerPlayers && (
+        <FormerPlayersPanel
+          teamName={team.name}
+          formerPlayers={team.formerPlayers}
+          onClose={() => setShowFormerPlayers(false)}
+          teamColor={getTeamColors(team.owner.substring(0, 3).toUpperCase()).primary}
         />
       )}
     </div>
