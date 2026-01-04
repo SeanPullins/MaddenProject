@@ -1,15 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import { ALL_TEAMS } from '../constants';
-import { Trophy, Medal, TrendingUp, TrendingDown, Award, Users, ArrowUpDown, ArrowDown, ArrowUp, Target, ChevronDown, ChevronUp } from 'lucide-react';
+import { Trophy, Medal, Award, Users, ArrowDown, ArrowUp, Target, Star, Zap, Shield, TrendingUp, Info } from 'lucide-react';
 import { TeamLogo } from '../components/TeamLogo';
 import { calculateLeagueScores } from '../utils/leagueScoring';
 
-type SortMode = 'RECORD' | 'LEAGUE_SCORE';
-
 export const Standings: React.FC = () => {
-  const [expandedTeamId, setExpandedTeamId] = useState<string | null>(null);
-  const [sortMode, setSortMode] = useState<SortMode>('RECORD');
   const [sortDirection, setSortDirection] = useState<'DESC' | 'ASC'>('DESC');
+  const [hoveredTeamId, setHoveredTeamId] = useState<string | null>(null);
 
   // Calculate league scores (safely)
   const leagueScores = useMemo(() => {
@@ -21,139 +18,87 @@ export const Standings: React.FC = () => {
     }
   }, []);
 
-  // Sort teams based on current mode
+  // Sort teams by League Score
   const sortedTeams = useMemo(() => {
     const teams = [...ALL_TEAMS];
 
-    if (sortMode === 'RECORD') {
-      // Sort by win-loss record
-      teams.sort((a, b) => {
-        const aWins = parseInt(a.record.split('-')[0] || '0');
-        const bWins = parseInt(b.record.split('-')[0] || '0');
+    teams.sort((a, b) => {
+      const aScore = leagueScores.find((ls) => ls.teamId === a.id);
+      const bScore = leagueScores.find((ls) => ls.teamId === b.id);
 
-        if (sortDirection === 'DESC') {
-          return bWins - aWins;
-        } else {
-          return aWins - bWins;
-        }
-      });
-    } else {
-      // Sort by league score
-      teams.sort((a, b) => {
-        const aScore = leagueScores.find((ls) => ls.teamId === a.id);
-        const bScore = leagueScores.find((ls) => ls.teamId === b.id);
+      const aTotal = aScore?.totalScore || 0;
+      const bTotal = bScore?.totalScore || 0;
 
-        const aTotal = aScore?.totalScore || 0;
-        const bTotal = bScore?.totalScore || 0;
-
-        if (sortDirection === 'DESC') {
-          return bTotal - aTotal;
-        } else {
-          return aTotal - bTotal;
-        }
-      });
-    }
+      if (sortDirection === 'DESC') {
+        return bTotal - aTotal;
+      } else {
+        return aTotal - bTotal;
+      }
+    });
 
     return teams;
-  }, [sortMode, sortDirection, leagueScores]);
+  }, [sortDirection, leagueScores]);
 
   const totalTeams = sortedTeams.length;
-  const playoffCutoff = Math.ceil(totalTeams / 2); // Top half make playoffs
 
-  const toggleSortMode = (mode: SortMode) => {
-    if (sortMode === mode) {
-      // Toggle direction if clicking same column
-      setSortDirection(sortDirection === 'DESC' ? 'ASC' : 'DESC');
-    } else {
-      // Switch to new column, default to DESC
-      setSortMode(mode);
-      setSortDirection('DESC');
-    }
-  };
-
-  const getSortIcon = (mode: SortMode) => {
-    if (sortMode !== mode) {
-      return <ArrowUpDown size={14} className="text-slate-500" />;
-    }
-    return sortDirection === 'DESC'
-      ? <ArrowDown size={14} className="text-brand-500" />
-      : <ArrowUp size={14} className="text-brand-500" />;
+  const toggleSortDirection = () => {
+    setSortDirection(sortDirection === 'DESC' ? 'ASC' : 'DESC');
   };
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-4xl font-display font-bold text-white mb-4">STANDINGS</h1>
+      <h1 className="text-4xl font-display font-bold text-white mb-4">LEAGUE STANDINGS</h1>
 
       {/* Intro */}
       <p className="text-slate-300 text-lg mb-6 max-w-3xl">
-        League rankings by win-loss record and computed League Score. The{' '}
-        <span className="text-yellow-500 font-semibold">top {playoffCutoff} teams</span>{' '}
-        by record qualify for playoffs. League Score is a calculated metric based on positional ratings,
-        depth quality, and roster configuration.
+        Teams ranked by{' '}
+        <span className="text-brand-500 font-semibold">League Score</span>, a comprehensive metric that evaluates positional strength, depth quality, and roster configuration.
+        Hover over any score to see how it's calculated.
       </p>
 
-      {/* Sort Mode Selector */}
-      <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 mb-6">
-        <div className="flex items-center gap-4">
-          <span className="text-slate-400 text-sm font-medium">Sort by:</span>
-          <div className="flex gap-2">
-            <button
-              onClick={() => toggleSortMode('RECORD')}
-              className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors flex items-center gap-2 ${
-                sortMode === 'RECORD'
-                  ? 'bg-brand-500 text-white'
-                  : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-              }`}
-            >
-              <Trophy size={16} />
-              Record
-              {sortMode === 'RECORD' && getSortIcon('RECORD')}
-            </button>
-            <button
-              onClick={() => toggleSortMode('LEAGUE_SCORE')}
-              className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors flex items-center gap-2 ${
-                sortMode === 'LEAGUE_SCORE'
-                  ? 'bg-brand-500 text-white'
-                  : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-              }`}
-            >
-              <Target size={16} />
-              League Score
-              {sortMode === 'LEAGUE_SCORE' && getSortIcon('LEAGUE_SCORE')}
-            </button>
+      {/* League Score Explanation Card */}
+      <div className="bg-gradient-to-r from-slate-800 to-slate-800/50 rounded-lg p-5 border border-slate-700 mb-6">
+        <div className="flex items-start gap-3">
+          <Info className="text-brand-500 mt-1" size={20} />
+          <div className="flex-1">
+            <h3 className="text-white font-bold mb-3 text-sm uppercase tracking-wide">
+              League Score Components
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div className="flex items-start gap-2">
+                <Star className="text-yellow-500 flex-shrink-0 mt-0.5" size={16} />
+                <div>
+                  <p className="text-white font-semibold mb-1">Positional Leaders</p>
+                  <p className="text-slate-400 text-xs leading-relaxed">
+                    Ranked by highest OVR at each position<br />
+                    1st: 5pts • 2nd: 3pts • 3rd: 2pts • Rest: 1pt
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <Zap className="text-brand-500 flex-shrink-0 mt-0.5" size={16} />
+                <div>
+                  <p className="text-white font-semibold mb-1">QB Bonus</p>
+                  <p className="text-slate-400 text-xs leading-relaxed">
+                    QB gets +2 bonus points<br />
+                    QB: 7pts / 5pts / 3pts / 1pt
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <Shield className="text-blue-500 flex-shrink-0 mt-0.5" size={16} />
+                <div>
+                  <p className="text-white font-semibold mb-1">Depth & Extras</p>
+                  <p className="text-slate-400 text-xs leading-relaxed">
+                    Best bench player: +1pt per position<br />
+                    Extra starters: +0.5pts each
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* League Score Explanation (only show when sorting by league score) */}
-      {sortMode === 'LEAGUE_SCORE' && (
-        <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 mb-6">
-          <h3 className="text-white font-bold mb-3 flex items-center gap-2">
-            <Target size={18} className="text-brand-500" />
-            League Score Calculation
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-            <div className="bg-slate-900 rounded p-3">
-              <p className="text-brand-500 font-bold mb-1">Positional Leaders</p>
-              <p className="text-slate-400 text-xs">
-                1st: 5pts (QB: 7pts) • 2nd: 3pts (QB: 5pts) • 3rd: 2pts (QB: 3pts) • Rest: 1pt
-              </p>
-            </div>
-            <div className="bg-slate-900 rounded p-3">
-              <p className="text-brand-500 font-bold mb-1">Depth Bonus</p>
-              <p className="text-slate-400 text-xs">
-                1pt per position for best bench player
-              </p>
-            </div>
-            <div className="bg-slate-900 rounded p-3">
-              <p className="text-brand-500 font-bold mb-1">Extra Starters</p>
-              <p className="text-slate-400 text-xs">
-                0.5pts per extra starter beyond typical lineup
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Standings Table */}
       <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
@@ -165,20 +110,16 @@ export const Standings: React.FC = () => {
               <th className="text-left py-4 px-6 text-slate-400 font-medium">Owner</th>
               <th
                 className="text-left py-4 px-6 text-slate-400 font-medium cursor-pointer hover:text-white transition-colors"
-                onClick={() => toggleSortMode('RECORD')}
+                onClick={toggleSortDirection}
               >
                 <div className="flex items-center gap-2">
-                  Record
-                  {getSortIcon('RECORD')}
-                </div>
-              </th>
-              <th
-                className="text-left py-4 px-6 text-slate-400 font-medium cursor-pointer hover:text-white transition-colors"
-                onClick={() => toggleSortMode('LEAGUE_SCORE')}
-              >
-                <div className="flex items-center gap-2">
+                  <Target size={16} className="text-brand-500" />
                   League Score
-                  {getSortIcon('LEAGUE_SCORE')}
+                  {sortDirection === 'DESC' ? (
+                    <ArrowDown size={14} className="text-brand-500" />
+                  ) : (
+                    <ArrowUp size={14} className="text-brand-500" />
+                  )}
                 </div>
               </th>
               <th className="text-left py-4 px-6 text-slate-400 font-medium">Avg OVR</th>
@@ -193,168 +134,201 @@ export const Standings: React.FC = () => {
                 team.roster.reduce((sum, p) => sum + p.ovr, 0) / team.roster.length
               );
 
-              // Determine status based on RECORD (not league score)
-              const wins = parseInt(team.record.split('-')[0] || '0');
-              const recordRank = [...ALL_TEAMS]
-                .sort((a, b) => {
-                  const aWins = parseInt(a.record.split('-')[0] || '0');
-                  const bWins = parseInt(b.record.split('-')[0] || '0');
-                  return bWins - aWins;
-                })
-                .findIndex(t => t.id === team.id) + 1;
+              const isHovered = hoveredTeamId === team.id;
 
-              const isChampion = recordRank === 1 && sortMode === 'RECORD';
-              const isPlayoffTeam = recordRank <= playoffCutoff;
-              const isLastPlace = recordRank === totalTeams && sortMode === 'RECORD';
-              const isExpanded = expandedTeamId === team.id;
-
-              // Determine background color based on current sort mode
+              // Highlight top 3 teams
               let bgClass = '';
-              if (sortMode === 'RECORD') {
-                if (isChampion) bgClass = 'bg-yellow-500/10 border-l-4 border-yellow-500';
-                else if (recordRank === 2) bgClass = 'bg-slate-700/30 border-l-4 border-slate-400';
-                else if (recordRank === 3) bgClass = 'bg-orange-400/10 border-l-4 border-orange-400';
-                else if (isLastPlace) bgClass = 'bg-red-500/10 border-l-4 border-red-500';
-                else if (isPlayoffTeam) bgClass = 'border-l-4 border-brand-500/30';
-              } else {
-                // League score mode - highlight top 3
-                if (rank === 1) bgClass = 'bg-yellow-500/10 border-l-4 border-yellow-500';
-                else if (rank === 2) bgClass = 'bg-slate-700/30 border-l-4 border-slate-400';
-                else if (rank === 3) bgClass = 'bg-orange-400/10 border-l-4 border-orange-400';
-              }
+              if (rank === 1) bgClass = 'bg-yellow-500/10 border-l-4 border-yellow-500';
+              else if (rank === 2) bgClass = 'bg-slate-700/30 border-l-4 border-slate-400';
+              else if (rank === 3) bgClass = 'bg-orange-400/10 border-l-4 border-orange-400';
 
               return (
-                <React.Fragment key={team.id}>
-                  <tr className={`border-b border-slate-800 hover:bg-slate-700/50 transition-colors ${bgClass}`}>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center gap-2">
-                        {rank === 1 && <Trophy className="text-yellow-500" size={18} />}
-                        {rank === 2 && <Medal className="text-slate-400" size={18} />}
-                        {rank === 3 && <Medal className="text-orange-400" size={18} />}
-                        <span
-                          className={`text-lg font-bold ${
-                            rank === 1 ? 'text-yellow-500'
-                            : rank === 2 ? 'text-slate-300'
-                            : rank === 3 ? 'text-orange-400'
+                <tr
+                  key={team.id}
+                  className={`border-b border-slate-800 hover:bg-slate-700/50 transition-colors ${bgClass}`}
+                >
+                  <td className="py-4 px-6">
+                    <div className="flex items-center gap-2">
+                      {rank === 1 && <Trophy className="text-yellow-500" size={18} />}
+                      {rank === 2 && <Medal className="text-slate-400" size={18} />}
+                      {rank === 3 && <Medal className="text-orange-400" size={18} />}
+                      <span
+                        className={`text-lg font-bold ${
+                          rank === 1
+                            ? 'text-yellow-500'
+                            : rank === 2
+                            ? 'text-slate-300'
+                            : rank === 3
+                            ? 'text-orange-400'
                             : 'text-slate-400'
-                          }`}
-                        >
-                          {rank}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center gap-3">
-                        <TeamLogo
-                          src={team.avatarUrl}
-                          alt={team.name}
-                          size="md"
-                          className={rank === 1 ? 'ring-2 ring-yellow-500' : ''}
-                        />
-                        <span className={`font-bold ${rank <= 3 ? 'text-white text-base' : 'text-slate-200'}`}>
-                          {team.name}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="py-4 px-6 text-slate-300">{team.owner}</td>
-                    <td className="py-4 px-6">
-                      <span className={`font-bold text-lg ${
-                        sortMode === 'RECORD' && rank === 1 ? 'text-yellow-500' : 'text-white'
-                      }`}>
-                        {team.record}
+                        }`}
+                      >
+                        {rank}
                       </span>
-                    </td>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center gap-2">
-                        <span className={`font-bold text-xl ${
-                          sortMode === 'LEAGUE_SCORE' && rank === 1 ? 'text-yellow-500' : 'text-brand-500'
-                        }`}>
-                          {teamScore?.totalScore.toFixed(1) || '0.0'}
-                        </span>
-                        {teamScore && (
-                          <button
-                            onClick={() => setExpandedTeamId(isExpanded ? null : team.id)}
-                            className="text-slate-400 hover:text-white transition-colors"
-                            title="View breakdown"
-                          >
-                            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                          </button>
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-4 px-6">
-                      <span className={`inline-block px-3 py-1 rounded-lg font-bold text-sm ${
-                        avgOvr >= 85 ? 'bg-yellow-500 text-black'
-                        : avgOvr >= 80 ? 'bg-brand-500 text-white'
-                        : avgOvr >= 75 ? 'bg-blue-500 text-white'
-                        : 'bg-slate-600 text-white'
-                      }`}>
-                        {avgOvr}
+                    </div>
+                  </td>
+                  <td className="py-4 px-6">
+                    <div className="flex items-center gap-3">
+                      <TeamLogo
+                        src={team.avatarUrl}
+                        alt={team.name}
+                        size="md"
+                        className={rank === 1 ? 'ring-2 ring-yellow-500' : ''}
+                      />
+                      <span className={`font-bold ${rank <= 3 ? 'text-white text-base' : 'text-slate-200'}`}>
+                        {team.name}
                       </span>
-                    </td>
-                    <td className="py-4 px-6">
-                      {sortMode === 'RECORD' && (
-                        <>
-                          {isChampion && (
-                            <span className="px-3 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-xs font-bold border border-yellow-500/30">
-                              1ST PLACE
-                            </span>
-                          )}
-                          {!isChampion && isPlayoffTeam && (
-                            <span className="px-3 py-1 bg-brand-500/20 text-brand-500 rounded-full text-xs font-bold border border-brand-500/30">
-                              PLAYOFF
-                            </span>
-                          )}
-                          {!isPlayoffTeam && !isLastPlace && (
-                            <span className="px-3 py-1 bg-slate-700 text-slate-400 rounded-full text-xs font-medium">
-                              ELIMINATION
-                            </span>
-                          )}
-                          {isLastPlace && (
-                            <span className="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-xs font-bold border border-red-500/30">
-                              LAST PLACE
-                            </span>
-                          )}
-                        </>
-                      )}
-                      {sortMode === 'LEAGUE_SCORE' && rank === 1 && (
-                        <span className="px-3 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-xs font-bold border border-yellow-500/30">
-                          TOP SCORE
-                        </span>
-                      )}
-                    </td>
-                  </tr>
+                    </div>
+                  </td>
+                  <td className="py-4 px-6 text-slate-300">{team.owner}</td>
+                  <td
+                    className="py-4 px-6 relative"
+                    onMouseEnter={() => setHoveredTeamId(team.id)}
+                    onMouseLeave={() => setHoveredTeamId(null)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`font-bold text-2xl ${
+                          rank === 1 ? 'text-yellow-500' : 'text-brand-500'
+                        }`}
+                      >
+                        {teamScore?.totalScore.toFixed(1) || '0.0'}
+                      </span>
+                      <Info size={14} className="text-slate-500" />
+                    </div>
 
-                  {/* Expandable Breakdown Row */}
-                  {isExpanded && teamScore && (
-                    <tr className={`${bgClass} border-b border-slate-700`}>
-                      <td colSpan={7} className="py-4 px-6">
-                        <div className="bg-slate-900 rounded-lg p-4 space-y-3">
-                          <h4 className="text-white font-bold text-sm mb-3">LEAGUE SCORE BREAKDOWN</h4>
-                          <div className="grid grid-cols-3 gap-4 text-sm">
-                            <div>
-                              <p className="text-slate-400 text-xs mb-1">Positional Leaders</p>
-                              <p className="text-brand-500 font-bold text-lg">{teamScore.breakdown.positionalLeaders.toFixed(1)} pts</p>
-                            </div>
-                            <div>
-                              <p className="text-slate-400 text-xs mb-1">Depth Bonus</p>
-                              <p className="text-brand-500 font-bold text-lg">{teamScore.breakdown.depthBonus.toFixed(1)} pts</p>
-                            </div>
-                            <div>
-                              <p className="text-slate-400 text-xs mb-1">Extra Starters</p>
-                              <p className="text-brand-500 font-bold text-lg">{teamScore.breakdown.extraStarters.toFixed(1)} pts</p>
-                            </div>
+                    {/* Hover Tooltip */}
+                    {isHovered && teamScore && (
+                      <div className="absolute left-0 top-full mt-2 z-50 w-80">
+                        <div className="bg-slate-900 rounded-lg shadow-2xl border border-slate-700 p-4">
+                          <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-700">
+                            <Target size={16} className="text-brand-500" />
+                            <h4 className="text-white font-bold text-sm">
+                              {team.name} Score Breakdown
+                            </h4>
                           </div>
-                          <div className="pt-2 border-t border-slate-700">
-                            <p className="text-slate-400 text-xs">
-                              Top Positions: {teamScore.positionScores.filter(ps => ps.rank <= 3).map(ps => `${ps.position} (#${ps.rank})`).join(', ') || 'None'}
-                            </p>
+
+                          <div className="space-y-3">
+                            {/* Positional Leaders */}
+                            <div className="flex items-start gap-2">
+                              <Star className="text-yellow-500 flex-shrink-0 mt-0.5" size={14} />
+                              <div className="flex-1">
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="text-slate-300 text-xs font-semibold">
+                                    Positional Leaders
+                                  </span>
+                                  <span className="text-brand-500 font-bold text-sm">
+                                    {teamScore.breakdown.positionalLeaders.toFixed(1)} pts
+                                  </span>
+                                </div>
+                                <p className="text-slate-500 text-xs">
+                                  Ranked by highest OVR at each position
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Depth Bonus */}
+                            <div className="flex items-start gap-2">
+                              <Shield className="text-blue-500 flex-shrink-0 mt-0.5" size={14} />
+                              <div className="flex-1">
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="text-slate-300 text-xs font-semibold">
+                                    Depth Bonus
+                                  </span>
+                                  <span className="text-brand-500 font-bold text-sm">
+                                    {teamScore.breakdown.depthBonus.toFixed(1)} pts
+                                  </span>
+                                </div>
+                                <p className="text-slate-500 text-xs">
+                                  Best bench player at each position
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Extra Starters */}
+                            <div className="flex items-start gap-2">
+                              <TrendingUp className="text-green-500 flex-shrink-0 mt-0.5" size={14} />
+                              <div className="flex-1">
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="text-slate-300 text-xs font-semibold">
+                                    Extra Starters
+                                  </span>
+                                  <span className="text-brand-500 font-bold text-sm">
+                                    {teamScore.breakdown.extraStarters.toFixed(1)} pts
+                                  </span>
+                                </div>
+                                <p className="text-slate-500 text-xs">
+                                  +0.5pts per extra starter beyond typical lineup
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Total */}
+                            <div className="pt-2 border-t border-slate-700">
+                              <div className="flex items-center justify-between">
+                                <span className="text-white text-sm font-bold">Total Score</span>
+                                <span className="text-brand-500 text-lg font-bold">
+                                  {teamScore.totalScore.toFixed(1)}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Top Positions */}
+                            {teamScore.positionScores.filter((ps) => ps.rank <= 3).length > 0 && (
+                              <div className="pt-2 border-t border-slate-700">
+                                <p className="text-slate-400 text-xs mb-1">Top 3 Positions:</p>
+                                <div className="flex flex-wrap gap-1">
+                                  {teamScore.positionScores
+                                    .filter((ps) => ps.rank <= 3)
+                                    .map((ps) => (
+                                      <span
+                                        key={ps.position}
+                                        className="px-2 py-0.5 bg-brand-500/20 text-brand-400 rounded text-xs font-medium"
+                                      >
+                                        {ps.position} (#{ps.rank})
+                                      </span>
+                                    ))}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
+                      </div>
+                    )}
+                  </td>
+                  <td className="py-4 px-6">
+                    <span
+                      className={`inline-block px-3 py-1 rounded-lg font-bold text-sm ${
+                        avgOvr >= 85
+                          ? 'bg-yellow-500 text-black'
+                          : avgOvr >= 80
+                          ? 'bg-brand-500 text-white'
+                          : avgOvr >= 75
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-slate-600 text-white'
+                      }`}
+                    >
+                      {avgOvr}
+                    </span>
+                  </td>
+                  <td className="py-4 px-6">
+                    {rank === 1 && (
+                      <span className="px-3 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-xs font-bold border border-yellow-500/30">
+                        LEAGUE LEADER
+                      </span>
+                    )}
+                    {rank === 2 && (
+                      <span className="px-3 py-1 bg-slate-500/20 text-slate-300 rounded-full text-xs font-bold border border-slate-500/30">
+                        2ND PLACE
+                      </span>
+                    )}
+                    {rank === 3 && (
+                      <span className="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-xs font-bold border border-orange-500/30">
+                        3RD PLACE
+                      </span>
+                    )}
+                  </td>
+                </tr>
               );
             })}
           </tbody>
@@ -376,11 +350,15 @@ export const Standings: React.FC = () => {
           </div>
           <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
             <div className="flex items-center gap-3 mb-2">
-              <Award className="text-brand-500" size={20} />
-              <p className="text-slate-400 text-sm font-medium">Playoff Teams</p>
+              <Trophy className="text-yellow-500" size={20} />
+              <p className="text-slate-400 text-sm font-medium">League Leader</p>
             </div>
-            <p className="text-3xl font-bold text-white">{playoffCutoff}</p>
-            <p className="text-slate-500 text-xs mt-1">Top {Math.round((playoffCutoff / totalTeams) * 100)}%</p>
+            <p className="text-2xl font-bold text-white">
+              {sortedTeams[0]?.name || '-'}
+            </p>
+            <p className="text-slate-500 text-xs mt-1">
+              {leagueScores[0]?.totalScore.toFixed(1) || '0.0'} pts
+            </p>
           </div>
           <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
             <div className="flex items-center gap-3 mb-2">
@@ -395,7 +373,7 @@ export const Standings: React.FC = () => {
           </div>
           <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
             <div className="flex items-center gap-3 mb-2">
-              <Trophy className="text-yellow-500" size={20} />
+              <Award className="text-brand-500" size={20} />
               <p className="text-slate-400 text-sm font-medium">League Avg OVR</p>
             </div>
             <p className="text-3xl font-bold text-white">
