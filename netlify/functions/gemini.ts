@@ -6,9 +6,7 @@ export const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ error: 'Method Not Allowed' }),
     };
   }
@@ -34,22 +32,19 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    // ✅ CRITICAL FIX: explicitly use v1 API
     const ai = new GoogleGenAI({
       apiKey,
       apiVersion: 'v1',
     });
 
     const result = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-1.5-pro', // ✅ THIS IS THE FIX
       contents: prompt,
     });
 
     return {
       statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         text: result.text,
       }),
@@ -59,9 +54,7 @@ export const handler: Handler = async (event) => {
 
     return {
       statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         error: err?.message || 'Internal Server Error',
       }),
