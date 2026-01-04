@@ -54,18 +54,28 @@ const getTierConfig = (tier: PlayerTier) => {
 export const Players: React.FC = () => {
   const [positionFilter, setPositionFilter] = useState<string>('ALL');
   const [tierFilter, setTierFilter] = useState<string>('ALL');
+  const [teamFilter, setTeamFilter] = useState<string>('ALL');
+  const [depthFilter, setDepthFilter] = useState<string>('ALL');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   // Get all players from all teams
   const allPlayers: Player[] = ALL_TEAMS.flatMap((team) => team.roster);
 
+  // Get unique NFL teams
+  const nflTeams = Array.from(new Set(allPlayers.map(p => p.team))).sort();
+
   // Filter players
   const filteredPlayers = allPlayers.filter((player) => {
     const matchesPosition = positionFilter === 'ALL' || player.position === positionFilter;
     const matchesSearch = player.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesTier = tierFilter === 'ALL' || getPlayerTier(player.ovr) === tierFilter;
-    return matchesPosition && matchesSearch && matchesTier;
+    const matchesTeam = teamFilter === 'ALL' || player.team === teamFilter;
+    const matchesDepth = depthFilter === 'ALL' ||
+      (depthFilter === 'STARTER' && player.depthOrder === 1) ||
+      (depthFilter === 'BACKUP' && player.depthOrder === 2) ||
+      (depthFilter === 'DEPTH' && player.depthOrder && player.depthOrder > 2);
+    return matchesPosition && matchesSearch && matchesTier && matchesTeam && matchesDepth;
   });
 
   // Sort by OVR descending
@@ -113,7 +123,7 @@ export const Players: React.FC = () => {
 
       {/* Filters */}
       <div className="bg-slate-800 rounded-lg p-6 border border-slate-700 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
             <label className="block text-slate-400 text-sm mb-2">Search Player</label>
             <input
@@ -154,6 +164,36 @@ export const Players: React.FC = () => {
             </select>
           </div>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-slate-400 text-sm mb-2">NFL Team</label>
+            <select
+              value={teamFilter}
+              onChange={(e) => setTeamFilter(e.target.value)}
+              className="w-full px-4 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500"
+            >
+              <option value="ALL">All Teams</option>
+              {nflTeams.map((team) => (
+                <option key={team} value={team}>
+                  {team}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-slate-400 text-sm mb-2">Depth Chart</label>
+            <select
+              value={depthFilter}
+              onChange={(e) => setDepthFilter(e.target.value)}
+              className="w-full px-4 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500"
+            >
+              <option value="ALL">All Depth Slots</option>
+              <option value="STARTER">Starters Only</option>
+              <option value="BACKUP">Backups Only</option>
+              <option value="DEPTH">Depth Only (3+)</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       {/* Player Count */}
@@ -165,8 +205,8 @@ export const Players: React.FC = () => {
 
       {/* Players Table */}
       <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
+        <div className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
+          <table className="w-full min-w-max">
             <thead>
               <tr className="bg-slate-900 border-b-2 border-slate-700">
                 <th className="text-left py-4 px-4 text-slate-400 font-medium">Rank</th>

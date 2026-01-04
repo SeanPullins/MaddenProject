@@ -1,15 +1,19 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Page } from '../types';
 import { ALL_TEAMS } from '../constants';
-import { TrendingUp, Users, Trophy, Search, GitCompare, Award, ArrowRight, Target } from 'lucide-react';
+import { TrendingUp, Users, Trophy, Search, GitCompare, Award, ArrowRight, Target, Info, Star, Shield, ChevronRight } from 'lucide-react';
 import { TeamLogo } from '../components/TeamLogo';
 import { calculateLeagueScores } from '../utils/leagueScoring';
+import { LeagueScoreModal } from '../components/LeagueScoreModal';
 
 interface DashboardProps {
   onNavigate: (page: Page) => void;
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
+  const [hoveredTeamId, setHoveredTeamId] = useState<string | null>(null);
+  const [modalTeamId, setModalTeamId] = useState<string | null>(null);
+
   // Calculate league scores
   const leagueScores = useMemo(() => {
     try {
@@ -23,6 +27,27 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   const getTeamScore = (teamId: string) => {
     const score = leagueScores.find(ts => ts.teamId === teamId);
     return score?.totalScore.toFixed(1) || '0.0';
+  };
+
+  const getTeamSummary = (teamId: string) => {
+    const teamScore = leagueScores.find(ts => ts.teamId === teamId);
+    if (!teamScore) return null;
+
+    // Find top positional strength (best rank)
+    const topPosition = teamScore.positionScores
+      .filter(ps => ps.rank > 0)
+      .sort((a, b) => a.rank - b.rank)[0];
+
+    // Find weakest position (worst rank)
+    const weakestPosition = teamScore.positionScores
+      .filter(ps => ps.rank > 0)
+      .sort((a, b) => b.rank - a.rank)[0];
+
+    return {
+      topPosition: topPosition ? `${topPosition.position} (#${topPosition.rank})` : 'N/A',
+      weakestPosition: weakestPosition ? `${weakestPosition.position} (#${weakestPosition.rank})` : 'N/A',
+      depthBonus: teamScore.breakdown.depthBonus.toFixed(1),
+    };
   };
 
   return (
@@ -138,38 +163,129 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
         <h2 className="text-2xl font-display font-bold text-white mb-6">LEAGUE TEAMS</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {ALL_TEAMS.map((team) => (
-            <div
-              key={team.id}
-              className="bg-slate-900 rounded-lg p-4 border border-slate-700 hover:border-brand-500 transition-colors cursor-pointer"
-              onClick={() => onNavigate(Page.TEAMS)}
-            >
-              <div className="flex items-center gap-3 mb-2">
-                <TeamLogo
-                  src={team.avatarUrl}
-                  alt={team.name}
-                  size="lg"
-                />
-                <div>
-                  <h3 className="font-bold text-white">{team.name}</h3>
-                  <p className="text-sm text-slate-400">{team.owner}</p>
+          {ALL_TEAMS.map((team) => {
+            const teamScore = leagueScores.find(ts => ts.teamId === team.id);
+            const summary = getTeamSummary(team.id);
+            const isHovered = hoveredTeamId === team.id;
+
+            return (
+              <div
+                key={team.id}
+                className="bg-slate-900 rounded-lg border border-slate-700 hover:border-brand-500 transition-colors overflow-hidden"
+              >
+                {/* Team Header - Clickable to Teams page */}
+                <div
+                  className="p-4 pb-3 cursor-pointer hover:bg-slate-800/50 transition-colors"
+                  onClick={() => onNavigate(Page.TEAMS)}
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <TeamLogo
+                      src={team.avatarUrl}
+                      alt={team.name}
+                      size="lg"
+                    />
+                    <div className="flex-1">
+                      <h3 className="font-bold text-white">{team.name}</h3>
+                      <p className="text-sm text-slate-400">{team.owner}</p>
+                    </div>
+                  </div>
+
+                  {/* League Score - Primary Element */}
+                  <div
+                    className="bg-slate-800 rounded-lg p-3 border border-slate-700 hover:border-brand-500 transition-colors relative"
+                    onMouseEnter={() => setHoveredTeamId(team.id)}
+                    onMouseLeave={() => setHoveredTeamId(null)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setModalTeamId(team.id);
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Target size={16} className="text-brand-500" />
+                        <span className="text-slate-400 text-sm font-medium">League Score</span>
+                        <Info size={12} className="text-slate-500" />
+                      </div>
+                      <span className="text-brand-500 font-bold text-2xl">{getTeamScore(team.id)}</span>
+                    </div>
+
+                    {/* Hover Tooltip */}
+                    {isHovered && teamScore && (
+                      <div className="absolute left-0 top-full mt-2 z-50 w-80 pointer-events-none">
+                        <div className="bg-slate-900 rounded-lg shadow-2xl border border-slate-700 p-3">
+                          <p className="text-white font-bold text-xs mb-2">Score Breakdown:</p>
+                          <div className="space-y-1 text-xs">
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-300">Positional Leaders</span>
+                              <span className="text-brand-500 font-bold">{teamScore.breakdown.positionalLeaders.toFixed(1)}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-300">Depth Bonus</span>
+                              <span className="text-brand-500 font-bold">{teamScore.breakdown.depthBonus.toFixed(1)}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-300">Extra Starters</span>
+                              <span className="text-brand-500 font-bold">{teamScore.breakdown.extraStarters.toFixed(1)}</span>
+                            </div>
+                            <div className="border-t border-slate-700 pt-1 mt-1">
+                              <p className="text-slate-400 text-xs">Click for full breakdown →</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
+
+                {/* Team Summary - Compact Section */}
+                {summary && (
+                  <div className="px-4 pb-4">
+                    <div className="bg-slate-800/50 rounded-lg p-3 space-y-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-1.5 text-slate-400">
+                          <Star size={12} className="text-yellow-500" />
+                          <span>Top Strength:</span>
+                        </div>
+                        <span className="text-white font-medium">{summary.topPosition}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-1.5 text-slate-400">
+                          <TrendingUp size={12} className="text-red-400" />
+                          <span>Weakest:</span>
+                        </div>
+                        <span className="text-slate-300 font-medium">{summary.weakestPosition}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-1.5 text-slate-400">
+                          <Shield size={12} className="text-blue-500" />
+                          <span>Depth:</span>
+                        </div>
+                        <span className="text-brand-500 font-medium">{summary.depthBonus} pts</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="flex justify-between items-center text-sm">
-                <div className="flex items-center gap-1 text-slate-400">
-                  <Target size={12} className="text-brand-500" />
-                  <span>League Score:</span>
-                </div>
-                <span className="text-brand-500 font-bold">{getTeamScore(team.id)}</span>
-              </div>
-              <div className="flex justify-between text-sm mt-1">
-                <span className="text-slate-400">Roster:</span>
-                <span className="text-white font-medium">{team.roster.length} players</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
+
+      {/* League Score Modal */}
+      {modalTeamId && (() => {
+        const team = ALL_TEAMS.find(t => t.id === modalTeamId);
+        const teamScore = leagueScores.find(ts => ts.teamId === modalTeamId);
+        if (team && teamScore) {
+          return (
+            <LeagueScoreModal
+              teamName={team.name}
+              teamScore={teamScore}
+              onClose={() => setModalTeamId(null)}
+            />
+          );
+        }
+        return null;
+      })()}
     </div>
   );
 };

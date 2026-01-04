@@ -520,8 +520,8 @@ export const Drafts: React.FC = () => {
           {roundFilter !== 'ALL' && <span className="text-brand-500"> — Round {roundFilter}</span>}
         </h2>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm font-mono">
+        <div className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
+          <table className="w-full text-sm font-mono min-w-max">
             <thead className="sticky top-0 bg-slate-800 z-10">
               <tr className="border-b-2 border-slate-700">
                 {headers.map((header, index) => {
