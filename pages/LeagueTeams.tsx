@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { ALL_TEAMS } from '../constants';
 import { TeamLogo } from '../components/TeamLogo';
 import { FormerPlayersPanel } from '../components/FormerPlayersPanel';
+import { LeagueScoreModal } from '../components/LeagueScoreModal';
 import { UserMinus, Target, Star, Shield, TrendingUp, Info } from 'lucide-react';
 import { getTeamColors } from '../utils/teamColors';
 import { calculateLeagueScores } from '../utils/leagueScoring';
@@ -17,6 +18,7 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
   const [selectedTeam, setSelectedTeam] = useState(ALL_TEAMS[0]);
   const [showFormerPlayers, setShowFormerPlayers] = useState<boolean>(false);
   const [hoveredScore, setHoveredScore] = useState<boolean>(false);
+  const [modalTeamId, setModalTeamId] = useState<string | null>(null);
 
   // Calculate league scores
   const leagueScores = useMemo(() => {
@@ -106,9 +108,11 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
             <div className="grid grid-cols-3 gap-4 mb-6">
               {/* League Score Card with Tooltip */}
               <div
-                className="bg-slate-900 rounded-lg p-4 border border-slate-700 relative"
+                className="bg-slate-900 rounded-lg p-4 border border-slate-700 relative cursor-pointer hover:border-brand-500 transition-colors"
                 onMouseEnter={() => setHoveredScore(true)}
                 onMouseLeave={() => setHoveredScore(false)}
+                onClick={() => setModalTeamId(selectedTeam.id)}
+                title="Click for detailed breakdown"
               >
                 <div className="flex items-center gap-2 mb-1">
                   <Target size={16} className="text-brand-500" />
@@ -260,6 +264,22 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
           teamColor={getTeamColors(selectedTeam.owner.substring(0, 3).toUpperCase()).primary}
         />
       )}
+
+      {/* League Score Modal */}
+      {modalTeamId && (() => {
+        const team = ALL_TEAMS.find(t => t.id === modalTeamId);
+        const teamScore = leagueScores.find(ts => ts.teamId === modalTeamId);
+        if (team && teamScore) {
+          return (
+            <LeagueScoreModal
+              teamName={team.name}
+              teamScore={teamScore}
+              onClose={() => setModalTeamId(null)}
+            />
+          );
+        }
+        return null;
+      })()}
     </div>
   );
 };

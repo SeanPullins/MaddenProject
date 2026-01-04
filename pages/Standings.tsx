@@ -3,10 +3,12 @@ import { ALL_TEAMS } from '../constants';
 import { Trophy, Medal, Award, Users, ArrowDown, ArrowUp, Target, Star, Zap, Shield, TrendingUp, Info } from 'lucide-react';
 import { TeamLogo } from '../components/TeamLogo';
 import { calculateLeagueScores } from '../utils/leagueScoring';
+import { LeagueScoreModal } from '../components/LeagueScoreModal';
 
 export const Standings: React.FC = () => {
   const [sortDirection, setSortDirection] = useState<'DESC' | 'ASC'>('DESC');
   const [hoveredTeamId, setHoveredTeamId] = useState<string | null>(null);
+  const [modalTeamId, setModalTeamId] = useState<string | null>(null);
 
   // Calculate league scores (safely)
   const leagueScores = useMemo(() => {
@@ -181,12 +183,14 @@ export const Standings: React.FC = () => {
                     </div>
                   </td>
                   <td className="py-4 px-6 text-slate-300">{team.owner}</td>
-                  <td
-                    className="py-4 px-6 relative"
-                    onMouseEnter={() => setHoveredTeamId(team.id)}
-                    onMouseLeave={() => setHoveredTeamId(null)}
-                  >
-                    <div className="flex items-center gap-2">
+                  <td className="py-4 px-6">
+                    <button
+                      className="flex items-center gap-2 hover:bg-slate-700/30 rounded px-2 py-1 -mx-2 -my-1 transition-colors cursor-pointer group"
+                      onMouseEnter={() => setHoveredTeamId(team.id)}
+                      onMouseLeave={() => setHoveredTeamId(null)}
+                      onClick={() => setModalTeamId(team.id)}
+                      title="Click for detailed breakdown"
+                    >
                       <span
                         className={`font-bold text-2xl ${
                           rank === 1 ? 'text-yellow-500' : 'text-brand-500'
@@ -194,13 +198,17 @@ export const Standings: React.FC = () => {
                       >
                         {teamScore?.totalScore.toFixed(1) || '0.0'}
                       </span>
-                      <Info size={14} className="text-slate-500" />
-                    </div>
+                      <Info size={14} className="text-slate-500 group-hover:text-brand-400 transition-colors" />
+                    </button>
 
-                    {/* Hover Tooltip */}
+                    {/* Hover Tooltip - Fixed positioning to avoid clipping */}
                     {isHovered && teamScore && (
-                      <div className="absolute left-0 top-full mt-2 z-50 w-80">
-                        <div className="bg-slate-900 rounded-lg shadow-2xl border border-slate-700 p-4">
+                      <div className="fixed z-[100] pointer-events-none" style={{
+                        left: '50%',
+                        top: '50%',
+                        transform: 'translate(-50%, -50%)'
+                      }}>
+                        <div className="bg-slate-900 rounded-lg shadow-2xl border border-slate-700 p-4 w-80">
                           <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-700">
                             <Target size={16} className="text-brand-500" />
                             <h4 className="text-white font-bold text-sm">
@@ -221,6 +229,13 @@ export const Standings: React.FC = () => {
                                     {teamScore.breakdown.positionalLeaders.toFixed(1)} pts
                                   </span>
                                 </div>
+                                {/* Visual Bar */}
+                                <div className="w-full bg-slate-700 rounded-full h-1.5 mb-1">
+                                  <div
+                                    className="bg-gradient-to-r from-yellow-500 to-yellow-600 h-full rounded-full"
+                                    style={{ width: `${Math.min((teamScore.breakdown.positionalLeaders / 60) * 100, 100)}%` }}
+                                  />
+                                </div>
                                 <p className="text-slate-500 text-xs">
                                   Ranked by highest OVR at each position
                                 </p>
@@ -239,6 +254,13 @@ export const Standings: React.FC = () => {
                                     {teamScore.breakdown.depthBonus.toFixed(1)} pts
                                   </span>
                                 </div>
+                                {/* Visual Bar */}
+                                <div className="w-full bg-slate-700 rounded-full h-1.5 mb-1">
+                                  <div
+                                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-full rounded-full"
+                                    style={{ width: `${Math.min((teamScore.breakdown.depthBonus / 10) * 100, 100)}%` }}
+                                  />
+                                </div>
                                 <p className="text-slate-500 text-xs">
                                   Best bench player at each position
                                 </p>
@@ -256,6 +278,13 @@ export const Standings: React.FC = () => {
                                   <span className="text-brand-500 font-bold text-sm">
                                     {teamScore.breakdown.extraStarters.toFixed(1)} pts
                                   </span>
+                                </div>
+                                {/* Visual Bar */}
+                                <div className="w-full bg-slate-700 rounded-full h-1.5 mb-1">
+                                  <div
+                                    className="bg-gradient-to-r from-green-500 to-green-600 h-full rounded-full"
+                                    style={{ width: `${Math.min((teamScore.breakdown.extraStarters / 10) * 100, 100)}%` }}
+                                  />
                                 </div>
                                 <p className="text-slate-500 text-xs">
                                   +0.5pts per extra starter beyond typical lineup
@@ -388,6 +417,22 @@ export const Standings: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* League Score Modal */}
+      {modalTeamId && (() => {
+        const team = ALL_TEAMS.find(t => t.id === modalTeamId);
+        const teamScore = leagueScores.find(ts => ts.teamId === modalTeamId);
+        if (team && teamScore) {
+          return (
+            <LeagueScoreModal
+              teamName={team.name}
+              teamScore={teamScore}
+              onClose={() => setModalTeamId(null)}
+            />
+          );
+        }
+        return null;
+      })()}
     </div>
   );
 };
