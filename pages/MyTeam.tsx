@@ -4,8 +4,9 @@ import { Team, Player } from '../types';
 import { TeamLogo } from '../components/TeamLogo';
 import { PlayerCard } from '../components/PlayerCard';
 import { FormerPlayersPanel } from '../components/FormerPlayersPanel';
-import { UserMinus } from 'lucide-react';
+import { UserMinus, Target } from 'lucide-react';
 import { getTeamColors } from '../utils/teamColors';
+import { calculateLeagueScores } from '../utils/leagueScoring';
 
 const SELECTED_TEAM_KEY = 'fanleague_selected_team_id';
 
@@ -51,6 +52,17 @@ export const MyTeam: React.FC = () => {
       setTeam(selectedTeam);
     }
   };
+
+  // Calculate league scores and get current team's score
+  const leagueScores = useMemo(() => calculateLeagueScores(ALL_TEAMS), []);
+  const teamScore = useMemo(() =>
+    leagueScores.find(ts => ts.teamId === team.id),
+    [leagueScores, team.id]
+  );
+  const teamRank = useMemo(() => {
+    const index = leagueScores.findIndex(ts => ts.teamId === team.id);
+    return index !== -1 ? index + 1 : null;
+  }, [leagueScores, team.id]);
 
   // Group and sort roster by position and depth chart
   const groupedRoster = useMemo(() => {
@@ -118,10 +130,30 @@ export const MyTeam: React.FC = () => {
       </div>
 
       {/* Team Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
           <p className="text-slate-400 text-sm mb-1">Record</p>
           <p className="text-2xl font-bold text-white">{team.record}</p>
+        </div>
+        <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
+          <div className="flex items-center gap-2 mb-1">
+            <Target size={16} className="text-brand-500" />
+            <p className="text-slate-400 text-sm">League Score</p>
+          </div>
+          {teamScore ? (
+            <div>
+              <p className="text-2xl font-bold text-brand-500">
+                {teamScore.totalScore.toFixed(1)}
+              </p>
+              {teamRank && (
+                <p className="text-slate-500 text-xs mt-1">
+                  Rank: #{teamRank} of {leagueScores.length}
+                </p>
+              )}
+            </div>
+          ) : (
+            <p className="text-2xl font-bold text-white">-</p>
+          )}
         </div>
         <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
           <p className="text-slate-400 text-sm mb-1">Active Roster</p>
