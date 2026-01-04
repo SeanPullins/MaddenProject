@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navigation } from './components/Navigation';
+import { Landing } from './pages/Landing';
 import { Dashboard } from './pages/Dashboard';
 import { Franchise } from './pages/Franchise';
 import { MyTeam } from './pages/MyTeam';
@@ -16,7 +17,7 @@ import { Loader2 } from 'lucide-react';
 import { CRUISE_SHIP_CRUSADERS } from './constants';
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<Page>(Page.DASHBOARD);
+  const [currentPage, setCurrentPage] = useState<Page>(Page.LANDING);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,6 +31,7 @@ const App: React.FC = () => {
 
   const renderPage = () => {
     switch (currentPage) {
+      case Page.LANDING: return <Landing onNavigate={setCurrentPage} />;
       case Page.DASHBOARD: return <Dashboard onNavigate={setCurrentPage} />;
       case Page.TEAMS: return <LeagueTeams />;
       case Page.MY_TEAM: return <MyTeam />;
@@ -53,21 +55,26 @@ const App: React.FC = () => {
       );
   }
 
+  // Landing page has its own layout without navigation
+  if (currentPage === Page.LANDING) {
+    return renderPage();
+  }
+
   return (
     <div className="flex h-screen bg-slate-950 text-slate-100 overflow-hidden">
-      <Navigation 
-        currentPage={currentPage} 
+      <Navigation
+        currentPage={currentPage}
         onNavigate={setCurrentPage}
         isMobileMenuOpen={isMobileMenuOpen}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
       />
-      
+
       <main className="flex-1 overflow-y-auto overflow-x-hidden relative pt-16 lg:pt-0">
         {/* Top Fade for aesthetics */}
         <div className="sticky top-0 z-30 h-8 bg-gradient-to-b from-slate-950 to-transparent pointer-events-none lg:hidden" />
-        
+
         {renderPage()}
-        
+
       </main>
     </div>
   );

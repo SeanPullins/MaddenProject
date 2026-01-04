@@ -1,5 +1,6 @@
 // UI Types
 export enum Page {
+  LANDING = 'LANDING',
   DASHBOARD = 'DASHBOARD',
   MY_TEAM = 'MY_TEAM', // Keeping for legacy/user specific view if needed
   TEAMS = 'TEAMS', // New Franchise/Teams view
