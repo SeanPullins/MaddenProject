@@ -66,10 +66,25 @@ export const HitRates: React.FC = () => {
     <div className="p-6 max-w-7xl mx-auto">
       <h1 className="text-4xl font-display font-bold text-white mb-4">HIT RATES ANALYSIS</h1>
 
+      {/* What is a Hit */}
+      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mb-6">
+        <div className="flex items-start gap-3">
+          <Info className="text-blue-500 mt-0.5 flex-shrink-0" size={20} />
+          <div>
+            <h3 className="text-white font-bold mb-2">What is a "Hit"?</h3>
+            <p className="text-slate-300 text-sm">
+              A draft pick qualifies as a <span className="text-blue-500 font-semibold">"hit"</span> when the player becomes a <strong>regular starter</strong> for your franchise.
+              The threshold varies by round: early picks (Rounds 1-2) must start in 3 of their first 5 years,
+              mid-rounds (3-5) need 2 years, and late rounds (6-7/UN) need just 1 year as a starter.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Intro */}
       <p className="text-slate-300 text-lg mb-6 max-w-3xl">
         Hit rates measure <span className="text-brand-500 font-semibold">draft success</span> by tracking which picks become valuable contributors.
-        A "hit" is defined by league criteria (typically starter-level performance over multiple years).
+        <strong className="text-white"> Success rate = (Total Hits ÷ Total Picks)</strong> for each round.
         Higher percentages indicate <span className="font-semibold">superior scouting and drafting strategy</span>.
         Use this data to identify which teams excel at finding talent in specific rounds.
       </p>
@@ -235,22 +250,51 @@ export const HitRates: React.FC = () => {
       </div>
 
       {/* About Section */}
-      <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-        <h3 className="text-xl font-display font-bold text-white mb-4">ABOUT HIT CRITERIA</h3>
-        <div className="text-slate-300 space-y-2 text-sm">
-          <p>
-            <span className="text-brand-500 font-semibold">Rounds 1-2:</span> Must be a starter (depth order &lt;5) in 3 of first 5 years to qualify as a "hit"
-          </p>
-          <p>
-            <span className="text-brand-500 font-semibold">Rounds 3-5:</span> Must be a starter in 2 of first 5 years to qualify as a "hit"
-          </p>
-          <p>
-            <span className="text-brand-500 font-semibold">Rounds 6-7 & UN:</span> Must be a starter in 1 of first 5 years to qualify as a "hit"
-          </p>
-          <p className="text-slate-500 text-xs mt-4">
-            These thresholds reflect realistic expectations for draft capital invested. Early picks are held to higher standards.
-          </p>
+      <div className="bg-gradient-to-r from-slate-800 to-slate-850 rounded-lg p-6 border border-slate-700">
+        <h3 className="text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
+          <AlertCircle className="text-brand-500" size={24} />
+          HIT CRITERIA BY ROUND
+        </h3>
+        <p className="text-slate-400 text-sm mb-4">
+          Draft picks are evaluated based on <strong className="text-white">starter years</strong> (depth order &lt; 5) within their first 5 seasons. Higher draft picks face higher expectations:
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+            <div className="flex items-center gap-2 mb-2">
+              <Award className="text-yellow-500" size={18} />
+              <span className="text-brand-500 font-semibold text-lg">Rounds 1-2</span>
+            </div>
+            <p className="text-slate-300 text-sm">
+              <strong className="text-white">3+ years</strong> as a starter
+            </p>
+            <p className="text-slate-500 text-xs mt-1">High investment, high expectations</p>
+          </div>
+
+          <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+            <div className="flex items-center gap-2 mb-2">
+              <Target className="text-blue-500" size={18} />
+              <span className="text-brand-500 font-semibold text-lg">Rounds 3-5</span>
+            </div>
+            <p className="text-slate-300 text-sm">
+              <strong className="text-white">2+ years</strong> as a starter
+            </p>
+            <p className="text-slate-500 text-xs mt-1">Moderate expectations</p>
+          </div>
+
+          <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+            <div className="flex items-center gap-2 mb-2">
+              <TrendingUp className="text-brand-500" size={18} />
+              <span className="text-brand-500 font-semibold text-lg">Rounds 6-7 & UN</span>
+            </div>
+            <p className="text-slate-300 text-sm">
+              <strong className="text-white">1+ year</strong> as a starter
+            </p>
+            <p className="text-slate-500 text-xs mt-1">Low capital, any starter is a win</p>
+          </div>
         </div>
+        <p className="text-slate-500 text-xs mt-4 italic">
+          💡 Tip: These thresholds reflect realistic ROI for draft capital. A 50% hit rate means half your picks became reliable starters.
+        </p>
       </div>
     </div>
   );

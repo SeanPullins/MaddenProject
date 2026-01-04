@@ -47,9 +47,14 @@ export const Navigation: React.FC<NavigationProps> = ({
         `}
       >
         <div className="p-6">
-          <h1 className="text-2xl font-display font-bold text-brand-500 mb-8">
-            FANLEAGUE
-          </h1>
+          <div className="mb-8">
+            <h1 className="text-2xl font-display font-bold text-brand-500">
+              FANLEAGUE
+            </h1>
+            <p className="text-xs text-slate-400 mt-1 font-sans normal-case tracking-normal">
+              Where the Best GM Meets Madden
+            </p>
+          </div>
 
           <ul className="space-y-2">
             {navItems.map(({ page, label, icon: Icon }) => (
