@@ -2,67 +2,52 @@ import { Handler } from '@netlify/functions';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export const handler: Handler = async (event) => {
-  // 1. Method Check
   if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Method Not Allowed' }),
-    };
+    return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
   try {
-    // 2. Parse User Input
     const { prompt: userTeamData } = JSON.parse(event.body || '{}');
 
     if (!userTeamData) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Prompt is required' }),
-      };
+      return { statusCode: 400, body: JSON.stringify({ error: 'Prompt is required' }) };
     }
 
-    // 3. API Key Check
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      console.error("Missing GEMINI_API_KEY");
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'Server Configuration Error' }),
-      };
+      return { statusCode: 500, body: JSON.stringify({ error: 'Missing API Key' }) };
     }
 
-    // 4. DEFINE LEAGUE RULES
+    // 1. LEAGUE RULES (Condensed for Speed)
+    // We removed fluff to make the input smaller and faster to process.
     const LEAGUE_SCORING_RULES = `
-    ROLE: You are an expert Assistant GM for a Madden Franchise League.
-    OBJECTIVE: Evaluate the user's team data based on the specific "League Year Winner" scoring rubric below.
+    ROLE: Madden GM Assistant.
+    TASK: Evaluate team based on this scoring:
+    1. STARTERS: 1st=5pts, 2nd=3pts, 3rd=2pts, Rest=1pt. (QB Premium: 7/5/3/1).
+    2. DEPTH: Highest rated NON-starter gets +1 pt.
+    3. EXTRA($): Extra starters get +0.5 pt.
     
-    SCORING RUBRIC (CRITICAL):
-    1. POSITIONAL RANKS (Starters):
-       - Standard Positions: 1st Highest Rated = 5pts, 2nd = 3pts, 3rd = 2pts, Rest = 1pt.
-       - Quarterback (QB) Premium: 1st = 7pts, 2nd = 5pts, 3rd = 3pts, Rest = 1pt.
-    
-    2. DEPTH BONUS: 
-       - The highest-rated player NOT in the starting lineup gets a +1 point bonus. (Depth is valuable!).
-    
-    3. EXTRA STARTERS ($):
-       - Any player marked as an "Extra Starter" (or $) gets a +0.5 point bonus.
-       
-    INSTRUCTIONS:
-    - Analyze the provided team data.
-    - Identify where the team is strong or weak based on these point values.
-    - Suggest moves to maximize this specific point system (e.g., "Acquire a better backup MLB to trigger the +1 Depth Bonus").
+    OUTPUT INSTRUCTIONS:
+    - BE EXTREMELY CONCISE. Bullet points only.
+    - Focus ONLY on "Depth Bonus" opportunities and "QB Premium".
+    - KEEP RESPONSE UNDER 200 WORDS.
     `;
 
-    // 5. Combine Rules + User Data
-    const fullPrompt = `${LEAGUE_SCORING_RULES}\n\nUSER TEAM DATA:\n${userTeamData}`;
+    const fullPrompt = `${LEAGUE_SCORING_RULES}\n\nTEAM DATA:\n${userTeamData}`;
 
-    // 6. Call Gemini (UPDATED MODEL)
     const genAI = new GoogleGenerativeAI(apiKey);
     
-    // FIX: Switched from 'gemini-1.5-flash' (Retired) to 'gemini-2.5-flash' (Current)
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    // 2. MODEL CONFIGURATION
+    // using 'gemini-2.5-flash' because 1.5 is retired for new accounts.
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.5-flash",
+      generationConfig: {
+        maxOutputTokens: 400, // <--- FORCE STOP after ~300 words to beat the 10s timer
+        temperature: 0.7,
+      }
+    });
     
+    // 3. GENERATE
     const result = await model.generateContent(fullPrompt);
     const response = await result.response;
     const responseText = response.text();
@@ -70,18 +55,14 @@ export const handler: Handler = async (event) => {
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text: responseText,
-      }),
+      body: JSON.stringify({ text: responseText }),
     };
 
   } catch (err: any) {
-    console.error('Gemini function error:', err);
+    console.error('Gemini error:', err);
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        error: err.message || 'Internal Server Error',
-      }),
+      body: JSON.stringify({ error: err.message || 'Error' }),
     };
   }
 };
