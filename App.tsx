@@ -33,7 +33,7 @@ const App: React.FC = () => {
     switch (currentPage) {
       case Page.LANDING: return <Landing onNavigate={setCurrentPage} />;
       case Page.DASHBOARD: return <Dashboard onNavigate={setCurrentPage} />;
-      case Page.TEAMS: return <LeagueTeams />;
+      case Page.TEAMS: return <LeagueTeams onNavigate={setCurrentPage} />;
       case Page.MY_TEAM: return <MyTeam />;
       case Page.PLAYERS: return <Players />;
       case Page.DRAFTS: return <Drafts />;

@@ -4,6 +4,7 @@ import { Team, Player } from '../types';
 import { TeamLogo } from '../components/TeamLogo';
 import { PlayerCard } from '../components/PlayerCard';
 import { FormerPlayersPanel } from '../components/FormerPlayersPanel';
+import { LeagueScoreModal } from '../components/LeagueScoreModal';
 import { UserMinus, Target, Star, Shield, TrendingUp, Info } from 'lucide-react';
 import { getTeamColors } from '../utils/teamColors';
 import { calculateLeagueScores } from '../utils/leagueScoring';
@@ -41,6 +42,7 @@ export const MyTeam: React.FC = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [showFormerPlayers, setShowFormerPlayers] = useState<boolean>(false);
   const [hoveredScore, setHoveredScore] = useState<boolean>(false);
+  const [modalTeamId, setModalTeamId] = useState<string | null>(null);
 
   // Persist team selection to localStorage
   useEffect(() => {
@@ -140,9 +142,11 @@ export const MyTeam: React.FC = () => {
       {/* Team Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div
-          className="bg-slate-800 rounded-lg p-6 border border-slate-700 relative"
+          className="bg-slate-800 rounded-lg p-6 border border-slate-700 relative cursor-pointer hover:border-brand-500 transition-colors"
           onMouseEnter={() => setHoveredScore(true)}
           onMouseLeave={() => setHoveredScore(false)}
+          onClick={() => setModalTeamId(team.id)}
+          title="Click for detailed breakdown"
         >
           <div className="flex items-center gap-2 mb-1">
             <Target size={16} className="text-brand-500" />
@@ -315,6 +319,22 @@ export const MyTeam: React.FC = () => {
           teamColor={getTeamColors(team.owner.substring(0, 3).toUpperCase()).primary}
         />
       )}
+
+      {/* League Score Modal */}
+      {modalTeamId && (() => {
+        const modalTeam = ALL_TEAMS.find(t => t.id === modalTeamId);
+        const teamScore = leagueScores.find(ts => ts.teamId === modalTeamId);
+        if (modalTeam && teamScore) {
+          return (
+            <LeagueScoreModal
+              teamName={modalTeam.name}
+              teamScore={teamScore}
+              onClose={() => setModalTeamId(null)}
+            />
+          );
+        }
+        return null;
+      })()}
     </div>
   );
 };
