@@ -1,5 +1,5 @@
 import { Handler } from '@netlify/functions';
-import { GoogleGenerativeAI } from '@google/generative-ai'; // This matches your package.json now!
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export const handler: Handler = async (event) => {
   // 1. Method Check
@@ -57,9 +57,11 @@ export const handler: Handler = async (event) => {
     // 5. Combine Rules + User Data
     const fullPrompt = `${LEAGUE_SCORING_RULES}\n\nUSER TEAM DATA:\n${userTeamData}`;
 
-    // 6. Call Gemini
+    // 6. Call Gemini (UPDATED MODEL)
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    
+    // FIX: Switched from 'gemini-1.5-flash' (Retired) to 'gemini-2.5-flash' (Current)
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     
     const result = await model.generateContent(fullPrompt);
     const response = await result.response;
