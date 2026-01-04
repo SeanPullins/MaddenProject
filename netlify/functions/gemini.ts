@@ -1,6 +1,6 @@
 import type { Handler } from '@netlify/functions';
-// CHANGE 1: Use the stable SDK import
-import { GoogleGenerativeAI } from '@google/generative-ai';
+// Reverting to the package you definitely have installed
+import { GoogleGenAI } from '@google/genai';
 
 export const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -29,24 +29,32 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    // CHANGE 2: Initialize the stable client
-    const genAI = new GoogleGenerativeAI(apiKey);
+    const ai = new GoogleGenAI({ apiKey });
 
-    // CHANGE 3: Get the specific model instance
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    // FIX: Use the explicit version 'gemini-1.5-flash-001'
+    // This resolves the 404 error on the Beta SDK you are using
+    const result = await ai.models.generateContent({
+      model: 'gemini-1.5-flash-001', 
+      contents: prompt,
+    });
 
-    // CHANGE 4: Generate content
-    const result = await model.generateContent(prompt);
-    
-    // CHANGE 5: Await the response and extract text
-    const response = await result.response;
-    const text = response.text();
+    // Handle the response text safely for the Beta SDK
+    // The Beta SDK returns a result object, we check for text() method or fall back to properties
+    let responseText = "";
+    if (typeof result.text === 'function') {
+        responseText = result.text();
+    } else if (result.text) {
+        responseText = result.text;
+    } else {
+        // Deep fallback if the structure is raw
+        responseText = result?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    }
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        text: text,
+        text: responseText,
       }),
     };
   } catch (err: any) {
@@ -54,9 +62,7 @@ export const handler: Handler = async (event) => {
     return {
       statusCode: 500,
       body: JSON.stringify({
-        // Log the full error to help debugging if this persists
         error: err.message || 'Internal Server Error',
-        details: err.toString()
       }),
     };
   }
