@@ -29,18 +29,23 @@ export const handler: Handler = async (event) => {
       };
     }
 
+    // Initialize the new SDK
     const ai = new GoogleGenAI({ apiKey });
 
+    // Call the API with the correct model name
     const result = await ai.models.generateContent({
-      model: 'gemini-pro', // ✅ CORRECT MODEL
+      model: 'gemini-1.5-flash', // Updated to currently supported model
       contents: prompt,
     });
+
+    // Extract text (Note: .text() is a function in the SDK)
+    const responseText = result.text();
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        text: result.text,
+        text: responseText,
       }),
     };
   } catch (err: any) {
@@ -53,4 +58,3 @@ export const handler: Handler = async (event) => {
     };
   }
 };
-
