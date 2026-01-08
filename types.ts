@@ -10,7 +10,7 @@ export enum Page {
   DRAFTS = 'DRAFTS', // New Draft History
   HIT_RATES = 'HIT_RATES', // New Hit Rates Page
   SETTINGS = 'SETTINGS',
-  AI_EVAL = 'AI_EVAL', // New AI Evaluation Page
+  // AI_EVAL = 'AI_EVAL', // DISABLED - AI Evaluation not working
 }
 
 // Data Types
