@@ -1,9 +1,38 @@
-import React, { useState } from 'react';
-import { Settings as SettingsIcon, User, Bell, Shield, Palette } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Settings as SettingsIcon, User, Bell, Shield, Palette, Moon, Sun } from 'lucide-react';
+
+const THEME_STORAGE_KEY = 'fanleague_theme_preference';
 
 export const Settings: React.FC = () => {
   const [notifications, setNotifications] = useState(true);
-  const [darkMode, setDarkMode] = useState(true);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
+  useEffect(() => {
+    // Load theme from localStorage on mount
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) as 'dark' | 'light' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      applyTheme(savedTheme);
+    } else {
+      applyTheme('dark');
+    }
+  }, []);
+
+  const applyTheme = (newTheme: 'dark' | 'light') => {
+    if (newTheme === 'light') {
+      document.documentElement.classList.add('light-theme');
+      document.documentElement.classList.remove('dark-theme');
+    } else {
+      document.documentElement.classList.add('dark-theme');
+      document.documentElement.classList.remove('light-theme');
+    }
+  };
+
+  const handleThemeChange = (newTheme: 'dark' | 'light') => {
+    setTheme(newTheme);
+    localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+    applyTheme(newTheme);
+  };
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -81,15 +110,31 @@ export const Settings: React.FC = () => {
             APPEARANCE
           </h2>
           <div className="space-y-3">
-            <label className="flex items-center justify-between cursor-pointer">
-              <span className="text-slate-300">Dark mode</span>
-              <input
-                type="checkbox"
-                checked={darkMode}
-                onChange={(e) => setDarkMode(e.target.checked)}
-                className="w-5 h-5 rounded bg-slate-900 border-slate-700 text-brand-500 focus:ring-brand-500"
-              />
-            </label>
+            <label className="block text-slate-400 text-sm mb-3">Theme</label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => handleThemeChange('dark')}
+                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 transition-all ${
+                  theme === 'dark'
+                    ? 'bg-brand-500 border-brand-500 text-white'
+                    : 'bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-600'
+                }`}
+              >
+                <Moon size={18} />
+                <span className="font-medium">Dark Mode</span>
+              </button>
+              <button
+                onClick={() => handleThemeChange('light')}
+                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 transition-all ${
+                  theme === 'light'
+                    ? 'bg-brand-500 border-brand-500 text-white'
+                    : 'bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-600'
+                }`}
+              >
+                <Sun size={18} />
+                <span className="font-medium">Light Mode</span>
+              </button>
+            </div>
           </div>
         </div>
 

@@ -17,6 +17,8 @@ import { Page } from './types';
 import { Loader2 } from 'lucide-react';
 import { CRUISE_SHIP_CRUSADERS } from './constants';
 
+const THEME_STORAGE_KEY = 'fanleague_theme_preference';
+
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>(Page.LANDING);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -28,6 +30,20 @@ const App: React.FC = () => {
         console.log("UI complete. Data loaded.");
     }, 1000);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Apply theme on app load
+  useEffect(() => {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) as 'dark' | 'light' | null;
+    const theme = savedTheme || 'dark';
+
+    if (theme === 'light') {
+      document.documentElement.classList.add('light-theme');
+      document.documentElement.classList.remove('dark-theme');
+    } else {
+      document.documentElement.classList.add('dark-theme');
+      document.documentElement.classList.remove('light-theme');
+    }
   }, []);
 
   const renderPage = () => {
