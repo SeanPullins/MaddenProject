@@ -18,7 +18,6 @@ export const Navigation: React.FC<NavigationProps> = ({
   const navItems = [
     { page: Page.DASHBOARD, label: 'Dashboard', icon: Home },
     { page: Page.LEAGUE_HUB, label: 'League Hub', icon: Shield },
-    { page: Page.MESSAGE_BOARD, label: 'Message Board', icon: MessageCircle },
     { page: Page.TEAMS, label: 'Teams', icon: Users },
     { page: Page.MY_TEAM, label: 'My Team', icon: UserCircle },
     { page: Page.PLAYERS, label: 'Players', icon: Users },
@@ -26,6 +25,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     { page: Page.COMPARISON, label: 'Compare', icon: GitCompare },
     { page: Page.DRAFTS, label: 'Drafts', icon: FileText },
     { page: Page.HIT_RATES, label: 'Hit Rates', icon: TrendingUp },
+    { page: Page.MESSAGE_BOARD, label: 'Message Board', icon: MessageCircle },
     { page: Page.SETTINGS, label: 'Settings', icon: Settings },
   ];
 
