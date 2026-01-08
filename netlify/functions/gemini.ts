@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) };
   }
 
   try {
@@ -18,37 +18,31 @@ export const handler: Handler = async (event) => {
       return { statusCode: 500, body: JSON.stringify({ error: 'Missing API Key' }) };
     }
 
-    // 1. LEAGUE RULES (Condensed for Speed)
-    // We removed fluff to make the input smaller and faster to process.
-    const LEAGUE_SCORING_RULES = `
-    ROLE: Madden GM Assistant.
-    TASK: Evaluate team based on this scoring:
-    1. STARTERS: 1st=5pts, 2nd=3pts, 3rd=2pts, Rest=1pt. (QB Premium: 7/5/3/1).
-    2. DEPTH: Highest rated NON-starter gets +1 pt.
-    3. EXTRA($): Extra starters get +0.5 pt.
-    
-    OUTPUT INSTRUCTIONS:
-    - BE EXTREMELY CONCISE. Bullet points only.
-    - Focus ONLY on "Depth Bonus" opportunities and "QB Premium".
-    - KEEP RESPONSE UNDER 200 WORDS.
-    `;
+    // TURBO PROMPT: Ultra-condensed for maximum speed to beat 10s timeout
+    const RULES = `
+    TASK: Identify "League Year Winner" scoring opportunities.
+    SCORING:
+    - Depth Bonus (+1pt): Highest rated NON-starter.
+    - QB Premium (+7/5/3pts): Top rated QBs.
+    - Extra Starters (+0.5pt): Players with $.
 
-    const fullPrompt = `${LEAGUE_SCORING_RULES}\n\nTEAM DATA:\n${userTeamData}`;
+    OUTPUT RULES:
+    1. DO NOT summarize the roster.
+    2. OUTPUT ONLY 3 BULLET POINTS MAX.
+    3. BE ROBOTIC AND BRIEF.`;
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    
-    // 2. MODEL CONFIGURATION
-    // using 'gemini-2.5-flash' because 1.5 is retired for new accounts.
-    const model = genAI.getGenerativeModel({ 
+
+    // MODEL CONFIG: Aggressive limits to force early completion and beat timeout
+    const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: {
-        maxOutputTokens: 400, // <--- FORCE STOP after ~300 words to beat the 10s timer
-        temperature: 0.7,
+        maxOutputTokens: 150,  // Stops AI after ~100 words (more aggressive than 400)
+        temperature: 0.4,      // Lower temp = faster, more deterministic (vs 0.7)
       }
     });
-    
-    // 3. GENERATE
-    const result = await model.generateContent(fullPrompt);
+
+    const result = await model.generateContent(`${RULES}\n\nDATA:\n${userTeamData}`);
     const response = await result.response;
     const responseText = response.text();
 
@@ -59,10 +53,10 @@ export const handler: Handler = async (event) => {
     };
 
   } catch (err: any) {
-    console.error('Gemini error:', err);
+    console.error('Gemini function error:', err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message || 'Error' }),
+      body: JSON.stringify({ error: err.message || 'Internal Server Error' }),
     };
   }
 };
