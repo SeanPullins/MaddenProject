@@ -5,6 +5,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Franchise } from './pages/Franchise';
 import { MyTeam } from './pages/MyTeam';
 import { LeagueTeams } from './pages/LeagueTeams';
+import { LeagueHub } from './pages/LeagueHub';
 import { Players } from './pages/Players';
 import { Standings } from './pages/Standings';
 import { PlayerComparison } from './pages/PlayerComparison';
@@ -32,6 +33,7 @@ const App: React.FC = () => {
     switch (currentPage) {
       case Page.LANDING: return <Landing onNavigate={setCurrentPage} />;
       case Page.DASHBOARD: return <Dashboard onNavigate={setCurrentPage} />;
+      case Page.LEAGUE_HUB: return <LeagueHub onNavigate={setCurrentPage} />;
       case Page.TEAMS: return <LeagueTeams onNavigate={setCurrentPage} />;
       case Page.MY_TEAM: return <MyTeam />;
       case Page.PLAYERS: return <Players />;
