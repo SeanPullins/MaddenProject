@@ -83,10 +83,10 @@ export const MessageBoard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 p-4 md:p-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-slate-950 md:p-8">
+      <div className="max-w-4xl mx-auto h-full flex flex-col">
         {/* Header */}
-        <div className="mb-6">
+        <div className="p-4 md:p-0 md:mb-6 flex-shrink-0">
           <div className="flex items-center gap-3 mb-2">
             <MessageCircle className="text-brand-500" size={32} />
             <h1 className="text-3xl md:text-4xl font-display font-bold text-white">
@@ -98,8 +98,8 @@ export const MessageBoard: React.FC = () => {
           </p>
         </div>
 
-        {/* Message List */}
-        <div className="bg-slate-900 border border-slate-800 rounded-lg mb-4 h-[500px] overflow-y-auto p-4">
+        {/* Message List - Full height on mobile, fixed height on desktop */}
+        <div className="flex-1 bg-slate-900 border-x border-t md:border md:rounded-lg overflow-y-auto p-4 md:mb-4 md:h-[500px] md:flex-none">
           {messages.length === 0 ? (
             <div className="h-full flex items-center justify-center text-slate-500 text-center">
               <div>
@@ -108,11 +108,11 @@ export const MessageBoard: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-4 pb-4">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
-                  className="bg-slate-800 border border-slate-700 rounded-lg p-4"
+                  className="bg-slate-800 border border-slate-700 rounded-lg p-4 touch-manipulation"
                 >
                   <div className="flex items-baseline justify-between gap-2 mb-2">
                     <span className="font-bold text-brand-400">
@@ -130,15 +130,15 @@ export const MessageBoard: React.FC = () => {
           )}
         </div>
 
-        {/* Input Section */}
-        <div className="bg-slate-900 border border-slate-800 rounded-lg p-4">
+        {/* Input Section - Fixed at bottom on mobile, static on desktop */}
+        <div className="fixed md:relative bottom-16 md:bottom-0 left-0 right-0 bg-slate-900 border-t border-x md:border md:rounded-lg p-4 flex-shrink-0">
           <div className="flex flex-col md:flex-row gap-3">
             <input
               type="text"
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 md:w-48"
+              className="px-4 py-3 md:py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 md:w-48 min-h-[44px] touch-manipulation"
               maxLength={20}
             />
             <input
@@ -151,15 +151,15 @@ export const MessageBoard: React.FC = () => {
                   handlePost();
                 }
               }}
-              className="flex-1 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-brand-500"
+              className="flex-1 px-4 py-3 md:py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 min-h-[44px] touch-manipulation"
               maxLength={500}
             />
             <button
               onClick={handlePost}
-              className="px-6 py-2 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="px-6 py-3 md:py-2 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-bold rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[44px] touch-manipulation"
             >
               <Send size={18} />
-              Post
+              <span>Post</span>
             </button>
           </div>
         </div>

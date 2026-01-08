@@ -87,7 +87,7 @@ const App: React.FC = () => {
         setIsMobileMenuOpen={setIsMobileMenuOpen}
       />
 
-      <main className="flex-1 overflow-y-auto overflow-x-hidden relative pt-16 lg:pt-0">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden relative pt-16 lg:pt-0 pb-20 lg:pb-0">
         {/* Top Fade for aesthetics */}
         <div className="sticky top-0 z-30 h-8 bg-gradient-to-b from-slate-950 to-transparent pointer-events-none lg:hidden" />
 
