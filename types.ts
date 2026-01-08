@@ -12,6 +12,7 @@ export enum Page {
   SETTINGS = 'SETTINGS',
   // AI_EVAL = 'AI_EVAL', // DISABLED - AI Evaluation not working
   LEAGUE_HUB = 'LEAGUE_HUB', // NEW: League management
+  MESSAGE_BOARD = 'MESSAGE_BOARD', // NEW: Global message board
   DRAFT_BOARD = 'DRAFT_BOARD', // NEW: Live draft board
   TRADES = 'TRADES', // NEW: Trade center
   GM_PROFILES = 'GM_PROFILES', // NEW: GM profiles
