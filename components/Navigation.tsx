@@ -29,6 +29,14 @@ export const Navigation: React.FC<NavigationProps> = ({
     { page: Page.SETTINGS, label: 'Settings', icon: Settings },
   ];
 
+  // Mobile bottom nav items (most important pages)
+  const mobileBottomNavItems = [
+    { page: Page.DASHBOARD, label: 'Home', icon: Home },
+    { page: Page.LEAGUE_HUB, label: 'Leagues', icon: Shield },
+    { page: Page.MESSAGE_BOARD, label: 'Chat', icon: MessageCircle },
+    { page: Page.SETTINGS, label: 'Settings', icon: Settings },
+  ];
+
   return (
     <>
       {/* Mobile Menu Button */}
@@ -91,6 +99,31 @@ export const Navigation: React.FC<NavigationProps> = ({
           className="lg:hidden fixed inset-0 bg-black/50 z-30"
         />
       )}
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 z-50 safe-area-inset-bottom">
+        <div className="grid grid-cols-4 h-16">
+          {mobileBottomNavItems.map(({ page, label, icon: Icon }) => (
+            <button
+              key={page}
+              onClick={() => onNavigate(page)}
+              className={`
+                flex flex-col items-center justify-center gap-1
+                transition-colors duration-200
+                min-h-[44px] touch-manipulation
+                ${
+                  currentPage === page
+                    ? 'text-brand-500'
+                    : 'text-slate-400 active:text-white'
+                }
+              `}
+            >
+              <Icon size={22} />
+              <span className="text-xs font-medium">{label}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
     </>
   );
 };
