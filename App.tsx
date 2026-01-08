@@ -10,7 +10,6 @@ import { Standings } from './pages/Standings';
 import { PlayerComparison } from './pages/PlayerComparison';
 import { Drafts } from './pages/Drafts';
 import { HitRates } from './pages/HitRates'; // Added
-import { AIEvaluation } from './pages/AIEvaluation';
 import { Settings } from './pages/Settings';
 import { Page } from './types';
 import { Loader2 } from 'lucide-react';
@@ -40,7 +39,6 @@ const App: React.FC = () => {
       case Page.HIT_RATES: return <HitRates />; // Added
       case Page.STANDINGS: return <Standings />;
       case Page.COMPARISON: return <PlayerComparison />;
-      case Page.AI_EVAL: return <AIEvaluation />;
       case Page.SETTINGS: return <Settings />;
       default: return <Dashboard onNavigate={setCurrentPage} />;
     }
