@@ -34,13 +34,8 @@ export const Settings: React.FC = () => {
   }, []);
 
   const applyTheme = (newTheme: 'dark' | 'light') => {
-    if (newTheme === 'light') {
-      document.documentElement.classList.add('light-theme');
-      document.documentElement.classList.remove('dark-theme');
-    } else {
-      document.documentElement.classList.add('dark-theme');
-      document.documentElement.classList.remove('light-theme');
-    }
+    // Use data-theme attribute for CSS variable-based theming
+    document.documentElement.setAttribute('data-theme', newTheme);
   };
 
   const handleThemeChange = (newTheme: 'dark' | 'light') => {

@@ -36,13 +36,8 @@ const App: React.FC = () => {
     const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) as 'dark' | 'light' | null;
     const theme = savedTheme || 'dark';
 
-    if (theme === 'light') {
-      document.documentElement.classList.add('light-theme');
-      document.documentElement.classList.remove('dark-theme');
-    } else {
-      document.documentElement.classList.add('dark-theme');
-      document.documentElement.classList.remove('light-theme');
-    }
+    // Use data-theme attribute for CSS variable-based theming
+    document.documentElement.setAttribute('data-theme', theme);
   }, []);
 
   const renderPage = () => {
