@@ -1,6 +1,6 @@
 import React from 'react';
 import { Page } from '../types';
-import { Menu, X, Home, Users, UserCircle, Trophy, GitCompare, FileText, TrendingUp, Settings, Shield, MessageCircle } from 'lucide-react';
+import { Menu, X, Home, Users, UserCircle, Trophy, GitCompare, FileText, TrendingUp, Settings, MessageCircle } from 'lucide-react';
 
 interface NavigationProps {
   currentPage: Page;
@@ -17,7 +17,6 @@ export const Navigation: React.FC<NavigationProps> = ({
 }) => {
   const navItems = [
     { page: Page.DASHBOARD, label: 'Dashboard', icon: Home },
-    { page: Page.LEAGUE_HUB, label: 'League Hub', icon: Shield },
     { page: Page.TEAMS, label: 'Teams', icon: Users },
     { page: Page.MY_TEAM, label: 'My Team', icon: UserCircle },
     { page: Page.PLAYERS, label: 'Players', icon: Users },
@@ -32,8 +31,8 @@ export const Navigation: React.FC<NavigationProps> = ({
   // Mobile bottom nav items (most important pages)
   const mobileBottomNavItems = [
     { page: Page.DASHBOARD, label: 'Home', icon: Home },
-    { page: Page.LEAGUE_HUB, label: 'Leagues', icon: Shield },
-    { page: Page.MESSAGE_BOARD, label: 'Chat', icon: MessageCircle },
+    { page: Page.MY_TEAM, label: 'My Team', icon: UserCircle },
+    { page: Page.MESSAGE_BOARD, label: 'Board', icon: MessageCircle },
     { page: Page.SETTINGS, label: 'Settings', icon: Settings },
   ];
 
