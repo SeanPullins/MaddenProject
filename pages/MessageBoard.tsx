@@ -9,6 +9,7 @@ interface Message {
 }
 
 const STORAGE_KEY = 'fanleague_global_chat';
+const USERNAME_KEY = 'fanleague_username';
 
 export const MessageBoard: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -18,6 +19,11 @@ export const MessageBoard: React.FC = () => {
 
   useEffect(() => {
     loadMessages();
+    // Load saved username
+    const savedUsername = localStorage.getItem(USERNAME_KEY);
+    if (savedUsername) {
+      setUsername(savedUsername);
+    }
   }, []);
 
   useEffect(() => {
@@ -47,6 +53,9 @@ export const MessageBoard: React.FC = () => {
       return;
     }
 
+    // Save username for future use
+    localStorage.setItem(USERNAME_KEY, username.trim());
+
     const newMessage: Message = {
       id: `msg-${Date.now()}-${Math.random()}`,
       username: username.trim(),
@@ -62,22 +71,40 @@ export const MessageBoard: React.FC = () => {
   };
 
   const formatTimestamp = (timestamp: number) => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const isToday = date.toDateString() === now.toDateString();
+    const now = Date.now();
+    const diff = now - timestamp;
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
 
-    if (isToday) {
-      return date.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-      });
-    } else {
+    // Relative timestamps for recent messages
+    if (seconds < 60) {
+      return 'just now';
+    } else if (minutes < 60) {
+      return `${minutes} min${minutes > 1 ? 's' : ''} ago`;
+    } else if (hours < 24) {
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (days < 7) {
+      return `${days} day${days > 1 ? 's' : ''} ago`;
+    }
+
+    // Absolute timestamps for older messages
+    const date = new Date(timestamp);
+    const isThisYear = date.getFullYear() === new Date().getFullYear();
+
+    if (isThisYear) {
       return date.toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
         hour: 'numeric',
         minute: '2-digit',
+      });
+    } else {
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
       });
     }
   };
