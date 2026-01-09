@@ -1,18 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Settings as SettingsIcon, User, Bell, Shield, Palette, Moon, Sun, ChevronDown } from 'lucide-react';
+import { Settings as SettingsIcon, UserCircle, Palette, Moon, Sun, ChevronDown, MessageCircle, Info, Shield } from 'lucide-react';
 
 const THEME_STORAGE_KEY = 'fanleague_theme_preference';
+const MY_TEAM_STORAGE_KEY = 'fanleague_my_team';
+const MESSAGE_PREFS_STORAGE_KEY = 'fanleague_message_preferences';
+
+interface MessagePreferences {
+  rememberUsername: boolean;
+  autoScroll: boolean;
+  relativeTimestamps: boolean;
+}
 
 export const Settings: React.FC = () => {
-  const [notifications, setNotifications] = useState(true);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [myTeamName, setMyTeamName] = useState('');
+  const [messagePrefs, setMessagePrefs] = useState<MessagePreferences>({
+    rememberUsername: true,
+    autoScroll: true,
+    relativeTimestamps: true,
+  });
 
   // Mobile collapsible sections (only used on mobile)
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-    profile: true,
-    notifications: false,
+    myTeam: true,
     appearance: false,
-    privacy: false,
+    messageBoard: false,
+    about: false,
   });
 
   const toggleSection = (section: string) => {
@@ -31,6 +44,18 @@ export const Settings: React.FC = () => {
     } else {
       applyTheme('dark');
     }
+
+    // Load My Team name
+    const savedTeamName = localStorage.getItem(MY_TEAM_STORAGE_KEY);
+    if (savedTeamName) {
+      setMyTeamName(savedTeamName);
+    }
+
+    // Load Message Board preferences
+    const savedPrefs = localStorage.getItem(MESSAGE_PREFS_STORAGE_KEY);
+    if (savedPrefs) {
+      setMessagePrefs(JSON.parse(savedPrefs));
+    }
   }, []);
 
   const applyTheme = (newTheme: 'dark' | 'light') => {
@@ -44,6 +69,18 @@ export const Settings: React.FC = () => {
     applyTheme(newTheme);
   };
 
+  const handleMyTeamChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setMyTeamName(value);
+    localStorage.setItem(MY_TEAM_STORAGE_KEY, value);
+  };
+
+  const handleMessagePrefChange = (key: keyof MessagePreferences, value: boolean) => {
+    const newPrefs = { ...messagePrefs, [key]: value };
+    setMessagePrefs(newPrefs);
+    localStorage.setItem(MESSAGE_PREFS_STORAGE_KEY, JSON.stringify(newPrefs));
+  };
+
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <h1 className="text-4xl font-display font-bold text-white mb-8 flex items-center gap-3">
@@ -52,86 +89,39 @@ export const Settings: React.FC = () => {
       </h1>
 
       <div className="space-y-6">
-        {/* Profile Settings */}
+        {/* My Team Section */}
         <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
           <button
-            onClick={() => toggleSection('profile')}
+            onClick={() => toggleSection('myTeam')}
             className="w-full p-6 md:cursor-default flex items-center justify-between md:pointer-events-none"
           >
             <h2 className="text-xl font-display font-bold text-white flex items-center gap-2">
-              <User size={20} />
-              PROFILE
+              <UserCircle size={20} />
+              MY TEAM
             </h2>
             <ChevronDown
               size={24}
               className={`md:hidden text-slate-400 transition-transform ${
-                expandedSections.profile ? 'rotate-180' : ''
+                expandedSections.myTeam ? 'rotate-180' : ''
               }`}
             />
           </button>
-          <div className={`${expandedSections.profile ? 'block' : 'hidden md:block'} px-6 pb-6 space-y-4`}>
-            <div>
-              <label className="block text-slate-400 text-sm mb-2">Display Name</label>
+          <div className={`${expandedSections.myTeam ? 'block' : 'hidden md:block'} px-6 pb-6`}>
+            <div className="mb-4">
+              <label className="block text-slate-400 text-sm mb-2">Team Name</label>
               <input
                 type="text"
-                defaultValue="Team Owner"
-                className="w-full px-4 py-3 md:py-2 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500 min-h-[44px] touch-manipulation"
+                value={myTeamName}
+                onChange={handleMyTeamChange}
+                placeholder="Enter your team name"
+                className="w-full px-4 py-3 md:py-2 bg-slate-900 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 min-h-[44px] touch-manipulation"
+                maxLength={50}
               />
             </div>
-            <div>
-              <label className="block text-slate-400 text-sm mb-2">Email</label>
-              <input
-                type="email"
-                defaultValue="owner@fanleague.com"
-                className="w-full px-4 py-3 md:py-2 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500 min-h-[44px] touch-manipulation"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Notifications */}
-        <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
-          <button
-            onClick={() => toggleSection('notifications')}
-            className="w-full p-6 md:cursor-default flex items-center justify-between md:pointer-events-none"
-          >
-            <h2 className="text-xl font-display font-bold text-white flex items-center gap-2">
-              <Bell size={20} />
-              NOTIFICATIONS
-            </h2>
-            <ChevronDown
-              size={24}
-              className={`md:hidden text-slate-400 transition-transform ${
-                expandedSections.notifications ? 'rotate-180' : ''
-              }`}
-            />
-          </button>
-          <div className={`${expandedSections.notifications ? 'block' : 'hidden md:block'} px-6 pb-6 space-y-3`}>
-            <label className="flex items-center justify-between cursor-pointer min-h-[44px] touch-manipulation">
-              <span className="text-slate-300">Enable notifications</span>
-              <input
-                type="checkbox"
-                checked={notifications}
-                onChange={(e) => setNotifications(e.target.checked)}
-                className="w-6 h-6 md:w-5 md:h-5 rounded bg-slate-900 border-slate-700 text-brand-500 focus:ring-brand-500"
-              />
-            </label>
-            <label className="flex items-center justify-between cursor-pointer min-h-[44px] touch-manipulation">
-              <span className="text-slate-300">Trade alerts</span>
-              <input
-                type="checkbox"
-                defaultChecked
-                className="w-6 h-6 md:w-5 md:h-5 rounded bg-slate-900 border-slate-700 text-brand-500 focus:ring-brand-500"
-              />
-            </label>
-            <label className="flex items-center justify-between cursor-pointer min-h-[44px] touch-manipulation">
-              <span className="text-slate-300">Draft reminders</span>
-              <input
-                type="checkbox"
-                defaultChecked
-                className="w-6 h-6 md:w-5 md:h-5 rounded bg-slate-900 border-slate-700 text-brand-500 focus:ring-brand-500"
-              />
-            </label>
+            <p className="text-slate-500 text-sm flex items-start gap-2">
+              <Info size={14} className="mt-0.5 flex-shrink-0" />
+              <span>This team will be used as your default context across FanLeague.</span>
+            </p>
           </div>
         </div>
 
@@ -181,44 +171,98 @@ export const Settings: React.FC = () => {
           </div>
         </div>
 
-        {/* Privacy */}
+        {/* Message Board Preferences */}
         <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
           <button
-            onClick={() => toggleSection('privacy')}
+            onClick={() => toggleSection('messageBoard')}
             className="w-full p-6 md:cursor-default flex items-center justify-between md:pointer-events-none"
           >
             <h2 className="text-xl font-display font-bold text-white flex items-center gap-2">
-              <Shield size={20} />
-              PRIVACY & SECURITY
+              <MessageCircle size={20} />
+              MESSAGE BOARD
             </h2>
             <ChevronDown
               size={24}
               className={`md:hidden text-slate-400 transition-transform ${
-                expandedSections.privacy ? 'rotate-180' : ''
+                expandedSections.messageBoard ? 'rotate-180' : ''
               }`}
             />
           </button>
-          <div className={`${expandedSections.privacy ? 'block' : 'hidden md:block'} px-6 pb-6 space-y-3`}>
-            <button className="w-full px-4 py-3 md:py-2 bg-slate-900 hover:bg-slate-700 active:bg-slate-600 text-white rounded-lg transition-colors text-left min-h-[44px] touch-manipulation">
-              Change password
-            </button>
-            <button className="w-full px-4 py-3 md:py-2 bg-slate-900 hover:bg-slate-700 active:bg-slate-600 text-white rounded-lg transition-colors text-left min-h-[44px] touch-manipulation">
-              Manage API keys
-            </button>
-            <button className="w-full px-4 py-3 md:py-2 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white rounded-lg transition-colors text-left min-h-[44px] touch-manipulation">
-              Delete account
-            </button>
+          <div className={`${expandedSections.messageBoard ? 'block' : 'hidden md:block'} px-6 pb-6 space-y-3`}>
+            <label className="flex items-center justify-between cursor-pointer min-h-[44px] touch-manipulation">
+              <span className="text-slate-300">Remember my username</span>
+              <input
+                type="checkbox"
+                checked={messagePrefs.rememberUsername}
+                onChange={(e) => handleMessagePrefChange('rememberUsername', e.target.checked)}
+                className="w-6 h-6 md:w-5 md:h-5 rounded bg-slate-900 border-slate-700 text-brand-500 focus:ring-brand-500"
+              />
+            </label>
+            <label className="flex items-center justify-between cursor-pointer min-h-[44px] touch-manipulation">
+              <span className="text-slate-300">Auto-scroll to new messages</span>
+              <input
+                type="checkbox"
+                checked={messagePrefs.autoScroll}
+                onChange={(e) => handleMessagePrefChange('autoScroll', e.target.checked)}
+                className="w-6 h-6 md:w-5 md:h-5 rounded bg-slate-900 border-slate-700 text-brand-500 focus:ring-brand-500"
+              />
+            </label>
+            <label className="flex items-center justify-between cursor-pointer min-h-[44px] touch-manipulation">
+              <span className="text-slate-300">Show relative timestamps</span>
+              <input
+                type="checkbox"
+                checked={messagePrefs.relativeTimestamps}
+                onChange={(e) => handleMessagePrefChange('relativeTimestamps', e.target.checked)}
+                className="w-6 h-6 md:w-5 md:h-5 rounded bg-slate-900 border-slate-700 text-brand-500 focus:ring-brand-500"
+              />
+            </label>
           </div>
         </div>
 
-        {/* Save Button */}
-        <div className="flex flex-col md:flex-row justify-end gap-3">
-          <button className="px-6 py-3 md:py-2 bg-slate-700 hover:bg-slate-600 active:bg-slate-500 text-white rounded-lg transition-colors min-h-[44px] touch-manipulation">
-            Cancel
+        {/* About Section */}
+        <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
+          <button
+            onClick={() => toggleSection('about')}
+            className="w-full p-6 md:cursor-default flex items-center justify-between md:pointer-events-none"
+          >
+            <h2 className="text-xl font-display font-bold text-white flex items-center gap-2">
+              <Info size={20} />
+              ABOUT
+            </h2>
+            <ChevronDown
+              size={24}
+              className={`md:hidden text-slate-400 transition-transform ${
+                expandedSections.about ? 'rotate-180' : ''
+              }`}
+            />
           </button>
-          <button className="px-6 py-3 md:py-2 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-bold rounded-lg transition-colors min-h-[44px] touch-manipulation">
-            Save Changes
-          </button>
+          <div className={`${expandedSections.about ? 'block' : 'hidden md:block'} px-6 pb-6 space-y-3`}>
+            <div className="flex items-center justify-between py-2">
+              <span className="text-slate-400">Version</span>
+              <span className="text-white font-medium">2.5.0</span>
+            </div>
+            <div className="border-t border-slate-700 pt-3 space-y-2">
+              <a
+                href="#"
+                className="block text-slate-300 hover:text-brand-500 transition-colors py-2"
+                onClick={(e) => e.preventDefault()}
+              >
+                Privacy Policy
+              </a>
+              <a
+                href="#"
+                className="block text-slate-300 hover:text-brand-500 transition-colors py-2"
+                onClick={(e) => e.preventDefault()}
+              >
+                Terms of Service
+              </a>
+            </div>
+            <div className="mt-4 pt-4 border-t border-slate-700">
+              <p className="text-slate-500 text-xs text-center">
+                © 2025 FanLeague. Where the Best GM Meets Madden.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
