@@ -311,6 +311,55 @@ export const MessageBoard: React.FC = () => {
     return `${username} (no team)`;
   };
 
+  // Get unique usernames from messages for dropdown
+  const getExistingUsernames = () => {
+    const usernameMap = new Map<string, { username: string; team: string | null }>();
+
+    messages.forEach((msg) => {
+      if (!usernameMap.has(msg.username)) {
+        usernameMap.set(msg.username, {
+          username: msg.username,
+          team: msg.team,
+        });
+      }
+    });
+
+    return Array.from(usernameMap.values());
+  };
+
+  const handleUsernameSelect = (selectedUsername: string) => {
+    if (selectedUsername === 'custom') {
+      // Switch to custom input mode
+      setEditUsernameValue('');
+      return;
+    }
+
+    // Find the user's last used team
+    const userMessages = messages.filter((msg) => msg.username === selectedUsername);
+    const lastMessage = userMessages[userMessages.length - 1];
+
+    setUsername(selectedUsername);
+    localStorage.setItem(USERNAME_KEY, selectedUsername);
+
+    // Auto-select their last used team
+    if (lastMessage?.team) {
+      setSelectedTeam(lastMessage.team);
+      saveIdentity(selectedUsername, lastMessage.team);
+    } else {
+      // Check if they have My Team set
+      const myTeam = getMyTeam();
+      if (myTeam) {
+        setSelectedTeam(myTeam);
+        saveIdentity(selectedUsername, myTeam);
+      } else {
+        setSelectedTeam('');
+        saveIdentity(selectedUsername, '');
+      }
+    }
+
+    setIsEditingUsername(false);
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 md:p-8">
       <div className="max-w-4xl mx-auto h-full flex flex-col">
@@ -445,34 +494,54 @@ export const MessageBoard: React.FC = () => {
             <div className="flex flex-col md:flex-row gap-2 md:items-center">
               <label className="text-sm text-slate-400 md:w-24 flex-shrink-0">Posting as:</label>
               {isEditingUsername ? (
-                <div className="flex gap-2 flex-1">
-                  <input
-                    type="text"
-                    placeholder="Enter your username"
-                    value={editUsernameValue}
-                    onChange={(e) => setEditUsernameValue(e.target.value)}
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
-                        handleSaveUsername();
-                      }
-                    }}
-                    className="flex-1 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 min-h-[44px] touch-manipulation"
-                    maxLength={20}
-                    autoFocus
-                  />
-                  <button
-                    onClick={handleSaveUsername}
-                    className="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg min-h-[44px] touch-manipulation"
-                  >
-                    <Check size={18} />
-                  </button>
-                  {username && (
-                    <button
-                      onClick={handleCancelEditUsername}
-                      className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg min-h-[44px] touch-manipulation"
+                <div className="flex flex-col gap-2 flex-1">
+                  {/* Username selection dropdown */}
+                  {editUsernameValue === '' && getExistingUsernames().length > 0 ? (
+                    <select
+                      onChange={(e) => handleUsernameSelect(e.target.value)}
+                      className="flex-1 px-4 py-3 md:py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500 min-h-[44px] touch-manipulation"
+                      autoFocus
                     >
-                      <X size={18} />
-                    </button>
+                      <option value="">Select a username...</option>
+                      {getExistingUsernames().map((user) => (
+                        <option key={user.username} value={user.username}>
+                          {user.username}
+                          {user.team ? ` (last used: ${user.team})` : ''}
+                        </option>
+                      ))}
+                      <option value="custom">Type custom name...</option>
+                    </select>
+                  ) : (
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="Enter your username"
+                        value={editUsernameValue}
+                        onChange={(e) => setEditUsernameValue(e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            handleSaveUsername();
+                          }
+                        }}
+                        className="flex-1 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 min-h-[44px] touch-manipulation"
+                        maxLength={20}
+                        autoFocus
+                      />
+                      <button
+                        onClick={handleSaveUsername}
+                        className="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg min-h-[44px] touch-manipulation"
+                      >
+                        <Check size={18} />
+                      </button>
+                      {username && (
+                        <button
+                          onClick={handleCancelEditUsername}
+                          className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg min-h-[44px] touch-manipulation"
+                        >
+                          <X size={18} />
+                        </button>
+                      )}
+                    </div>
                   )}
                 </div>
               ) : (
