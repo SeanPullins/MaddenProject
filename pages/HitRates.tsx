@@ -32,11 +32,21 @@ export const HitRates: React.FC = () => {
     if (isNaN(num)) return '';
 
     // High success: 50%+ (green)
-    if (num >= 0.5) return 'bg-brand-500/20 text-brand-500 font-bold';
+    if (num >= 0.5) return 'text-brand-500';
     // Medium success: 30-49% (yellow)
-    if (num >= 0.3) return 'bg-yellow-500/20 text-yellow-500 font-medium';
+    if (num >= 0.3) return 'text-yellow-500';
     // Low success: <30% (red)
-    return 'bg-red-500/20 text-red-400 font-medium';
+    return 'text-red-400';
+  };
+
+  // Get background color based on percentage value
+  const getPercentageBg = (value: string): string => {
+    const num = parseFloat(value);
+    if (isNaN(num)) return '';
+
+    if (num >= 0.5) return 'bg-brand-500/10';
+    if (num >= 0.3) return 'bg-yellow-500/10';
+    return 'bg-red-500/10';
   };
 
   // Get icon based on percentage value
@@ -44,9 +54,9 @@ export const HitRates: React.FC = () => {
     const num = parseFloat(value);
     if (isNaN(num)) return null;
 
-    if (num >= 0.6) return <TrendingUp className="inline-block mr-1" size={14} />;
-    if (num < 0.25) return <TrendingDown className="inline-block mr-1" size={14} />;
-    return null;
+    if (num >= 0.6) return <TrendingUp className="inline-block" size={16} />;
+    if (num < 0.25) return <TrendingDown className="inline-block" size={16} />;
+    return <Target className="inline-block" size={16} />;
   };
 
   // Format percentage for display
@@ -63,11 +73,16 @@ export const HitRates: React.FC = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-4xl font-display font-bold text-white mb-4">HIT RATES ANALYSIS</h1>
+    <div className="p-4 md:p-6 max-w-7xl mx-auto">
+      <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-3">
+        HIT RATES ANALYSIS
+      </h1>
+      <p className="text-slate-400 text-sm md:text-base mb-6 md:mb-8">
+        Track draft success by round and team
+      </p>
 
       {/* What is a Hit */}
-      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mb-6">
+      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mb-6 md:mb-8">
         <div className="flex items-start gap-3">
           <Info className="text-blue-500 mt-0.5 flex-shrink-0" size={20} />
           <div>
@@ -81,116 +96,152 @@ export const HitRates: React.FC = () => {
         </div>
       </div>
 
-      {/* Intro */}
-      <p className="text-slate-300 text-lg mb-6 max-w-3xl">
-        Hit rates measure <span className="text-brand-500 font-semibold">draft success</span> by tracking which picks become valuable contributors.
-        <strong className="text-white"> Success rate = (Total Hits ÷ Total Picks)</strong> for each round.
-        Higher percentages indicate <span className="font-semibold">superior scouting and drafting strategy</span>.
-        Use this data to identify which teams excel at finding talent in specific rounds.
-      </p>
-
       {/* Legend */}
-      <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 mb-6">
-        <div className="flex flex-wrap items-center gap-6 text-sm">
+      <div className="bg-slate-800/50 rounded-lg p-4 mb-6 md:mb-8">
+        <div className="flex flex-wrap items-center gap-4 md:gap-6 text-sm">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded bg-brand-500/20 flex items-center justify-center">
               <TrendingUp className="text-brand-500" size={14} />
             </div>
-            <span className="text-slate-300">High Success (50%+)</span>
+            <span className="text-slate-300">High (50%+)</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded bg-yellow-500/20 flex items-center justify-center">
               <Target className="text-yellow-500" size={14} />
             </div>
-            <span className="text-slate-300">Medium Success (30-49%)</span>
+            <span className="text-slate-300">Medium (30-49%)</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded bg-red-500/20 flex items-center justify-center">
               <TrendingDown className="text-red-400" size={14} />
             </div>
-            <span className="text-slate-300">Low Success (&lt;30%)</span>
+            <span className="text-slate-300">Low (&lt;30%)</span>
           </div>
         </div>
       </div>
 
       {/* Data Sections */}
-      <div className="space-y-6 mb-8">
-        {sections.map((section, sectionIndex) => (
-          <div key={sectionIndex} className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-            <h2 className="text-2xl font-display font-bold text-white mb-4 flex items-center gap-2">
-              {section.title === 'Highest Hit %' && <Award className="text-yellow-500" size={24} />}
-              {section.title === 'Count for Formula' && <Info className="text-brand-500" size={24} />}
-              {section.title || `Section ${sectionIndex + 1}`}
-            </h2>
+      <div className="space-y-8 md:space-y-10 mb-10">
+        {sections.map((section, sectionIndex) => {
+          const headers = section.data[0] || [];
+          const dataRows = section.data.slice(1);
 
-            {section.title === 'Highest Hit %' && (
-              <p className="text-slate-400 text-sm mb-4">
-                Success rate by draft round for each team. Higher percentages indicate better talent evaluation.
-              </p>
-            )}
+          return (
+            <div key={sectionIndex} className="space-y-4">
+              <div className="flex items-center gap-3 mb-4">
+                {section.title === 'Highest Hit %' && <Award className="text-yellow-500" size={24} />}
+                {section.title === 'Count for Formula' && <Info className="text-brand-500" size={24} />}
+                <div>
+                  <h2 className="text-xl md:text-2xl font-display font-bold text-white">
+                    {section.title || `Section ${sectionIndex + 1}`}
+                  </h2>
+                  {section.title === 'Highest Hit %' && (
+                    <p className="text-slate-500 text-xs md:text-sm mt-1">
+                      Success rate by draft round
+                    </p>
+                  )}
+                  {section.title === 'Count for Formula' && (
+                    <p className="text-slate-500 text-xs md:text-sm mt-1">
+                      Total hits by round
+                    </p>
+                  )}
+                </div>
+              </div>
 
-            {section.title === 'Count for Formula' && (
-              <p className="text-slate-400 text-sm mb-4">
-                Total number of "hits" recorded by round. More hits demonstrate consistent drafting success.
-              </p>
-            )}
+              {/* Mobile: Card layout */}
+              <div className="block md:hidden space-y-4">
+                {dataRows.map((row, rowIndex) => {
+                  const teamName = row[0];
+                  if (!teamName) return null;
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <tbody>
-                  {section.data.map((row, rowIndex) => (
-                    <tr
-                      key={rowIndex}
-                      className={rowIndex === 0 ? 'border-b-2 border-slate-700' : 'border-b border-slate-800'}
-                    >
-                      {row.map((cell, cellIndex) => {
-                        const isHeaderRow = rowIndex === 0;
-                        const isFirstColumn = cellIndex === 0;
-                        const cellIsPercentage = isPercentage(cell);
-                        const isTotalRow = row[0]?.includes('Total') || row[0]?.includes('Ave');
+                  return (
+                    <div key={rowIndex} className="bg-slate-800/50 rounded-lg p-4 space-y-3">
+                      <h3 className="text-white font-bold text-base">{teamName}</h3>
+                      <div className="grid grid-cols-2 gap-3">
+                        {headers.slice(1).map((header, idx) => {
+                          const value = row[idx + 1];
+                          if (!value) return null;
+                          const cellIsPercentage = isPercentage(value);
 
-                        let cellClass = 'py-3 px-4';
+                          return (
+                            <div key={idx} className="space-y-1">
+                              <p className="text-slate-500 text-xs">{header}</p>
+                              {cellIsPercentage ? (
+                                <div className={`flex items-center gap-2 px-3 py-2 rounded ${getPercentageBg(value)}`}>
+                                  <span className={`text-lg font-bold ${getPercentageColor(value)}`}>
+                                    {formatPercentage(value)}
+                                  </span>
+                                  <span className={getPercentageColor(value)}>
+                                    {getPercentageIcon(value)}
+                                  </span>
+                                </div>
+                              ) : (
+                                <p className="text-slate-300 text-base px-3 py-2">{value}</p>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
 
-                        if (isHeaderRow) {
-                          cellClass += ' text-slate-400 font-medium';
-                        } else if (isFirstColumn) {
-                          cellClass += ' text-white font-medium';
-                        } else if (cellIsPercentage) {
-                          cellClass += ` ${getPercentageColor(cell)}`;
-                        } else {
-                          cellClass += ' text-slate-300';
-                        }
-
-                        // Highlight total row
-                        if (isTotalRow && !isFirstColumn && cellIsPercentage) {
-                          cellClass += ' ring-1 ring-brand-500/30';
-                        }
-
-                        return (
-                          <td key={cellIndex} className={cellClass}>
-                            {cellIsPercentage ? (
-                              <>
-                                {getPercentageIcon(cell)}
-                                {formatPercentage(cell)}
-                              </>
-                            ) : (
-                              cell || '-'
-                            )}
-                          </td>
-                        );
-                      })}
+              {/* Desktop: Optimized table with better spacing */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-700">
+                      {headers.map((header, idx) => (
+                        <th key={idx} className={`text-left py-4 px-4 text-slate-500 text-xs uppercase tracking-wider font-medium ${idx === 0 ? 'sticky left-0 bg-slate-950' : ''}`}>
+                          {header}
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/50">
+                    {dataRows.map((row, rowIndex) => {
+                      const isTotalRow = row[0]?.includes('Total') || row[0]?.includes('Ave');
+
+                      return (
+                        <tr key={rowIndex} className={isTotalRow ? 'bg-slate-800/30' : ''}>
+                          {row.map((cell, cellIndex) => {
+                            const isFirstColumn = cellIndex === 0;
+                            const cellIsPercentage = isPercentage(cell);
+
+                            return (
+                              <td key={cellIndex} className={`py-4 px-4 ${isFirstColumn ? 'sticky left-0 bg-slate-950' : ''}`}>
+                                {isFirstColumn ? (
+                                  <span className="text-white font-medium">{cell || '-'}</span>
+                                ) : cellIsPercentage ? (
+                                  <div className="flex items-center gap-2">
+                                    <span className={`text-xl font-bold ${getPercentageColor(cell)}`}>
+                                      {formatPercentage(cell)}
+                                    </span>
+                                    <span className={getPercentageColor(cell)}>
+                                      {getPercentageIcon(cell)}
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <span className="text-slate-400 text-sm">{cell || '-'}</span>
+                                )}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* How to Use This Data */}
-      <div className="bg-gradient-to-r from-brand-500/10 to-blue-500/10 border border-brand-500/30 rounded-lg p-6 mb-6">
-        <h2 className="text-2xl font-display font-bold text-white mb-4 flex items-center gap-2">
+      <div className="bg-gradient-to-r from-brand-500/10 to-blue-500/10 border border-brand-500/30 rounded-lg p-6 mb-8">
+        <h2 className="text-xl md:text-2xl font-display font-bold text-white mb-4 flex items-center gap-2">
           <AlertCircle className="text-brand-500" size={24} />
           HOW TO USE THIS DATA
         </h2>
@@ -251,29 +302,29 @@ export const HitRates: React.FC = () => {
 
       {/* About Section */}
       <div className="bg-gradient-to-r from-slate-800 to-slate-850 rounded-lg p-6 border border-slate-700">
-        <h3 className="text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
-          <AlertCircle className="text-brand-500" size={24} />
+        <h3 className="text-lg md:text-xl font-display font-bold text-white mb-4 flex items-center gap-2">
+          <AlertCircle className="text-brand-500" size={20} />
           HIT CRITERIA BY ROUND
         </h3>
         <p className="text-slate-400 text-sm mb-4">
-          Draft picks are evaluated based on <strong className="text-white">starter years</strong> (depth order &lt; 5) within their first 5 seasons. Higher draft picks face higher expectations:
+          Draft picks are evaluated based on <strong className="text-white">starter years</strong> (depth order &lt; 5) within their first 5 seasons.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
             <div className="flex items-center gap-2 mb-2">
               <Award className="text-yellow-500" size={18} />
-              <span className="text-brand-500 font-semibold text-lg">Rounds 1-2</span>
+              <span className="text-brand-500 font-semibold text-base">Rounds 1-2</span>
             </div>
             <p className="text-slate-300 text-sm">
               <strong className="text-white">3+ years</strong> as a starter
             </p>
-            <p className="text-slate-500 text-xs mt-1">High investment, high expectations</p>
+            <p className="text-slate-500 text-xs mt-1">High expectations</p>
           </div>
 
           <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
             <div className="flex items-center gap-2 mb-2">
               <Target className="text-blue-500" size={18} />
-              <span className="text-brand-500 font-semibold text-lg">Rounds 3-5</span>
+              <span className="text-brand-500 font-semibold text-base">Rounds 3-5</span>
             </div>
             <p className="text-slate-300 text-sm">
               <strong className="text-white">2+ years</strong> as a starter
@@ -284,17 +335,14 @@ export const HitRates: React.FC = () => {
           <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="text-brand-500" size={18} />
-              <span className="text-brand-500 font-semibold text-lg">Rounds 6-7 & UN</span>
+              <span className="text-brand-500 font-semibold text-base">Rounds 6-7 & UN</span>
             </div>
             <p className="text-slate-300 text-sm">
               <strong className="text-white">1+ year</strong> as a starter
             </p>
-            <p className="text-slate-500 text-xs mt-1">Low capital, any starter is a win</p>
+            <p className="text-slate-500 text-xs mt-1">Any starter is a win</p>
           </div>
         </div>
-        <p className="text-slate-500 text-xs mt-4 italic">
-          💡 Tip: These thresholds reflect realistic ROI for draft capital. A 50% hit rate means half your picks became reliable starters.
-        </p>
       </div>
     </div>
   );
