@@ -278,24 +278,27 @@ export const MessageBoard: React.FC = () => {
     return myTeam && messageTeam === myTeam;
   };
 
+  // Predefined team/GM combinations
+  const LEAGUE_TEAMS = [
+    { team: 'Crusie Ship Crusaders', gm: 'Bullard' },
+    { team: 'Key West Killas', gm: 'Kurt' },
+    { team: 'New Lexington Legends', gm: 'Rugg' },
+    { team: 'Port Charlotte Pythons', gm: 'Dusty' },
+    { team: 'Road Warriors', gm: 'Foss' },
+  ];
+
   const getIdentityOptions = () => {
     const options = [];
-    const myTeam = getMyTeam();
 
     // No team option
     options.push({ value: 'no-team', label: `${username} (no team)` });
 
-    // My Team option (if exists)
-    if (myTeam) {
-      options.push({ value: myTeam, label: `${username} repping ${myTeam}` });
-    }
-
-    // Other teams (showing a few common ones for quick access)
-    const quickTeams = ['Cowboys', 'Eagles', 'Giants', 'Commanders', '49ers', 'Packers', 'Chiefs', 'Bills'];
-    quickTeams.forEach((team) => {
-      if (team !== myTeam) {
-        options.push({ value: team, label: `${username} repping ${team}` });
-      }
+    // League teams
+    LEAGUE_TEAMS.forEach((entry) => {
+      options.push({
+        value: entry.team,
+        label: `${username} repping ${entry.team}`
+      });
     });
 
     // Edit username option
@@ -311,52 +314,24 @@ export const MessageBoard: React.FC = () => {
     return `${username} (no team)`;
   };
 
-  // Get unique usernames from messages for dropdown
-  const getExistingUsernames = () => {
-    const usernameMap = new Map<string, { username: string; team: string | null }>();
-
-    messages.forEach((msg) => {
-      if (!usernameMap.has(msg.username)) {
-        usernameMap.set(msg.username, {
-          username: msg.username,
-          team: msg.team,
-        });
-      }
-    });
-
-    return Array.from(usernameMap.values());
-  };
-
-  const handleUsernameSelect = (selectedUsername: string) => {
-    if (selectedUsername === 'custom') {
+  const handleUsernameSelect = (value: string) => {
+    if (value === 'custom') {
       // Switch to custom input mode
       setEditUsernameValue('');
       return;
     }
 
-    // Find the user's last used team
-    const userMessages = messages.filter((msg) => msg.username === selectedUsername);
-    const lastMessage = userMessages[userMessages.length - 1];
-
-    setUsername(selectedUsername);
-    localStorage.setItem(USERNAME_KEY, selectedUsername);
-
-    // Auto-select their last used team
-    if (lastMessage?.team) {
-      setSelectedTeam(lastMessage.team);
-      saveIdentity(selectedUsername, lastMessage.team);
-    } else {
-      // Check if they have My Team set
-      const myTeam = getMyTeam();
-      if (myTeam) {
-        setSelectedTeam(myTeam);
-        saveIdentity(selectedUsername, myTeam);
-      } else {
-        setSelectedTeam('');
-        saveIdentity(selectedUsername, '');
-      }
+    if (value === '') {
+      return; // No selection
     }
 
+    // Parse team and GM from selection (format: "teamName|gmName")
+    const [teamName, gmName] = value.split('|');
+
+    setUsername(gmName);
+    setSelectedTeam(teamName);
+    localStorage.setItem(USERNAME_KEY, gmName);
+    saveIdentity(gmName, teamName);
     setIsEditingUsername(false);
   };
 
@@ -496,17 +471,16 @@ export const MessageBoard: React.FC = () => {
               {isEditingUsername ? (
                 <div className="flex flex-col gap-2 flex-1">
                   {/* Username selection dropdown */}
-                  {editUsernameValue === '' && getExistingUsernames().length > 0 ? (
+                  {editUsernameValue === '' ? (
                     <select
                       onChange={(e) => handleUsernameSelect(e.target.value)}
                       className="flex-1 px-4 py-3 md:py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500 min-h-[44px] touch-manipulation"
                       autoFocus
                     >
-                      <option value="">Select a username...</option>
-                      {getExistingUsernames().map((user) => (
-                        <option key={user.username} value={user.username}>
-                          {user.username}
-                          {user.team ? ` (last used: ${user.team})` : ''}
+                      <option value="">Select your team...</option>
+                      {LEAGUE_TEAMS.map((entry) => (
+                        <option key={entry.gm} value={`${entry.team}|${entry.gm}`}>
+                          {entry.team} ({entry.gm})
                         </option>
                       ))}
                       <option value="custom">Type custom name...</option>
