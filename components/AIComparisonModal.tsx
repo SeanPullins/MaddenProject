@@ -45,8 +45,8 @@ interface CachedComparison {
 }
 
 const CACHE_KEY_PREFIX = 'ai_comparison_cache_';
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-const COOLDOWN_DURATION = 30 * 1000; // 30 seconds
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes (increased from 5)
+const COOLDOWN_DURATION = 60 * 1000; // 60 seconds (increased from 30)
 const LAST_COMPARISON_KEY = 'ai_comparison_last_request';
 
 export const AIComparisonModal: React.FC<AIComparisonModalProps> = ({
@@ -276,7 +276,7 @@ export const AIComparisonModal: React.FC<AIComparisonModalProps> = ({
                 {/* Cache Notice */}
                 <div className="bg-indigo-900/20 border border-indigo-500/30 rounded-lg p-3">
                   <p className="text-indigo-300 text-xs text-center">
-                    ℹ️ AI analyses are cached for 5 minutes to reduce API usage
+                    ℹ️ AI analyses are cached for 30 minutes to conserve API quota
                   </p>
                 </div>
 

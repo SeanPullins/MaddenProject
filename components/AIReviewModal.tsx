@@ -33,8 +33,8 @@ interface CachedReview {
 }
 
 const CACHE_KEY_PREFIX = 'ai_review_cache_';
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-const COOLDOWN_DURATION = 30 * 1000; // 30 seconds
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes (increased from 5)
+const COOLDOWN_DURATION = 60 * 1000; // 60 seconds (increased from 30)
 const LAST_REQUEST_KEY = 'ai_review_last_request';
 
 export const AIReviewModal: React.FC<AIReviewModalProps> = ({ team, onClose }) => {
@@ -241,7 +241,7 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ team, onClose }) =
                 {/* Cache Notice */}
                 <div className="bg-purple-900/20 border border-purple-500/30 rounded-lg p-3">
                   <p className="text-purple-300 text-xs text-center">
-                    ℹ️ AI reviews are cached for 5 minutes to reduce API usage
+                    ℹ️ AI reviews are cached for 30 minutes to conserve API quota
                   </p>
                 </div>
 
