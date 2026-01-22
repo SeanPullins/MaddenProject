@@ -67,43 +67,53 @@ export const handler: Handler = async (event) => {
     // Initialize Gemini AI
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash", // Same stable model as existing gemini.ts function
+      model: "gemini-2.5-flash",
       generationConfig: {
         maxOutputTokens: 800,
-        temperature: 0.7,
-        responseMimeType: "application/json"
+        temperature: 0.7
+        // Note: responseMimeType removed - not reliably supported by all models
       }
     });
 
     // Create AI prompt for team scouting report
-    const prompt = `You are a professional fantasy football scout analyzing a Madden-style fantasy team.
+    const prompt = `You are a professional fantasy football scout. Analyze this team and return ONLY a valid JSON object (no markdown, no code blocks, no extra text).
 
 TEAM: ${teamData.teamName} (Owner: ${teamData.owner})
 
 ROSTER:
 ${teamData.roster.map(p => `- ${p.name} (${p.position}, ${p.team}) - OVR: ${p.ovr} - Draft: ${p.draftRound || 'N/A'}`).join('\n')}
 
-Generate a scouting report in STRICT JSON format with these fields:
+Return this EXACT JSON structure with your analysis:
 
 {
-  "overallGrade": "A single letter grade (A+, A, A-, B+, B, etc.)",
-  "strengths": ["3 specific strengths as bullet points"],
-  "weaknesses": ["2-3 specific weaknesses or concerns"],
-  "positionalNotes": ["2-3 notes about position groups (QB, RB, WR, Defense, etc.)"],
-  "draftAnalysis": "One paragraph analyzing draft strategy and value picks",
-  "recommendations": ["2-3 actionable recommendations for improvement"]
+  "overallGrade": "letter grade A+ to D-",
+  "strengths": ["strength 1", "strength 2", "strength 3"],
+  "weaknesses": ["weakness 1", "weakness 2"],
+  "positionalNotes": ["QB/RB/WR note", "defense note", "OL note"],
+  "draftAnalysis": "one paragraph about draft strategy and value picks",
+  "recommendations": ["recommendation 1", "recommendation 2", "recommendation 3"]
 }
 
-IMPORTANT:
-- Be specific and analytical (mention player names and OVR ratings)
-- Focus on roster construction, depth, and team balance
-- Consider positional value and draft efficiency
-- Output ONLY valid JSON, no markdown or extra text`;
+Rules:
+- Be specific (mention player names and OVR ratings)
+- Focus on roster construction, depth, and balance
+- Output ONLY the JSON object
+- No markdown formatting, no code blocks, no extra text before or after`;
 
     // Call Gemini API
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    const responseText = response.text();
+    let responseText = response.text();
+
+    // Extract JSON from response (handle markdown code blocks)
+    // Remove markdown code blocks if present: ```json ... ``` or ``` ... ```
+    responseText = responseText.trim();
+    if (responseText.startsWith('```json')) {
+      responseText = responseText.replace(/^```json\s*/i, '').replace(/\s*```$/, '');
+    } else if (responseText.startsWith('```')) {
+      responseText = responseText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    }
+    responseText = responseText.trim();
 
     // Parse AI response as JSON
     let aiReview: AIReviewResponse;
@@ -111,6 +121,7 @@ IMPORTANT:
       aiReview = JSON.parse(responseText);
     } catch (parseError) {
       console.error('Failed to parse AI response as JSON:', parseError);
+      console.error('Raw response text:', responseText.substring(0, 500)); // Log first 500 chars
       return {
         statusCode: 500,
         body: JSON.stringify({
