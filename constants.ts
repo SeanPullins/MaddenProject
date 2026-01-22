@@ -27,46 +27,46 @@ const createPlayer = (id: string, name: string, pos: string, ovr: number, team: 
 // Parsed Roster Data for Cruise Ship Crusaders
 const ROSTER_CSC: Player[] = [
     // QB
-    createPlayer('qb1', 'Clayton Tune', 'QB', 50, 'GB', '4th', '2027', 1),
-    
+    createPlayer('qb1', 'Clayton Tune', 'QB', 62, 'ARI', '4th', '2027', 1),
+
     // RB
     createPlayer('rb1', 'Devin Neal', 'RB', 72, 'NO', '5th', '2029', 1),
     createPlayer('rb2', 'Roschon Johnson', 'RB', 71, 'CHI', '4th', '2027', 2),
     createPlayer('rb3', 'Dj Giddens', 'RB', 70, 'IND', '4th', '2029', 3),
     createPlayer('rb4', 'Rasheen Ali', 'RB', 69, 'BAL', '5th', '2028', 4),
-    createPlayer('rb5', 'Sean Tucker', 'RB', 70, 'TB', 'UN', '2027', 5),
-    
+    createPlayer('rb5', 'Sean Tucker', 'RB', 71, 'TB', 'UN', '2027', 5),
+
     // WR
     createPlayer('wr1', 'AJ Brown', 'WR', 89, 'PHI', 'FA 2023', '2028', 1),
     createPlayer('wr2', 'Adonai Mitchell', 'WR', 75, 'IND', '2nd', '2028', 2),
     createPlayer('wr3', 'Khalil Shakir', 'WR', 82, 'BUF', '4c', '2026', 1),
     createPlayer('wr4', 'Skyy Moore', 'WR', 72, 'KC', '2nd', '2026', 2),
-    createPlayer('wr5', 'Jayden Higgins', 'WR', 75, 'HOU', '1st', '2029', 1),
+    createPlayer('wr5', 'Jayden Higgins', 'WR', 76, 'HOU', '1st', '2029', 1),
     createPlayer('wr6', 'Isaiah Bond', 'WR', 69, 'CLE', '7th', '2029', 2),
 
     // TE
     createPlayer('te1', 'Noah Gray', 'TE', 75, 'KC', '4th', '2025', 1),
     createPlayer('te2', 'Gunnar Helm', 'TE', 70, 'TEN', '3rd', '2029', 2),
     createPlayer('te3', 'Ben Sims', 'TE', 62, 'MIN', 'UN', '2027', 3),
-    createPlayer('te4', 'Chig Okonkwo', 'TE', 75, 'TEN', '4c', '2026', 1),
+    createPlayer('te4', 'Chig Okonkwo', 'TE', 0, 'TEN', '4c', '2026', 1),
     createPlayer('te5', 'Charlie Kolar', 'TE', 68, 'BAL', '4th', '2026', 2),
-    createPlayer('te6', 'Tanner McLachlan', 'TE', 0, 'CIN', '6th', '2028', 3), // Listed in active columns
-    
+    createPlayer('te6', 'Tanner McLachlan', 'TE', 0, 'CIN', '6th', '2028', 3),
+
     // OL
-    createPlayer('ol1', 'Rashawn Slater', 'OT', 93, 'LAC', '1st', '2025', 1),
-    createPlayer('ol2', 'KT Levingston', 'OG', 67, 'CLE', '7th', '2028', 2),
-    createPlayer('ol3', 'Mason McCormick', 'OG', 75, 'PIT', '4th', '2028', 1),
-    createPlayer('ol4', 'Robert Jones', 'OG', 70, 'MIA', 'UN', '2025', 2),
+    createPlayer('ol1', 'Rashawn Slater', 'OT', 92, 'LAC', '1st', '2025', 1),
+    createPlayer('ol2', 'KT Levingston', 'OG', 67, 'LAR', '7th', '2028', 2),
+    createPlayer('ol3', 'Mason McCormick', 'OG', 77, 'PIT', '4th', '2028', 1),
+    createPlayer('ol4', 'Robert Jones', 'OG', 0, 'MIA', 'UN', '2025', 2),
     createPlayer('ol5', 'Creed Humphrey', 'C', 95, 'KC', '2nd', '2025', 1),
     createPlayer('ol6', 'Luke Wypler', 'C', 66, 'CLE', '5th', '2027', 2),
-    createPlayer('ol7', 'Chris Paul', 'OG', 74, 'WSH', '7th', '2026', 1),
-    createPlayer('ol8', 'Jackson Slater', 'OG', 68, 'TEN', '5th', '2029', 2),
-    createPlayer('ol9', 'Andrew Thomas', 'OT', 92, 'NYG', 'FA 2024', '2029', 1),
-    createPlayer('ol10', 'Frank Crum', 'OT', 63, 'DEN', 'UN', '2028', 2),
+    createPlayer('ol7', 'Chris Paul', 'OG', 75, 'WSH', '7th', '2026', 1),
+    createPlayer('ol8', 'Jackson Slater', 'OG', 67, 'TEN', '5th', '2029', 2),
+    createPlayer('ol9', 'Andrew Thomas', 'OT', 93, 'NYG', 'FA 2024', '2029', 1),
+    createPlayer('ol10', 'Frank Crum', 'OT', 64, 'DEN', 'UN', '2028', 2),
 
     // DEFENSE ED
     createPlayer('ed1', 'Brian Burns', 'ED', 89, 'NYG', 'FA 2023', '2028', 1),
-    createPlayer('ed2', 'Laiatu Latu', 'ED', 79, 'IND', '1st', '2028', 2),
+    createPlayer('ed2', 'Laiatu Latu', 'ED', 81, 'IND', '1st', '2028', 2),
     createPlayer('ed3', 'Isaiah McGuire', 'ED', 72, 'CLE', '3rd', '2027', 3),
     createPlayer('ed4', 'Josh Sweat', 'ED', 84, 'PHI', 'FA 2022', '2027', 1),
     createPlayer('ed5', 'Mike Green', 'ED', 75, 'BAL', '2nd', '2029', 2),
@@ -75,16 +75,16 @@ const ROSTER_CSC: Player[] = [
     // DT
     createPlayer('dt1', 'Grady Jarrett', 'DT', 80, 'ATL', 'Legend', '2029', 1),
     createPlayer('dt2', 'Joshua Farmer', 'DT', 71, 'NE', '3rd', '2029', 2),
-    createPlayer('dt3', 'Aeneas Peebles', 'DT', 68, 'BAL', '6th', '2029', 3),
-    createPlayer('dt4', 'Javon Hargrave', 'DT', 80, 'SF', 'FA 2020', '2025', 1),
+    createPlayer('dt3', 'Aeneas Peebles', 'DT', 67, 'BAL', '6th', '2029', 3),
+    createPlayer('dt4', 'Javon Hargrave', 'DT', 80, 'PIT', 'FA 2020', '2025', 1),
     createPlayer('dt5', 'CJ West', 'DT', 68, 'SF', '3rd', '2029', 2),
-    createPlayer('dt6', 'Desjuan Johnson', 'DT', 63, 'LAR', '7th', '2027', 3),
+    createPlayer('dt6', 'Desjuan Johnson', 'DT', 65, 'LAR', '7th', '2027', 3),
     createPlayer('dt7', 'Keeanu Benton', 'DT', 76, 'PIT', '2nd', '2027', 1),
 
     // LB
     createPlayer('lb1', 'Zack Baun', 'LB', 90, 'PHI', 'FA 2024', '2029', 1),
     createPlayer('lb2', 'Henry To\'oTo\'o', 'LB', 75, 'HOU', '5th', '2027', 2),
-    createPlayer('lb3', 'Damone Clark', 'LB', 71, 'DAL', '5th', '2026', 3),
+    createPlayer('lb3', 'Damone Clark', 'LB', 0, 'DAL', '5th', '2026', 3),
     createPlayer('lb4', 'Nakobe Dean', 'LB', 78, 'PHI', '3rd', '2026', 1),
     createPlayer('lb5', 'Derrick Barnes', 'LB', 74, 'DET', '3rd', '2025', 2),
     createPlayer('lb6', 'Shaun Dolac', 'LB', 69, 'LAR', 'UN', '2029', 3),
@@ -92,17 +92,18 @@ const ROSTER_CSC: Player[] = [
     // CB
     createPlayer('cb1', 'Christian Gonzalez', 'CB', 96, 'NE', '1st', '2027', 1),
     createPlayer('cb2', 'Cam Hart', 'CB', 73, 'LAC', '4th', '2028', 2),
-    createPlayer('cb3', 'Cobee Bryant', 'CB', 65, 'SEA', 'UN', '2029', 3),
+    createPlayer('cb3', 'Cobee Bryant', 'CB', 65, 'ATL', 'UN', '2029', 3),
     createPlayer('cb4', 'Jarvis Brownlee', 'CB', 75, 'TEN', '4th', '2028', 1),
-    createPlayer('cb5', 'Bo Melton', 'CB', 68, 'SEA', '6c', '2026', 2),
+    createPlayer('cb5', 'Bo Melton', 'CB', 68, 'GB', '6c', '2026', 2),
     createPlayer('cb6', 'Benjamin Morrison', 'CB', 75, 'TB', '2nd', '2029', 1),
-    createPlayer('cb7', 'Tre Brown', 'CB', 50, 'SEA', '4th', '2025', 2),
+    createPlayer('cb7', 'Tre Brown', 'CB', 0, 'SEA', '4th', '2025', 2),
 
     // S
     createPlayer('s1', 'Kyle Hamilton', 'S', 93, 'BAL', '1st', '2026', 1),
     createPlayer('s2', 'Ji\'Ayir Brown', 'S', 74, 'SF', '3rd', '2027', 2),
-    createPlayer('s3', 'Xavier Woods', 'S', 81, 'CAR', 'FA 2020', '2026', 1),
-    createPlayer('s4', 'Darrick Forrest', 'S', 50, 'WSH', '4th', '2025', 2),
+    createPlayer('s3', 'Xavier Woods', 'S', 81, 'DAL', 'FA 2020', '2026', 1),
+    createPlayer('s4', 'Darrick Forrest', 'S', 0, 'WSH', '4th', '2025', 2),
+    createPlayer('s5', 'Millard Bradford', 'S', 0, 'NO', 'UN', '2028', 2),
 ];
 
 const PRACTICE_SQUAD_CSC: Player[] = [
@@ -113,7 +114,7 @@ const PRACTICE_SQUAD_CSC: Player[] = [
     createPlayer('ps5', 'Joshua Gray', 'OG', 0, 'ATL', 'UN', '2029', 9, 'PRACTICE_SQUAD'),
     createPlayer('ps6', 'Brenden Jaimes', 'OT', 0, 'NE', '5th', '2025', 9, 'PRACTICE_SQUAD'),
     createPlayer('ps7', 'Carl Lawson', 'ED', 0, 'RETIRED', 'FA 2021', '2026', 9, 'PRACTICE_SQUAD'),
-    createPlayer('ps8', 'Chris Paul Jr', 'LB', 0, 'SEA', '5th', '2029', 9, 'PRACTICE_SQUAD'),
+    createPlayer('ps8', 'Chris Paul Jr', 'LB', 0, 'LAR', '5th', '2029', 9, 'PRACTICE_SQUAD'),
     createPlayer('ps9', 'Desmond King', 'CB', 0, 'HOU', 'FA 2021', '2026', 9, 'PRACTICE_SQUAD'),
     createPlayer('ps10', 'JC Jackson', 'CB', 0, 'RETIRED', 'FA 2022', '2027', 9, 'PRACTICE_SQUAD'),
 ];
@@ -156,8 +157,8 @@ const FORMER_PLAYERS_CSC: FormerPlayer[] = [
 const ROSTER_KILLAS: Player[] = [
     // QB
     createPlayer('kqb1', 'Shedeur Sanders', 'QB', 69, 'CLE', '4th', '2029', 1),
-    createPlayer('kqb2', 'Malik Willis', 'QB', 65, 'GB', '3rd', '2026', 2),
-    createPlayer('kqb3', 'Sam Howell', 'QB', 65, 'PHI', '4th', '2026', 3),
+    createPlayer('kqb2', 'Malik Willis', 'QB', 71, 'TEN', '3rd', '2026', 2),
+    createPlayer('kqb3', 'Sam Howell', 'QB', 0, 'WAS', '4th', '2026', 3),
 
     // RB
     createPlayer('krb1', 'Omarion Hampton', 'RB', 80, 'LAC', '1st', '2029', 1),
@@ -168,29 +169,29 @@ const ROSTER_KILLAS: Player[] = [
     createPlayer('kwr2', 'Jacob Cowing', 'WR', 71, 'SF', '4th', '2028', 2),
     createPlayer('kwr3', 'Cedric Tillman', 'WR', 74, 'CLE', '3rd', '2026', 1),
     createPlayer('kwr4', 'Isaiah Williams', 'WR', 67, 'DET', 'UN', '2028', 2),
-    createPlayer('kwr5', 'Malik Washington', 'WR', 72, 'MIA', '5th', '2028', 1),
-    createPlayer('kwr6', 'Ihmir Smith-Marsette', 'WR', 50, 'NYG', '4th', '2025', 2),
+    createPlayer('kwr5', 'Malik Washington', 'WR', 73, 'MIA', '5th', '2028', 1),
+    createPlayer('kwr6', 'Ihmir Smith-Marsette', 'WR', 50, 'MIN', '4th', '2025', 2),
 
     // TE
     createPlayer('kte1', 'Luke Musgrave', 'TE', 70, 'GB', '2nd', '2027', 1),
     createPlayer('kte2', 'Dallin Holker', 'TE', 50, 'NO', 'UN', '2027', 2),
     createPlayer('kte3', 'Jake Briningstool', 'TE', 63, 'KC', 'UN', '2029', 1),
-    createPlayer('kte4', 'Noah Grindorf', 'TE', 50, 'RETIRED', 'UN', '2027', 2),
+    createPlayer('kte4', 'Noah Grindorf', 'TE', 50, 'SEA', 'UN', '2027', 2),
 
     // OL
     createPlayer('kol1', 'Warren McClendon', 'OT', 73, 'LAR', '5th', '2027', 1),
     createPlayer('kol2', 'Cam Williams', 'OT', 66, 'PHI', '6th', '2029', 2),
-    createPlayer('kol3', 'Kevin Dotson', 'OG', 86, 'LAR', 'FA 2024', '2028', 1),
-    createPlayer('kol4', 'Emery Jones', 'OG', 71, 'BAL', '3rd', '2029', 2),
+    createPlayer('kol3', 'Kevin Dotson', 'OG', 87, 'PIT', 'FA 2024', '2028', 1),
+    createPlayer('kol4', 'Cameron Williams', 'OG', 0, 'BAL', '3rd', '2029', 2),
     createPlayer('kol5', 'Tyler Linderbaum', 'C', 87, 'BAL', '1st', '2026', 1),
-    createPlayer('kol6', 'Jedrick Wills', 'C', 45, 'CLE', 'FA 2024', '2028', 2), // Listed as C backup
+    createPlayer('kol6', 'Jedrick Wills', 'C', 45, 'CLE', 'FA 2024', '2028', 2),
     createPlayer('kol7', 'Andrew Vorhees', 'OG', 71, 'BAL', '7th', '2027', 1),
-    createPlayer('kol8', 'Logan Brown', 'OT', 50, 'SEA', 'UN', '2029', 2),
+    createPlayer('kol8', 'Logan Brown', 'OT', 50, 'MIN', 'UN', '2029', 2),
     createPlayer('kol9', 'Jamaree Salyer', 'OT', 70, 'LAC', '6th', '2026', 1),
     createPlayer('kol10', 'Carter Warren', 'OT', 50, 'NYJ', '4th', '2027', 2),
 
     // ED
-    createPlayer('ked1', 'Montez Sweat', 'ED', 82, 'CHI', 'FA 2023', '2027', 1),
+    createPlayer('ked1', 'Montez Sweat', 'ED', 82, 'WAS', 'FA 2023', '2027', 1),
     createPlayer('ked2', 'Josiah Stewart', 'ED', 73, 'LAR', '3rd', '2029', 2),
     createPlayer('ked3', 'Jared Ivey', 'ED', 59, 'SEA', '7th', '2029', 3),
     createPlayer('ked4', 'Jaelan Phillips', 'ED', 81, 'MIA', '1st', '2025', 1),
@@ -198,28 +199,28 @@ const ROSTER_KILLAS: Player[] = [
 
     // DT
     createPlayer('kdt1', 'Byron Murphy', 'DT', 81, 'SEA', '1st', '2028', 1),
-    createPlayer('kdt2', 'Adetomiwa Adebawore', 'DT', 67, 'IND', '3rd', '2027', 2),
+    createPlayer('kdt2', 'Adetomiwa Adebawore', 'DT', 69, 'IND', '3rd', '2027', 2),
     createPlayer('kdt3', 'Levi Drake Rodriguez', 'DT', 69, 'MIN', '7th', '2028', 1),
     createPlayer('kdt4', 'Leonard Taylor', 'DT', 50, 'NYJ', '6th', '2028', 2),
 
     // LB
-    createPlayer('klb1', 'Micah McFadden', 'LB', 76, 'NYG', '4c', '2026', 1), // Listed as DT3/LB3
+    createPlayer('klb1', 'Micah McFadden', 'LB', 76, 'NYG', '4c', '2026', 1),
     createPlayer('klb2', 'Jack Campbell', 'LB', 87, 'DET', '1st', '2027', 1),
-    createPlayer('klb3', 'Jamal Adams', 'LB', 72, 'TEN', 'FA 2021', '2026', 2),
+    createPlayer('klb3', 'Jamal Adams', 'LB', 72, 'NYJ', 'FA 2021', '2026', 2),
     createPlayer('klb4', 'Jeremiah Owusu-Koramoah', 'LB', 83, 'CLE', '2nd', '2025', 1),
     createPlayer('klb5', 'Cody Simon', 'LB', 70, 'ARI', '3rd', '2029', 2),
 
     // CB
     createPlayer('kcb1', 'Kamari Lassiter', 'CB', 85, 'HOU', '2nd', '2028', 1),
-    createPlayer('kcb2', 'Marcus Harris', 'CB', 71, 'KC', '5th', '2029', 2),
+    createPlayer('kcb2', 'Marcus Harris', 'CB', 71, 'TEN', '5th', '2029', 2),
     createPlayer('kcb3', 'Paulson Adebo', 'CB', 78, 'NO', '3rd', '2025', 1),
     createPlayer('kcb4', 'Andrew Booth', 'CB', 50, 'MIN', '2nd', '2026', 2),
-    createPlayer('kcb5', 'Clark Phillips', 'CB', 75, 'ATL', '3rd', '2027', 1), // Nickel
+    createPlayer('kcb5', 'Clark Phillips', 'CB', 75, 'ATL', '3rd', '2027', 1),
     createPlayer('kcb6', 'Eli Ricks', 'CB', 50, 'PHI', 'UN', '2027', 2),
 
     // S
-    createPlayer('ks1', 'Calen Bullock', 'S', 77, 'HOU', '3rd', '2028', 1),
-    createPlayer('ks2', 'Malachi Moore', 'S', 70, 'NYJ', '4th', '2029', 2),
+    createPlayer('ks1', 'Calen Bullock', 'S', 80, 'HOU', '3rd', '2028', 1),
+    createPlayer('ks2', 'Malachi Moore', 'S', 71, 'NYJ', '4th', '2029', 2),
     createPlayer('ks3', 'Markquese Bell', 'S', 72, 'DAL', 'UN', '2026', 1),
     createPlayer('ks4', 'JJ Roberts', 'S', 64, 'TB', 'UN', '2029', 2),
 ];
@@ -231,19 +232,19 @@ const PRACTICE_SQUAD_KILLAS: Player[] = [
     createPlayer('kps4', 'Abram Smith', 'RB', 0, 'XFL', 'UN', '2026', 9, 'PRACTICE_SQUAD'),
     createPlayer('kps5', 'Justyn Ross', 'WR', 0, 'KC', '5c', '2026', 9, 'PRACTICE_SQUAD'),
     createPlayer('kps6', 'Kyle Philips', 'WR', 0, 'TEN', '5th', '2026', 9, 'PRACTICE_SQUAD'),
-    createPlayer('kps7', 'Austin Watkins', 'WR', 0, 'Unknown', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('kps8', 'Tamorrian Terry', 'WR', 0, 'Unknown', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('kps9', 'David Moore', 'OT', 0, 'Unknown', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('kps10', 'Marvin Wilson', 'DT', 0, 'Unknown', '7th', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('kps7', 'Austin Watkins', 'WR', 0, 'CLE', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('kps8', 'Tamorrian Terry', 'WR', 0, 'SEA', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('kps9', 'David Moore', 'OT', 0, 'CLE', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('kps10', 'Marvin Wilson', 'DT', 0, 'CLE', '7th', '2025', 9, 'PRACTICE_SQUAD'),
     createPlayer('kps11', 'Jerrod Clark', 'DT', 0, 'LAC', 'UN', '2027', 9, 'PRACTICE_SQUAD'),
-    createPlayer('kps12', 'Cam McGrone', 'LB', 0, 'Unknown', '5th', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('kps12', 'Cam McGrone', 'LB', 0, 'NE', '5th', '2025', 9, 'PRACTICE_SQUAD'),
     createPlayer('kps13', 'Jeremiah Gemmel', 'LB', 0, 'SF', 'UN', '2026', 9, 'PRACTICE_SQUAD'),
-    createPlayer('kps14', 'Thomas Graham Jr', 'CB', 0, 'Unknown', '6th', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('kps15', 'Shaun Wade', 'CB', 0, 'Unknown', '4th', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('kps16', 'Kendall Fuller', 'CB', 0, 'Unknown', 'FA 2020', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('kps17', 'Sidney Jones', 'CB', 0, 'Unknown', 'FA 2021', '2026', 9, 'PRACTICE_SQUAD'),
+    createPlayer('kps14', 'Thomas Graham Jr', 'CB', 0, 'CHI', '6th', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('kps15', 'Shaun Wade', 'CB', 0, 'NE', '4th', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('kps16', 'Kendall Fuller', 'CB', 0, 'WAS', 'FA 2020', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('kps17', 'Sidney Jones', 'CB', 0, 'PHI', 'FA 2021', '2026', 9, 'PRACTICE_SQUAD'),
     createPlayer('kps18', 'DJ James', 'CB', 0, 'SEA', '6th', '2028', 9, 'PRACTICE_SQUAD'),
-    createPlayer('kps19', 'Juan Thornhill', 'S', 0, 'FA', 'FA 2023', '2027', 9, 'PRACTICE_SQUAD'),
+    createPlayer('kps19', 'Juan Thornhill', 'S', 0, 'KC', 'FA 2023', '2027', 9, 'PRACTICE_SQUAD'),
     createPlayer('kps20', 'Caden Sterns', 'S', 0, 'DEN', '4th', '2025', 9, 'PRACTICE_SQUAD'),
 ];
 
@@ -281,7 +282,7 @@ const FORMER_PLAYERS_KILLAS: FormerPlayer[] = [
 const ROSTER_LEGENDS: Player[] = [
     // QB
     createPlayer('lqb1', 'Jaxson Dart', 'QB', 76, 'NYG', '1st', '2029', 1),
-    createPlayer('lqb2', 'Mac Jones', 'QB', 74, 'JAX', '1st', '2025', 2),
+    createPlayer('lqb2', 'Mac Jones', 'QB', 0, 'NE', '1st', '2025', 2),
     createPlayer('lqb3', 'Spencer Rattler', 'QB', 70, 'NO', '4th', '2028', 3),
 
     // RB
@@ -293,7 +294,7 @@ const ROSTER_LEGENDS: Player[] = [
     createPlayer('lwr3', 'Chris Olave', 'WR', 86, 'NO', '1st', '2026', 1),
     createPlayer('lwr4', 'Jalen Nailor', 'WR', 77, 'MIN', '5c', '2026', 2),
     createPlayer('lwr5', 'Bryce Ford-Wheaton', 'WR', 68, 'NYG', 'UN', '2027', 2),
-    createPlayer('lwr6', 'Tre Nixon', 'WR', 50, 'NE', '7th', '2025', 2),
+    createPlayer('lwr6', 'Tre Nixon', 'WR', 0, 'NE', '7th', '2025', 2),
 
     // TE
     createPlayer('lte1', 'Brock Bowers', 'TE', 93, 'LV', '1st', '2028', 1),
@@ -305,76 +306,76 @@ const ROSTER_LEGENDS: Player[] = [
     createPlayer('lol2', 'Trey Smith', 'OG', 91, 'KC', '5th', '2025', 1),
     createPlayer('lol3', 'Kiran Amegadjie', 'OT', 69, 'CHI', '3rd', '2028', 1),
     createPlayer('lol4', 'Miles Frazier', 'OG', 69, 'DET', '3rd', '2029', 1),
-    createPlayer('lol5', 'Darian Kinnard', 'OT', 68, 'PHI', '3c', '2026', 2),
+    createPlayer('lol5', 'Darian Kinnard', 'OT', 68, 'KC', '3c', '2026', 2),
     createPlayer('lol6', 'Jake Andrews', 'C', 67, 'NE', '3rd', '2027', 1),
     createPlayer('lol7', 'Sedrick Van Pran-Granger', 'C', 66, 'BUF', '4th', '2028', 2),
     createPlayer('lol8', 'Myles Hinton', 'OG', 65, 'PHI', '5th', '2029', 2),
-    createPlayer('lol9', 'Chase Lundt', 'OT', 65, 'Unknown', '6th', '2029', 2),
-    createPlayer('lol10', 'Stone Forsythe', 'OT', 63, 'SEA', '6th', '2025', 3),
-    createPlayer('lol11', 'Willie Lampkin', 'OG', 63, 'BUF', 'UN', '2029', 2),
+    createPlayer('lol9', 'Chase Lundt', 'OT', 65, 'BUF', '6th', '2029', 2),
+    createPlayer('lol10', 'Stone Forsythe', 'OT', 0, 'SEA', '6th', '2025', 3),
+    createPlayer('lol11', 'Willie Lampkin', 'OG', 63, 'LAR', 'UN', '2029', 2),
 
     // ED
     createPlayer('led1', 'Josh Sweat', 'ED', 84, 'PHI', 'FA 2022', '2027', 1),
     createPlayer('led2', 'Tavius Robinson', 'ED', 74, 'BAL', '4th', '2027', 1),
-    createPlayer('led3', 'Kingsley Enagbare', 'ED', 71, 'GB', '5c', '2026', 2),
+    createPlayer('led3', 'Kingsley Enagbare', 'ED', 72, 'GB', '5c', '2026', 2),
     createPlayer('led4', 'Mekhi Wingo', 'ED', 70, 'DET', '5th', '2028', 2),
-    createPlayer('led5', 'Matt Judon', 'ED', 50, 'ATL', 'FA 2020', '2025', 2),
+    createPlayer('led5', 'Matt Judon', 'ED', 0, 'NE', 'FA 2020', '2025', 2),
 
     // DT
     createPlayer('ldt1', 'Gervon Dexter Sr', 'DT', 79, 'CHI', '2nd', '2027', 1),
     createPlayer('ldt2', 'Travis Jones', 'DT', 79, 'BAL', '3rd', '2026', 1),
     createPlayer('ldt3', 'JJ Pegues', 'DT', 67, 'LV', '5th', '2029', 2),
-    createPlayer('ldt4', 'Tyrion Ingram-Dawkins', 'DT', 67, 'Unknown', '4th', '2029', 2),
+    createPlayer('ldt4', 'Tyrion Ingram-Dawkins', 'DT', 67, 'MIN', '4th', '2029', 2),
 
     // LB
     createPlayer('llb1', 'Ivan Pace', 'LB', 77, 'MIN', '7th', '2027', 1),
-    createPlayer('llb2', 'Jamal Adams', 'LB', 72, 'TEN', 'FA 2021', '2026', 1),
+    createPlayer('llb2', 'Jamal Adams', 'LB', 72, 'NYJ', 'FA 2021', '2026', 1),
     createPlayer('llb3', 'Nathaniel Watson', 'LB', 68, 'CLE', '6th', '2028', 1),
     createPlayer('llb4', 'Jay Higgins', 'LB', 61, 'BAL', 'UN', '2029', 2),
-    createPlayer('llb5', 'JaWhaun Bentley', 'LB', 50, 'NE', 'FA 2022', '2027', 2),
+    createPlayer('llb5', 'JaWhaun Bentley', 'LB', 0, 'NE', 'FA 2022', '2027', 2),
 
     // CB
-    createPlayer('lcb1', 'Tariq Woolen', 'CB', 81, 'SEA', '5th', '2026', 1),
-    createPlayer('lcb2', 'Asante Samuel Jr', 'CB', 76, 'LAC', '2nd', '2025', 1), // Nickel
+    createPlayer('lcb1', 'Tariq Woolen', 'CB', 0, 'SEA', '5th', '2026', 1),
+    createPlayer('lcb2', 'Asante Samuel Jr', 'CB', 76, 'LAC', '2nd', '2025', 1),
     createPlayer('lcb3', 'Mekhi Blackmon', 'CB', 76, 'MIN', '3rd', '2027', 1),
-    createPlayer('lcb4', 'Josh Jobe', 'CB', 74, 'PHI', 'UN', '2026', 2),
+    createPlayer('lcb4', 'Josh Jobe', 'CB', 75, 'PHI', 'UN', '2026', 2),
     createPlayer('lcb5', 'Shavon Revel', 'CB', 72, 'DAL', '2nd', '2029', 2),
     createPlayer('lcb6', 'Damarri Mathis', 'CB', 71, 'DEN', '4th', '2026', 2),
-    createPlayer('lcb7', 'TJ Tampa', 'CB', 69, 'BAL', '4th', '2028', 3),
+    createPlayer('lcb7', 'TJ Tampa', 'CB', 70, 'BAL', '4th', '2028', 3),
     createPlayer('lcb8', 'Cory Trice', 'CB', 67, 'PIT', '6th', '2027', 3),
 
     // S
-    createPlayer('ls1', 'Jaquan Brisker', 'S', 84, 'CHI', '2nd', '2026', 1),
+    createPlayer('ls1', 'Jaquan Brisker', 'S', 85, 'CHI', '2nd', '2026', 1),
     createPlayer('ls2', 'Javon Bullard', 'S', 75, 'GB', '2nd', '2028', 1),
     createPlayer('ls3', 'Jordan Battle', 'S', 76, 'CIN', '3rd', '2027', 1),
-    createPlayer('ls4', 'Xavier Watts', 'S', 76, 'ATL', '3rd', '2029', 1),
+    createPlayer('ls4', 'Xavier Watts', 'S', 79, 'ATL', '3rd', '2029', 1),
     createPlayer('ls5', 'Lathan Ransom', 'S', 70, 'CAR', '3rd', '2029', 2),
     createPlayer('ls6', 'JL Skinner', 'S', 66, 'DEN', '5th', '2027', 2),
 ];
 
 const PRACTICE_SQUAD_LEGENDS: Player[] = [
     createPlayer('lps1', 'Michael Pratt', 'QB', 0, 'GB', '7th', '2028', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps2', 'Kevin Austin', 'WR', 0, 'NO', 'UN', '2026', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps2', 'Kevin Austin', 'WR', 0, 'JAX', 'UN', '2026', 9, 'PRACTICE_SQUAD'),
     createPlayer('lps3', 'Samori Toure', 'WR', 0, 'GB', '7th', '2026', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps4', 'Michael Gallup', 'WR', 0, 'LV', 'FA 2022', '2026', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps4', 'Michael Gallup', 'WR', 0, 'DAL', 'FA 2022', '2026', 9, 'PRACTICE_SQUAD'),
     createPlayer('lps5', 'Cade Johnson', 'WR', 0, 'SEA', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
     createPlayer('lps6', 'Jaxson Kirkland', 'OT', 0, 'CIN', 'UN', '2027', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps7', 'Garrett Dellinger', 'OG', 0, 'Unknown', '7th', '2029', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps8', 'Cody Whitehair', 'OG', 0, 'LV', 'FA 2020', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps9', 'Dohnavon West', 'C', 0, 'Unknown', '6th', '2026', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps10', 'Luke Kandra', 'OG', 0, 'Unknown', 'UN', '2029', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps7', 'Garrett Dellinger', 'OG', 0, 'BAL', '7th', '2029', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps8', 'Cody Whitehair', 'OG', 0, 'CHI', 'FA 2020', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps9', 'Dohnavon West', 'C', 0, 'SF', '6th', '2026', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps10', 'Luke Kandra', 'OG', 0, 'CAR', 'UN', '2029', 9, 'PRACTICE_SQUAD'),
     createPlayer('lps11', 'Jordan McFadden', 'OG', 0, 'LAC', '5th', '2027', 9, 'PRACTICE_SQUAD'),
     createPlayer('lps12', 'Mohamed Kamara', 'ED', 0, 'MIA', '4th', '2028', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps13', 'Carl Lawson', 'ED', 0, 'DAL', 'FA 2021', '2026', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps14', 'Christian Wilkins', 'DT', 0, 'LV', 'FA 2023', '2028', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps15', 'Daviyon Nixon', 'DT', 0, 'Unknown', '4th', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps13', 'Carl Lawson', 'ED', 0, 'CIN', 'FA 2021', '2026', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps14', 'Christian Wilkins', 'DT', 0, 'MIA', 'FA 2023', '2028', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps15', 'Daviyon Nixon', 'DT', 0, 'CAR', '4th', '2025', 9, 'PRACTICE_SQUAD'),
     createPlayer('lps16', 'Christopher Hinton', 'DT', 0, 'LAC', 'UN', '2026', 9, 'PRACTICE_SQUAD'),
     createPlayer('lps17', 'Andre Carter', 'ED', 0, 'MIN', 'UN', '2027', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps18', 'CJ Mosley', 'LB', 0, 'NYJ', 'Legend', '2028', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps19', 'Shakur Brown', 'CB', 0, 'Unknown', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps20', 'Bryan Mills', 'CB', 0, 'Unknown', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps21', 'Jamar Johnson', 'S', 0, 'Unknown', '4th', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('lps22', 'Gerald Willis', 'DT', 0, 'Unknown', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps18', 'CJ Mosley', 'LB', 0, 'BAL', 'Legend', '2028', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps19', 'Shakur Brown', 'CB', 0, 'PIT', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps20', 'Bryan Mills', 'CB', 0, 'MIN', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps21', 'Jamar Johnson', 'S', 0, 'DEN', '4th', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('lps22', 'Gerald Willis', 'DT', 0, 'MIA', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
 ];
 
 const FORMER_PLAYERS_LEGENDS: FormerPlayer[] = [
@@ -415,16 +416,16 @@ const ROSTER_DUSTY: Player[] = [
 
     // RB
     createPlayer('drb1', 'Kenneth Walker', 'RB', 87, 'SEA', '2nd', '2026', 1),
-    createPlayer('drb2', 'Cam Skattebo', 'RB', 81, 'NYG', '3rd', '2028', 2),
+    createPlayer('drb2', 'Cam Skattebo', 'RB', 81, 'NYG', '3rd', '2029', 2),
     createPlayer('drb3', 'Jonathon Brooks', 'RB', 76, 'CAR', '2nd', '2028', 3),
-    createPlayer('drb4', 'Scott Matlock', 'RB', 69, 'LAC', '6th', '2028', 4),
+    createPlayer('drb4', 'Scott Matlock', 'RB', 69, 'LAC', '6th', '2027', 4),
 
     // WR
     createPlayer('dwr1', 'Garrett Wilson', 'WR', 86, 'NYJ', '1st', '2026', 1),
-    createPlayer('dwr2', 'Elic Ayomanor', 'WR', 75, 'TEN', '4th', '2029', 1),
-    createPlayer('dwr3', 'Jalen Royals', 'WR', 71, 'KC', '3rd', '2028', 1),
-    createPlayer('dwr4', 'Tylan Wallace', 'WR', 71, 'BAL', '4th', '2025', 2),
-    createPlayer('dwr5', 'Johnny Wilson', 'WR', 68, 'PHI', '5th', '2029', 2),
+    createPlayer('dwr2', 'Elic Ayomanor', 'WR', 77, 'TEN', '4th', '2029', 1),
+    createPlayer('dwr3', 'Jalen Royals', 'WR', 71, 'KC', '3rd', '2029', 1),
+    createPlayer('dwr4', 'Tylan Wallace', 'WR', 0, 'BAL', '4th', '2025', 2),
+    createPlayer('dwr5', 'Johnny Wilson', 'WR', 68, 'PHI', '5th', '2028', 2),
     createPlayer('dwr6', 'Brendan Rice', 'WR', 50, 'LAC', '6th', '2028', 2),
 
     // TE
@@ -440,20 +441,20 @@ const ROSTER_DUSTY: Player[] = [
     createPlayer('dot4', 'Justin Shaffer', 'OT', 50, 'ATL', '5c', '2026', 2),
 
     // OG
-    createPlayer('dog1', 'Cody Mauch', 'OG', 82, 'TB', '2nd', '2027', 1),
-    createPlayer('dog2', 'Peter Skoronski', 'OG', 79, 'TEN', '1st', '2027', 1),
-    createPlayer('dog3', 'Jared Wilson', 'OG', 71, 'NE', '3rd', '2028', 2),
-    createPlayer('dog4', 'TJ Bass', 'OG', 69, 'DAL', 'UN', '2029', 2),
+    createPlayer('dog1', 'Cody Mauch', 'OG', 78, 'TB', '2nd', '2027', 1),
+    createPlayer('dog2', 'Peter Skoronski', 'OG', 84, 'TEN', '1st', '2027', 1),
+    createPlayer('dog3', 'Jared Wilson', 'OG', 71, 'NE', '3rd', '2029', 2),
+    createPlayer('dog4', 'TJ Bass', 'OG', 69, 'DAL', 'UN', '2027', 2),
     createPlayer('dog5', 'Joe Huber', 'OG', 62, 'MIN', 'UN', '2029', 2),
-    createPlayer('dog6', 'Javion Cohen', 'OG', 0, 'CLE', '7th', '2029', 3),
-    createPlayer('dog7', 'Emil Ekiyor', 'OG', 0, 'IND', '7th', '2028', 3),
+    createPlayer('dog6', 'Javion Cohen', 'OG', 0, 'CLE', '7th', '2028', 3),
+    createPlayer('dog7', 'Emil Ekiyor', 'OG', 0, 'IND', '7th', '2027', 3),
 
     // C
-    createPlayer('dc1', 'Tyler Biadasz', 'C', 80, 'WAS', 'FA 2024', '2029', 1),
+    createPlayer('dc1', 'Tyler Biadasz', 'C', 80, 'DAL', 'FA 2024', '2029', 1),
     createPlayer('dc2', 'Seth McLaughlin', 'C', 50, 'CIN', 'UN', '2029', 2),
 
     // ED
-    createPlayer('ded1', 'Dallas Turner', 'ED', 75, 'MIN', '1st', '2028', 1),
+    createPlayer('ded1', 'Dallas Turner', 'ED', 77, 'MIN', '1st', '2028', 1),
     createPlayer('ded2', 'Azeez Ojulari', 'ED', 73, 'NYG', '2nd', '2025', 1),
     createPlayer('ded3', 'Zach Harrison', 'ED', 73, 'ATL', '3rd', '2027', 2),
     createPlayer('ded4', 'Amare Barno', 'ED', 50, 'CAR', '5c', '2026', 2),
@@ -462,55 +463,56 @@ const ROSTER_DUSTY: Player[] = [
     // DT
     createPlayer('ddt1', 'Nnamdi Madubuike', 'DT', 92, 'BAL', 'FA 2024', '2029', 1),
     createPlayer('ddt2', 'Derrick Harmon', 'DT', 77, 'PIT', '1st', '2029', 1),
-    createPlayer('ddt3', 'Payton Wilson', 'LB', 75, 'PIT', '3rd', '2028', 1), // Listed as DT3/LB3
-    createPlayer('ddt4', 'Tyler Davis', 'DT', 73, 'LAR', '6th', '2028', 2),
+    createPlayer('ddt3', 'Payton Wilson', 'LB', 75, 'PIT', '3rd', '2028', 1),
+    createPlayer('ddt4', 'Tyler Davis', 'DT', 74, 'LAR', '6th', '2028', 2),
     createPlayer('ddt5', 'Darius Alexander', 'DT', 72, 'NYG', '2nd', '2029', 3),
 
     // LB
-    createPlayer('dlb1', 'Micah Parsons', 'LB', 98, 'GB', '1st', '2025', 1),
-    createPlayer('dlb2', 'Divine Deablo', 'LB', 81, 'ATL', '3rd', '2026', 1),
+    createPlayer('dlb1', 'Micah Parsons', 'LB', 98, 'DAL', '1st', '2025', 1),
+    createPlayer('dlb2', 'Divine Deablo', 'LB', 81, 'LV', '3rd', '2025', 1),
     createPlayer('dlb3', 'JD Bertrand', 'LB', 69, 'ATL', '4th', '2028', 2),
     createPlayer('dlb4', 'Smael Mondon', 'LB', 69, 'PHI', '5th', '2029', 2),
     createPlayer('dlb5', 'Noah Sewell', 'LB', 68, 'CHI', '5th', '2027', 2),
-    createPlayer('dlb6', 'Grant Stuard', 'LB', 64, 'IND', '7th', '2025', 2),
+    createPlayer('dlb6', 'Grant Stuard', 'LB', 64, 'TB', '7th', '2025', 2),
 
     // CB
     createPlayer('dcb1', 'Zyon McCollum', 'CB', 81, 'TB', '5th', '2026', 1),
     createPlayer('dcb2', 'Carrington Valentine', 'CB', 78, 'GB', '7th', '2027', 1),
-    createPlayer('dcb3', 'Kelee Ringo', 'CB', 73, 'PHI', '3rd', '2027', 1), // Nickel
-    createPlayer('dcb4', 'Jalyn Armour-Davis', 'CB', 67, 'BAL', '4th', '2026', 2),
-    createPlayer('dcb5', 'Rejzhon Wright', 'CB', 65, 'CAR', 'UN', '2028', 2),
-    createPlayer('dcb6', 'Kary Vincent Jr', 'CB', 50, 'PHI', '6th', '2025', 2),
+    createPlayer('dcb3', 'Kelee Ringo', 'CB', 73, 'PHI', '3rd', '2027', 1),
+    createPlayer('dcb4', 'Jalyn Armour-Davis', 'CB', 68, 'BAL', '4th', '2026', 2),
+    createPlayer('dcb5', 'Rejzhon Wright', 'CB', 0, 'CAR', 'UN', '2027', 2),
+    createPlayer('dcb6', 'Kary Vincent Jr', 'CB', 0, 'DEN', '6th', '2025', 2),
 
     // S
-    createPlayer('ds1', 'Ar\'Darius Washington', 'S', 79, 'BAL', 'UN', '2025', 1),
+    createPlayer('ds1', 'Ar\'Darius Washington', 'S', 78, 'BAL', 'UN', '2025', 1),
     createPlayer('ds2', 'Chamarri Conner', 'S', 76, 'KC', '4th', '2027', 1),
     createPlayer('ds3', 'Antonio Johnson', 'S', 76, 'JAX', '4th', '2027', 2),
     createPlayer('ds4', 'Jaden Hicks', 'S', 73, 'KC', '4th', '2028', 2),
     createPlayer('ds5', 'RJ Mickens', 'S', 70, 'LAC', '6th', '2029', 2),
     createPlayer('ds6', 'Kitan Oladapo', 'S', 67, 'GB', '5th', '2028', 2),
+    createPlayer('ds7', 'Tommi Hill', 'S', 0, 'MIN', 'UN', '2029', 2),
 ];
 
 const PRACTICE_SQUAD_DUSTY: Player[] = [
-    createPlayer('dps1', 'Sam Hartman', 'QB', 0, 'WAS', 'UN', '2029', 9, 'PRACTICE_SQUAD'),
+    createPlayer('dps1', 'Sam Hartman', 'QB', 0, 'WAS', 'UN', '2028', 9, 'PRACTICE_SQUAD'),
     createPlayer('dps2', 'Jermar Jefferson', 'RB', 0, 'DET', '7th', '2025', 9, 'PRACTICE_SQUAD'),
     createPlayer('dps3', 'AT Perry', 'WR', 0, 'NO', '5th', '2027', 9, 'PRACTICE_SQUAD'),
-    createPlayer('dps4', 'Sage Surratt', 'WR', 0, 'Unknown', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('dps4', 'Sage Surratt', 'WR', 0, 'DET', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
     createPlayer('dps5', 'Antoine Green', 'WR', 0, 'DET', '6th', '2027', 9, 'PRACTICE_SQUAD'),
     createPlayer('dps6', 'Malik Knowles', 'WR', 0, 'MIN', 'UN', '2027', 9, 'PRACTICE_SQUAD'),
-    createPlayer('dps7', 'Trajan Jeffcoat', 'ED', 0, 'Unknown', 'UN', '2028', 9, 'PRACTICE_SQUAD'),
-    createPlayer('dps8', 'Christopher Allen', 'ED', 0, 'DEN', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('dps7', 'Trajan Jeffcoat', 'ED', 0, 'NO', 'UN', '2028', 9, 'PRACTICE_SQUAD'),
+    createPlayer('dps8', 'Christopher Allen', 'ED', 0, 'DEN', 'UN', '2026', 9, 'PRACTICE_SQUAD'),
     createPlayer('dps9', 'Matt Henningsen', 'DT', 0, 'DEN', '6th', '2026', 9, 'PRACTICE_SQUAD'),
-    createPlayer('dps10', 'Garrett Haskins', 'DT', 0, 'TEN', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('dps10', 'Garrett Haskins', 'DT', 0, 'TEN', 'UN', '2026', 9, 'PRACTICE_SQUAD'),
     createPlayer('dps11', 'Fabien Lovett', 'DT', 0, 'KC', 'UN', '2028', 9, 'PRACTICE_SQUAD'),
-    createPlayer('dps12', 'Hamilcar Rashad Jr', 'ED', 0, 'Unknown', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('dps12', 'Hamilcar Rashad Jr', 'ED', 0, 'NYJ', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
     createPlayer('dps13', 'Curtis Jacobs', 'LB', 0, 'KC', '7th', '2028', 9, 'PRACTICE_SQUAD'),
     createPlayer('dps14', 'Tony Fields', 'LB', 0, 'CLE', '4th', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('dps15', 'Jojo Domann', 'LB', 0, 'IND', '7th', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('dps15', 'Jojo Domann', 'LB', 0, 'IND', '7th', '2026', 9, 'PRACTICE_SQUAD'),
     createPlayer('dps16', 'Hamsah Nasirildeen', 'LB', 0, 'NYJ', '5th', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('dps17', 'Tay Gowan', 'CB', 0, 'MIN', '6th', '2025', 9, 'PRACTICE_SQUAD'),
-    createPlayer('dps18', 'Tommy Hill', 'S', 0, 'Unknown', 'UN', '2029', 9, 'PRACTICE_SQUAD'),
-    createPlayer('dps19', 'Smoke Monday', 'S', 0, 'NO', 'UN', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('dps17', 'Tay Gowan', 'CB', 0, 'ARZ', '6th', '2025', 9, 'PRACTICE_SQUAD'),
+    createPlayer('dps18', 'Tommy Hill', 'S', 0, 'MIN', 'UN', '2029', 9, 'PRACTICE_SQUAD'),
+    createPlayer('dps19', 'Smoke Monday', 'S', 0, 'NO', 'UN', '2026', 9, 'PRACTICE_SQUAD'),
 ];
 
 const FORMER_PLAYERS_DUSTY: FormerPlayer[] = [
@@ -524,79 +526,79 @@ const FORMER_PLAYERS_DUSTY: FormerPlayer[] = [
 // --- Foss Data ---
 const ROSTER_FOSS: Player[] = [
     // QB
-    createPlayer('fqb1', 'JJ McCarthy', 'QB', 71, 'MIN', '1st', '2026', 1),
-    createPlayer('fqb2', 'Will Levis', 'QB', 68, 'TEN', '1st', '2025', 2),
+    createPlayer('fqb1', 'JJ McCarthy', 'QB', 71, 'MIN', '1st', '2028', 1),
+    createPlayer('fqb2', 'Will Levis', 'QB', 68, 'TEN', '1st', '2027', 2),
 
     // RB
-    createPlayer('frb1', 'Bhaysaul Tuten', 'RB', 76, 'JAC', '3rd', '2027', 1),
-    createPlayer('frb2', 'Kimani Vidal', 'RB', 77, 'LAC', '5th', '2026', 2),
-    createPlayer('frb3', 'Brashard Smith', 'RB', 73, 'KC', '6th', '2027', 3),
-    createPlayer('frb4', 'Keaton Mitchell', 'RB', 75, 'BAL', '7th', '2025', 4),
+    createPlayer('frb1', 'Bhaysaul Tuten', 'RB', 76, 'JAX', '3rd', '2029', 1),
+    createPlayer('frb2', 'Kimani Vidal', 'RB', 77, 'LAC', '5th', '2028', 2),
+    createPlayer('frb3', 'Brashard Smith', 'RB', 73, 'KC', '6th', '2029', 3),
+    createPlayer('frb4', 'Keaton Mitchell', 'RB', 75, 'BAL', '7th', '2027', 4),
 
     // WR
-    createPlayer('fwr1', 'Troy Franklin', 'WR', 79, 'DEN', '3rd', '2026', 1),
-    createPlayer('fwr2', 'Jaylin Lane', 'WR', 74, 'WAS', '4th', '2027', 1),
-    createPlayer('fwr3', 'Xavier Hutchinson', 'WR', 72, 'HOU', '6th', '2025', 1),
-    createPlayer('fwr4', 'Justin Shorter', 'WR', 50, 'BUF', '4th', '2025', 2),
-    createPlayer('fwr5', 'Elijah Badger', 'WR', 50, 'KC', '7th', '2027', 3),
-    createPlayer('fwr6', 'Matt Landers', 'WR', 50, 'SEA', 'UN', '2025', 4),
+    createPlayer('fwr1', 'Troy Franklin', 'WR', 79, 'DEN', '3rd', '2028', 1),
+    createPlayer('fwr2', 'Jaylin Lane', 'WR', 74, 'WAS', '4th', '2029', 1),
+    createPlayer('fwr3', 'Xavier Hutchinson', 'WR', 72, 'HOU', '6th', '2027', 1),
+    createPlayer('fwr4', 'Justin Shorter', 'WR', 50, 'BUF', '4th', '2027', 2),
+    createPlayer('fwr5', 'Elijah Badger', 'WR', 50, 'KC', '7th', '2029', 3),
+    createPlayer('fwr6', 'Matt Landers', 'WR', 50, 'SEA', 'UN', '2027', 4),
 
     // TE
-    createPlayer('fte1', 'Darnell Washington', 'TE', 76, 'PIT', '3rd', '2025', 1),
-    createPlayer('fte2', 'Mitchell Evans', 'TE', 69, 'CAR', '5th', '2027', 1),
-    createPlayer('fte3', 'Brayden Willis', 'TE', 50, 'SF', '7th', '2025', 2),
-    createPlayer('fte4', 'Jaheim Bell', 'TE', 50, 'NE', '7th', '2026', 3),
+    createPlayer('fte1', 'Darnell Washington', 'TE', 76, 'PIT', '3rd', '2027', 1),
+    createPlayer('fte2', 'Mitchell Evans', 'TE', 69, 'CAR', '5th', '2029', 1),
+    createPlayer('fte3', 'Brayden Willis', 'TE', 50, 'SF', '7th', '2027', 2),
+    createPlayer('fte4', 'Jaheim Bell', 'TE', 50, 'NE', '7th', '2028', 3),
 
     // OT
-    createPlayer('fot1', 'Ozzy Trapilo', 'OT', 72, 'Unknown', '2nd', '2027', 1),
-    createPlayer('fot2', 'Charles Grant', 'OT', 70, 'Unknown', '3rd', '2027', 1),
+    createPlayer('fot1', 'Ozzy Trapilo', 'OT', 72, 'CHI', '2nd', '2029', 1),
+    createPlayer('fot2', 'Charles Grant', 'OT', 70, 'LV', '3rd', '2029', 1),
 
     // OG
-    createPlayer('fog1', 'Jackson Powers-Johnson', 'OG', 78, 'LV', '2nd', '2026', 1),
-    createPlayer('fog2', 'Chandler Zavala', 'OG', 64, 'CAR', '4th', '2025', 1),
-    createPlayer('fog3', 'Jaelyn Duncan', 'OG', 50, 'TEN', '5th', '2025', 2),
-    createPlayer('fog4', 'Charles Turner', 'OG', 50, 'NE', 'UN', '2026', 2),
+    createPlayer('fog1', 'Jackson Powers-Johnson', 'OG', 78, 'LV', '2nd', '2028', 1),
+    createPlayer('fog2', 'Chandler Zavala', 'OG', 64, 'CAR', '4th', '2027', 1),
+    createPlayer('fog3', 'Jaelyn Duncan', 'OG', 50, 'TEN', '5th', '2027', 2),
+    createPlayer('fog4', 'Charles Turner', 'OG', 50, 'NE', 'UN', '2028', 2),
 
     // C
-    createPlayer('fc1', 'Jovaughn Gwyn', 'C', 58, 'ATL', '6th', '2025', 1),
+    createPlayer('fc1', 'Jovaughn Gwyn', 'C', 58, 'ATL', '6th', '2027', 1),
 
     // ED
-    createPlayer('fed1', 'Jack Sawyer', 'ED', 72, 'Unknown', '3rd', '2027', 1),
-    createPlayer('fed2', 'Bralen Trice', 'ED', 71, 'ATL', '3rd', '2026', 1),
-    createPlayer('fed3', 'Owen Pappoe', 'ED', 67, 'ARZ', '5th', '2025', 2),
-    createPlayer('fed4', 'Jah Joyner', 'ED', 50, 'Unknown', 'UN', '2027', 3),
+    createPlayer('fed1', 'Jack Sawyer', 'ED', 72, 'PIT', '3rd', '2029', 1),
+    createPlayer('fed2', 'Bralen Trice', 'ED', 71, 'ATL', '3rd', '2028', 1),
+    createPlayer('fed3', 'Owen Pappoe', 'ED', 67, 'ARZ', '5th', '2027', 2),
+    createPlayer('fed4', 'Jah Joyner', 'ED', 50, 'LV', 'UN', '2029', 3),
 
     // DT
-    createPlayer('fdt1', 'Jalen Redmond', 'DT', 77, 'Unknown', 'UN', '2025', 1),
-    createPlayer('fdt2', 'Khristian Boyd', 'DT', 70, 'NO', '6th', '2026', 1),
-    createPlayer('fdt3', 'Rylie Mills', 'DT', 68, 'Unknown', '4th', '2027', 2),
-    createPlayer('fdt4', 'Zeek Biggers', 'DT', 65, 'Unknown', '7th', '2027', 2),
-    createPlayer('fdt5', 'Jordan Magee', 'DT', 67, 'WAS', '4th', '2026', 1), // Listed as DT3/LB3
+    createPlayer('fdt1', 'Jalen Redmond', 'DT', 79, 'CAR', 'UN', '2027', 1),
+    createPlayer('fdt2', 'Khristian Boyd', 'DT', 70, 'NO', '6th', '2028', 1),
+    createPlayer('fdt3', 'Rylie Mills', 'DT', 68, 'SEA', '4th', '2029', 2),
+    createPlayer('fdt4', 'Zeek Biggers', 'DT', 65, 'MIA', '7th', '2029', 2),
+    createPlayer('fdt5', 'Jordan Magee', 'DT', 67, 'WAS', '4th', '2028', 1),
 
     // LB
-    createPlayer('flb1', 'Jihaad Campbell', 'LB', 80, 'PHI', '1st', '2027', 1),
-    createPlayer('flb2', 'Jeremiah Trotter Jr', 'LB', 67, 'PHI', '4th', '2026', 1),
-    createPlayer('flb3', 'Kobe King', 'LB', 66, 'Unknown', '6th', '2027', 2),
-    createPlayer('flb4', 'Nelson Ceasar', 'LB', 50, 'SEA', 'UN', '2026', 2),
+    createPlayer('flb1', 'Jihaad Campbell', 'LB', 80, 'PHI', '1st', '2029', 1),
+    createPlayer('flb2', 'Jeremiah Trotter Jr', 'LB', 67, 'PHI', '4th', '2028', 1),
+    createPlayer('flb3', 'Kobe King', 'LB', 66, 'MIN', '6th', '2029', 2),
+    createPlayer('flb4', 'Nelson Ceasar', 'LB', 50, 'SEA', 'UN', '2028', 2),
 
     // CB
-    createPlayer('fcb1', 'Kris Abrams-Draine', 'CB', 73, 'DEN', '4th', '2026', 1),
-    createPlayer('fcb2', 'Jakorian Bennett', 'CB', 73, 'LV', '3rd', '2025', 1),
-    createPlayer('fcb3', 'Josh Newton', 'CB', 71, 'CIN', '5th', '2026', 1), // Nickel
-    createPlayer('fcb4', 'Dwight McGlothern', 'CB', 50, 'MIN', '7th', '2026', 2),
-    createPlayer('fcb5', 'Zy Alexander', 'CB', 50, 'Unknown', 'UN', '2027', 2),
-    createPlayer('fcb6', 'Darius Rush', 'CB', 50, 'IND', '4th', '2025', 2),
+    createPlayer('fcb1', 'Kris Abrams-Draine', 'CB', 73, 'DEN', '4th', '2028', 1),
+    createPlayer('fcb2', 'Jakorian Bennett', 'CB', 73, 'LV', '3rd', '2027', 1),
+    createPlayer('fcb3', 'Josh Newton', 'CB', 71, 'CIN', '5th', '2028', 1),
+    createPlayer('fcb4', 'Dwight McGlothern', 'CB', 50, 'MIN', '7th', '2028', 2),
+    createPlayer('fcb5', 'Zy Alexander', 'CB', 50, 'SEA', 'UN', '2029', 2),
+    createPlayer('fcb6', 'Darius Rush', 'CB', 50, 'IND', '4th', '2027', 2),
 
     // S
-    createPlayer('fs1', 'Brian Branch', 'S', 91, 'DET', '2nd', '2025', 1),
-    createPlayer('fs2', 'Ronnie Hickman', 'S', 76, 'CLE', 'UN', '2025', 1),
-    createPlayer('fs3', 'Jaylen Reed', 'S', 68, 'Unknown', '5th', '2027', 2),
+    createPlayer('fs1', 'Brian Branch', 'S', 91, 'DET', '2nd', '2027', 1),
+    createPlayer('fs2', 'Ronnie Hickman', 'S', 76, 'CLE', 'UN', '2027', 1),
+    createPlayer('fs3', 'Jaylen Reed', 'S', 68, 'HOU', '5th', '2029', 2),
 ];
 
 const PRACTICE_SQUAD_FOSS: Player[] = [
-    createPlayer('fps1', 'Gabe Hall', 'DT', 0, 'PHI', 'UN', '2026', 9, 'PRACTICE_SQUAD'),
-    createPlayer('fps2', 'Gabriel Murphy', 'ED', 0, 'MIN', '6th', '2026', 9, 'PRACTICE_SQUAD'),
-    createPlayer('fps3', 'Simeon Barrow', 'DT', 0, 'Unknown', 'UN', '2027', 9, 'PRACTICE_SQUAD'),
+    createPlayer('fps1', 'Gabe Hall', 'DT', 0, 'PHI', 'UN', '2028', 9, 'PRACTICE_SQUAD'),
+    createPlayer('fps2', 'Gabriel Murphy', 'ED', 0, 'MIN', '6th', '2028', 9, 'PRACTICE_SQUAD'),
+    createPlayer('fps3', 'Simeon Barrow', 'DT', 0, 'ATL', 'UN', '2029', 9, 'PRACTICE_SQUAD'),
 ];
 
 const FORMER_PLAYERS_FOSS: FormerPlayer[] = [];
@@ -673,13 +675,13 @@ export const ALL_TEAMS: Team[] = [
 ];
 
 // Fallback for other files using the old MOCK_TEAM
-export const MOCK_TEAM = CRUISE_SHIP_CRUSADERS; 
+export const MOCK_TEAM = CRUISE_SHIP_CRUSADERS;
 export const MOCK_PLAYER_1 = ROSTER_CSC[0];
 export const MOCK_PLAYER_2 = ROSTER_CSC[6];
 
 // RAW DRAFT CSV DATA
 export const DRAFT_CSV = `RD,#,Order,Bullard,Kurt,Rugg,Dusty,Foss,Key
-2026,,,,,,,,&& Wasn’t Available at this pick
+2026,,,,,,,,&& Wasn't Available at this pick
 ,,,,,,,,
 ,,,,,,,,### Took extra player
 ,,,,,,,,
@@ -902,13 +904,13 @@ UN,,,DT Hercules Mata'afa WASH,LT Des Harrison CONTRA $,WR Simmie Cobbs IND,,,
 
 export const HIT_RATES_CSV = `Highest Hit %,Team Bull,Team Kurt,Team Rugg,Team Dusty,Team Foss,Unnamed: 6,Unnamed: 7,Unnamed: 8,Unnamed: 9
 ,,,,,,,,,
-Rd 1,0.8,0.8,0.8,1,0,,,, 
+Rd 1,0.8,0.8,0.8,1,0,,,,
 Rd 2,0.5,0.6,0.6,0.75,1,,,,
 Rd 3,0.5,0.4,0.4375,0.3,0.5,,,,
 Rd 4,0.64,0.35,0.3333333333333333,0.23076923076923078,0.14285714285714285,,,,
 Rd 5,0.3,0.125,0.47368421052631576,0.15384615384615385,0,,,,
 Rd 6,0.3333333333333333,0.1111111111111111,0.25,0.25,0.16666666666666666,,,,
-Rd 7,0.2857142857142857,0.15384615384615385,0.38461538461538464,0.4,0,,,, 
+Rd 7,0.2857142857142857,0.15384615384615385,0.38461538461538464,0.4,0,,,,
 UN,0.20833333333333334,0.125,0.08333333333333333,0.1111111111111111,0.1111111111111111,,,,
 ,,,,,,,,,
 Total Ave,0.44592261904761904,0.3331196581196581,0.4203082827260459,0.39946581196581193,0.2400793650793651,,,,
