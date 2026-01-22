@@ -1,14 +1,5 @@
 import { Player, Team, FormerPlayer } from './types';
 
-// Mock Attributes for visual flair
-const GENERIC_ATTRS = [
-  { name: 'SPD', value: 88 },
-  { name: 'ACC', value: 85 },
-  { name: 'STR', value: 70 },
-  { name: 'AGI', value: 82 },
-  { name: 'AWR', value: 75 },
-];
-
 const createPlayer = (id: string, name: string, pos: string, ovr: number, team: string, draft: string, fa: string, depth: number, status: 'ACTIVE' | 'PRACTICE_SQUAD' = 'ACTIVE'): Player => ({
     id,
     name,
@@ -16,7 +7,6 @@ const createPlayer = (id: string, name: string, pos: string, ovr: number, team: 
     team, // NFL Team
     ovr,
     imageUrl: `https://ui-avatars.com/api/?name=${name.replace(' ', '+')}&background=random&color=fff`, // Placeholder
-    attributes: GENERIC_ATTRS,
     projectedPoints: Math.floor(ovr / 5),
     draftRound: draft,
     faYear: fa,
