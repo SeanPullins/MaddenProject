@@ -105,23 +105,33 @@ Rules:
     const response = await result.response;
     let responseText = response.text();
 
-    // Extract JSON from response (handle markdown code blocks)
-    // Remove markdown code blocks if present: ```json ... ``` or ``` ... ```
-    responseText = responseText.trim();
-    if (responseText.startsWith('```json')) {
-      responseText = responseText.replace(/^```json\s*/i, '').replace(/\s*```$/, '');
-    } else if (responseText.startsWith('```')) {
-      responseText = responseText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    // Extract JSON from response - try multiple strategies
+    let jsonText = responseText.trim();
+
+    // Strategy 1: Remove markdown code blocks
+    if (jsonText.includes('```')) {
+      const codeBlockMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+      if (codeBlockMatch) {
+        jsonText = codeBlockMatch[1].trim();
+      }
     }
-    responseText = responseText.trim();
+
+    // Strategy 2: Find JSON object by looking for { ... }
+    if (!jsonText.startsWith('{')) {
+      const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        jsonText = jsonMatch[0];
+      }
+    }
 
     // Parse AI response as JSON
     let aiReview: AIReviewResponse;
     try {
-      aiReview = JSON.parse(responseText);
+      aiReview = JSON.parse(jsonText);
     } catch (parseError) {
       console.error('Failed to parse AI response as JSON:', parseError);
-      console.error('Raw response text:', responseText.substring(0, 500)); // Log first 500 chars
+      console.error('Raw response (first 500 chars):', responseText.substring(0, 500));
+      console.error('Extracted JSON attempt (first 500 chars):', jsonText.substring(0, 500));
       return {
         statusCode: 500,
         body: JSON.stringify({
