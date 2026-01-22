@@ -3,7 +3,8 @@ import { ALL_TEAMS } from '../constants';
 import { TeamLogo } from '../components/TeamLogo';
 import { FormerPlayersPanel } from '../components/FormerPlayersPanel';
 import { LeagueScoreModal } from '../components/LeagueScoreModal';
-import { UserMinus, Target, Star, Shield, TrendingUp, Info } from 'lucide-react';
+import { AIReviewModal } from '../components/AIReviewModal';
+import { UserMinus, Target, Star, Shield, TrendingUp, Info, Brain } from 'lucide-react';
 import { getTeamColors } from '../utils/teamColors';
 import { calculateLeagueScores } from '../utils/leagueScoring';
 import { Page } from '../types';
@@ -19,6 +20,7 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
   const [showFormerPlayers, setShowFormerPlayers] = useState<boolean>(false);
   const [hoveredScore, setHoveredScore] = useState<boolean>(false);
   const [modalTeamId, setModalTeamId] = useState<string | null>(null);
+  const [showAIReview, setShowAIReview] = useState<boolean>(false);
 
   // Calculate league scores
   const leagueScores = useMemo(() => {
@@ -216,9 +218,19 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
               View Full Roster →
             </button>
 
-            {/* Former Players Button */}
-            {selectedTeam.formerPlayers && selectedTeam.formerPlayers.length > 0 && (
-              <div className="mb-6">
+            {/* Action Buttons */}
+            <div className="mb-6 flex flex-wrap gap-3">
+              {/* AI Review Button - NEW FEATURE */}
+              <button
+                onClick={() => setShowAIReview(true)}
+                className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 border border-purple-500 rounded-lg text-white font-medium transition-all shadow-lg shadow-purple-500/20"
+              >
+                <Brain size={20} />
+                AI Review Team
+              </button>
+
+              {/* Former Players Button */}
+              {selectedTeam.formerPlayers && selectedTeam.formerPlayers.length > 0 && (
                 <button
                   onClick={() => setShowFormerPlayers(true)}
                   className="flex items-center gap-2 px-4 py-3 bg-slate-900 hover:bg-slate-700 border border-slate-700 hover:border-brand-500 rounded-lg text-white font-medium transition-colors"
@@ -226,8 +238,8 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
                   <UserMinus size={20} />
                   Former Players ({selectedTeam.formerPlayers.length})
                 </button>
-              </div>
-            )}
+              )}
+            </div>
 
             <h3 className="text-xl font-display font-bold text-white mb-3">TOP PLAYERS</h3>
             <div className="space-y-2">
@@ -280,6 +292,14 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
         }
         return null;
       })()}
+
+      {/* AI Review Modal - NEW FEATURE */}
+      {showAIReview && (
+        <AIReviewModal
+          team={selectedTeam}
+          onClose={() => setShowAIReview(false)}
+        />
+      )}
     </div>
   );
 };

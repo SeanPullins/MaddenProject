@@ -5,7 +5,8 @@ import { TeamLogo } from '../components/TeamLogo';
 import { PlayerCard } from '../components/PlayerCard';
 import { FormerPlayersPanel } from '../components/FormerPlayersPanel';
 import { LeagueScoreModal } from '../components/LeagueScoreModal';
-import { UserMinus, Target, Star, Shield, TrendingUp, Info } from 'lucide-react';
+import { AIReviewModal } from '../components/AIReviewModal';
+import { UserMinus, Target, Star, Shield, TrendingUp, Info, Brain } from 'lucide-react';
 import { getTeamColors } from '../utils/teamColors';
 import { calculateLeagueScores } from '../utils/leagueScoring';
 
@@ -43,6 +44,7 @@ export const MyTeam: React.FC = () => {
   const [showFormerPlayers, setShowFormerPlayers] = useState<boolean>(false);
   const [hoveredScore, setHoveredScore] = useState<boolean>(false);
   const [modalTeamId, setModalTeamId] = useState<string | null>(null);
+  const [showAIReview, setShowAIReview] = useState<boolean>(false);
 
   // Persist team selection to localStorage
   useEffect(() => {
@@ -248,9 +250,19 @@ export const MyTeam: React.FC = () => {
         </div>
       </div>
 
-      {/* Former Players Button */}
-      {team.formerPlayers && team.formerPlayers.length > 0 && (
-        <div className="mb-8">
+      {/* Action Buttons */}
+      <div className="mb-8 flex flex-wrap gap-3">
+        {/* AI Review Button - NEW FEATURE */}
+        <button
+          onClick={() => setShowAIReview(true)}
+          className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 border border-purple-500 rounded-lg text-white font-medium transition-all shadow-lg shadow-purple-500/20"
+        >
+          <Brain size={20} />
+          AI Review Team
+        </button>
+
+        {/* Former Players Button */}
+        {team.formerPlayers && team.formerPlayers.length > 0 && (
           <button
             onClick={() => setShowFormerPlayers(true)}
             className="flex items-center gap-2 px-4 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-brand-500 rounded-lg text-white font-medium transition-colors"
@@ -258,8 +270,8 @@ export const MyTeam: React.FC = () => {
             <UserMinus size={20} />
             Former Players ({team.formerPlayers.length})
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Roster by Position */}
       <div className="space-y-6">
@@ -335,6 +347,14 @@ export const MyTeam: React.FC = () => {
         }
         return null;
       })()}
+
+      {/* AI Review Modal - NEW FEATURE */}
+      {showAIReview && (
+        <AIReviewModal
+          team={team}
+          onClose={() => setShowAIReview(false)}
+        />
+      )}
     </div>
   );
 };
