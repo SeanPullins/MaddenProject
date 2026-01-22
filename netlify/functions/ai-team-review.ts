@@ -69,36 +69,28 @@ export const handler: Handler = async (event) => {
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: {
-        maxOutputTokens: 800,
+        maxOutputTokens: 2048, // Increased from 800 to allow full response
         temperature: 0.7
-        // Note: responseMimeType removed - not reliably supported by all models
       }
     });
 
     // Create AI prompt for team scouting report
-    const prompt = `You are a professional fantasy football scout. Analyze this team and return ONLY a valid JSON object (no markdown, no code blocks, no extra text).
+    const prompt = `Analyze this fantasy team. Return ONLY valid JSON (no markdown, no extra text).
 
-TEAM: ${teamData.teamName} (Owner: ${teamData.owner})
+TEAM: ${teamData.teamName} (${teamData.owner})
+ROSTER: ${teamData.roster.map(p => `${p.name} ${p.position} ${p.ovr}`).join(', ')}
 
-ROSTER:
-${teamData.roster.map(p => `- ${p.name} (${p.position}, ${p.team}) - OVR: ${p.ovr} - Draft: ${p.draftRound || 'N/A'}`).join('\n')}
-
-Return this EXACT JSON structure with your analysis:
-
+Return this exact structure:
 {
-  "overallGrade": "letter grade A+ to D-",
-  "strengths": ["strength 1", "strength 2", "strength 3"],
-  "weaknesses": ["weakness 1", "weakness 2"],
-  "positionalNotes": ["QB/RB/WR note", "defense note", "OL note"],
-  "draftAnalysis": "one paragraph about draft strategy and value picks",
-  "recommendations": ["recommendation 1", "recommendation 2", "recommendation 3"]
+  "overallGrade": "A+ to D-",
+  "strengths": ["point 1", "point 2", "point 3"],
+  "weaknesses": ["point 1", "point 2"],
+  "positionalNotes": ["QB/RB/WR note", "defense note"],
+  "draftAnalysis": "Brief paragraph on draft strategy",
+  "recommendations": ["tip 1", "tip 2", "tip 3"]
 }
 
-Rules:
-- Be specific (mention player names and OVR ratings)
-- Focus on roster construction, depth, and balance
-- Output ONLY the JSON object
-- No markdown formatting, no code blocks, no extra text before or after`;
+Keep all text concise. Mention 2-3 key player names. Output ONLY the JSON.`;
 
     // Call Gemini API
     const result = await model.generateContent(prompt);
