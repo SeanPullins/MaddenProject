@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { X, Brain, TrendingUp, Zap, Shield, AlertCircle, Loader, Trophy } from 'lucide-react';
+import { X, Brain, TrendingUp, Zap, Shield, AlertCircle, Loader, Trophy, Clock } from 'lucide-react';
 import { Team } from '../types';
 
 /**
- * AI Comparison Modal Component
+ * AI Comparison Modal Component with Caching and Rate Limiting
  *
  * SAFETY: This component is completely isolated and additive.
  * - Does NOT modify any team data
  * - Does NOT affect rankings or scores
  * - Gracefully handles loading and error states
- * - Can be removed without affecting the rest of the site
+ * - Implements caching to reduce API calls
+ * - Has cooldown to prevent quota exhaustion
  */
 
 interface AIComparisonModalProps {
@@ -38,6 +39,16 @@ interface AIComparison {
   finalVerdict: string;
 }
 
+interface CachedComparison {
+  comparison: AIComparison;
+  timestamp: number;
+}
+
+const CACHE_KEY_PREFIX = 'ai_comparison_cache_';
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const COOLDOWN_DURATION = 30 * 1000; // 30 seconds
+const LAST_COMPARISON_KEY = 'ai_comparison_last_request';
+
 export const AIComparisonModal: React.FC<AIComparisonModalProps> = ({
   teamA,
   teamB,
@@ -53,14 +64,72 @@ export const AIComparisonModal: React.FC<AIComparisonModalProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [comparison, setComparison] = useState<AIComparison | null>(null);
+  const [cooldownRemaining, setCooldownRemaining] = useState<number>(0);
 
   useEffect(() => {
-    fetchAIComparison();
+    checkCooldownAndFetch();
   }, []);
+
+  useEffect(() => {
+    if (cooldownRemaining > 0) {
+      const timer = setInterval(() => {
+        setCooldownRemaining(prev => Math.max(0, prev - 1));
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [cooldownRemaining]);
+
+  const getCacheKey = () => {
+    // Create unique cache key based on matchup details
+    return `${CACHE_KEY_PREFIX}${teamA.id}_${teamB.id}_${teamAType}_${teamBType}_${teamAFormation || 'none'}_${teamBFormation || 'none'}`;
+  };
+
+  const checkCooldownAndFetch = () => {
+    // Check if cached comparison exists
+    const cacheKey = getCacheKey();
+    const cached = localStorage.getItem(cacheKey);
+
+    if (cached) {
+      try {
+        const cachedData: CachedComparison = JSON.parse(cached);
+        const age = Date.now() - cachedData.timestamp;
+
+        if (age < CACHE_DURATION) {
+          // Use cached data
+          setComparison(cachedData.comparison);
+          setLoading(false);
+          return;
+        } else {
+          // Cache expired, remove it
+          localStorage.removeItem(cacheKey);
+        }
+      } catch (e) {
+        console.error('Failed to parse cached comparison:', e);
+        localStorage.removeItem(cacheKey);
+      }
+    }
+
+    // Check cooldown
+    const lastRequest = localStorage.getItem(LAST_COMPARISON_KEY);
+    if (lastRequest) {
+      const timeSinceLastRequest = Date.now() - parseInt(lastRequest);
+      if (timeSinceLastRequest < COOLDOWN_DURATION) {
+        const remaining = Math.ceil((COOLDOWN_DURATION - timeSinceLastRequest) / 1000);
+        setCooldownRemaining(remaining);
+        setError(`Please wait ${remaining} seconds before requesting another AI analysis.`);
+        setLoading(false);
+        return;
+      }
+    }
+
+    // Proceed with fetch
+    fetchAIComparison();
+  };
 
   const fetchAIComparison = async () => {
     setLoading(true);
     setError(null);
+    setCooldownRemaining(0);
 
     try {
       // Prepare comparison data for AI analysis (read-only)
@@ -82,6 +151,9 @@ export const AIComparisonModal: React.FC<AIComparisonModalProps> = ({
         matchupType: matchupDescription
       };
 
+      // Update last request timestamp
+      localStorage.setItem(LAST_COMPARISON_KEY, Date.now().toString());
+
       // Call Netlify Function
       const response = await fetch('/.netlify/functions/ai-team-comparison', {
         method: 'POST',
@@ -92,11 +164,23 @@ export const AIComparisonModal: React.FC<AIComparisonModalProps> = ({
       const data = await response.json();
 
       if (!response.ok || data.fallback) {
+        // Check for quota error
+        if (data.error && data.error.includes('quota')) {
+          throw new Error('AI quota limit reached. Please try again in a few minutes.');
+        }
         throw new Error(data.error || 'AI service unavailable');
       }
 
       if (data.success && data.comparison) {
         setComparison(data.comparison);
+
+        // Cache the successful response
+        const cacheKey = getCacheKey();
+        const cachedData: CachedComparison = {
+          comparison: data.comparison,
+          timestamp: Date.now()
+        };
+        localStorage.setItem(cacheKey, JSON.stringify(cachedData));
       } else {
         throw new Error('Invalid AI response');
       }
@@ -106,6 +190,10 @@ export const AIComparisonModal: React.FC<AIComparisonModalProps> = ({
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRetry = () => {
+    checkCooldownAndFetch();
   };
 
   const getWinnerColor = (prediction: string) => {
@@ -166,18 +254,32 @@ export const AIComparisonModal: React.FC<AIComparisonModalProps> = ({
               <div className="bg-red-900/20 border border-red-500 rounded-lg p-6 text-center">
                 <p className="text-red-400 text-lg font-bold mb-2">AI Analysis Unavailable</p>
                 <p className="text-slate-300 text-sm mb-4">{error}</p>
-                <button
-                  onClick={fetchAIComparison}
-                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
-                >
-                  Try Again
-                </button>
+                {cooldownRemaining > 0 ? (
+                  <div className="flex items-center justify-center gap-2 text-yellow-400">
+                    <Clock size={20} />
+                    <span className="font-mono text-lg">{cooldownRemaining}s</span>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleRetry}
+                    className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+                  >
+                    Try Again
+                  </button>
+                )}
               </div>
             )}
 
             {/* Success State - Display Comparison */}
             {comparison && !loading && !error && (
               <>
+                {/* Cache Notice */}
+                <div className="bg-indigo-900/20 border border-indigo-500/30 rounded-lg p-3">
+                  <p className="text-indigo-300 text-xs text-center">
+                    ℹ️ AI analyses are cached for 5 minutes to reduce API usage
+                  </p>
+                </div>
+
                 {/* Prediction & Win Probability */}
                 <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
                   <div className="flex items-center justify-center gap-2 mb-4">
