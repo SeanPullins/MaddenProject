@@ -1,8 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { ALL_TEAMS } from '../constants';
 import { Player, Team } from '../types';
-import { TrendingUp, TrendingDown, Minus, AlertCircle, Users, User, Shield, Zap, Info } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, AlertCircle, Users, User, Shield, Zap, Info, Brain } from 'lucide-react';
 import { PlayerCard } from '../components/PlayerCard';
+import { AIComparisonModal } from '../components/AIComparisonModal';
 
 type ComparisonMode = 'player-vs-player' | 'team-vs-team';
 type TeamComparisonType = 'offense-vs-defense' | 'offense-vs-offense' | 'defense-vs-defense';
@@ -34,6 +35,9 @@ export const PlayerComparison: React.FC = () => {
 
   // Player card modal state
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+
+  // AI Comparison modal state - NEW FEATURE
+  const [showAIComparison, setShowAIComparison] = useState<boolean>(false);
 
   // Get players by position group
   const getOffensivePlayers = (team: Team): Player[] => {
@@ -682,6 +686,20 @@ export const PlayerComparison: React.FC = () => {
                     </p>
                   )}
                 </div>
+
+                {/* AI Comparison Button - NEW FEATURE */}
+                <div className="mt-6 text-center">
+                  <button
+                    onClick={() => setShowAIComparison(true)}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 border border-indigo-500 rounded-lg text-white font-medium transition-all shadow-lg shadow-indigo-500/20"
+                  >
+                    <Brain size={20} />
+                    Get AI Matchup Analysis
+                  </button>
+                  <p className="text-slate-500 text-xs mt-2">
+                    AI-powered insights on this matchup
+                  </p>
+                </div>
               </div>
             )}
           </div>
@@ -693,6 +711,22 @@ export const PlayerComparison: React.FC = () => {
         <PlayerCard
           player={selectedPlayer}
           onClose={() => setSelectedPlayer(null)}
+        />
+      )}
+
+      {/* AI Comparison Modal - NEW FEATURE */}
+      {showAIComparison && teamComparisonAnalysis && teamA && teamB && (
+        <AIComparisonModal
+          teamA={teamA}
+          teamB={teamB}
+          teamAPlayers={teamComparisonAnalysis.teamAPlayers}
+          teamBPlayers={teamComparisonAnalysis.teamBPlayers}
+          teamAType={teamComparisonType.includes('offense') && teamComparisonType !== 'defense-vs-defense' ? 'offense' : 'defense'}
+          teamBType={teamComparisonType === 'offense-vs-defense' ? 'defense' : teamComparisonType === 'offense-vs-offense' ? 'offense' : 'defense'}
+          matchupDescription={teamComparisonAnalysis.description}
+          teamAFormation={teamComparisonType.includes('offense') && teamComparisonType !== 'defense-vs-defense' ? offensiveFormation : defensiveFormation}
+          teamBFormation={teamComparisonType === 'offense-vs-defense' ? defensiveFormation : teamComparisonType === 'offense-vs-offense' ? offensiveFormation : defensiveFormation}
+          onClose={() => setShowAIComparison(false)}
         />
       )}
     </div>
