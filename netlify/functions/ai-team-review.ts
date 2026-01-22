@@ -67,7 +67,7 @@ export const handler: Handler = async (event) => {
     // Initialize Gemini AI
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-exp",
+      model: "gemini-1.5-flash", // Stable model with high free-tier quota (15 RPM, 1M TPM)
       generationConfig: {
         maxOutputTokens: 800,
         temperature: 0.7,
