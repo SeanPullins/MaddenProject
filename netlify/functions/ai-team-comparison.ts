@@ -105,27 +105,21 @@ TEAM B (${comparisonData.teamB.name} - ${comparisonData.teamB.owner}):
 Type: ${comparisonData.teamB.type.toUpperCase()}${comparisonData.teamB.formation ? ` - ${comparisonData.teamB.formation}` : ''}
 Players: ${teamBPlayers}
 
-Return this exact structure:
+Return this exact structure with actual numbers:
 {
-  "prediction": "Team A or Team B",
+  "prediction": "Team A",
   "winProbability": {
-    "teamA": 0-100,
-    "teamB": 0-100
+    "teamA": 65,
+    "teamB": 35
   },
   "keyMatchups": ["matchup 1", "matchup 2", "matchup 3"],
   "teamAAdvantages": ["advantage 1", "advantage 2"],
   "teamBAdvantages": ["advantage 1", "advantage 2"],
   "strategicInsights": ["insight 1", "insight 2", "insight 3"],
-  "finalVerdict": "One paragraph explaining who wins and why"
+  "finalVerdict": "Brief paragraph explaining who wins and why"
 }
 
-Focus on:
-- Position matchups and player quality (OVR ratings)
-- Formation advantages/disadvantages
-- Depth and talent gaps
-- Strategic considerations
-
-Keep all text concise. Mention specific player names. Output ONLY the JSON.`;
+Keep text concise. Mention specific player names. Output ONLY the JSON.`;
 
     // Call Gemini API
     const result = await model.generateContent(prompt);
