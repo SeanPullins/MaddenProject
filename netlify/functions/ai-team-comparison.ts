@@ -93,6 +93,11 @@ export const handler: Handler = async (event) => {
       .map(p => `${p.name} ${p.position} (${p.ovr})`)
       .join(', ');
 
+    console.log('=== AI COMPARISON DEBUG ===');
+    console.log('Team A:', comparisonData.teamA.name, '- Players:', teamAPlayers.substring(0, 100));
+    console.log('Team B:', comparisonData.teamB.name, '- Players:', teamBPlayers.substring(0, 100));
+    console.log('Matchup Type:', comparisonData.matchupType);
+
     // Create AI prompt for matchup analysis
     const prompt = `Analyze this fantasy football matchup.
 
@@ -106,31 +111,37 @@ TEAM B (${comparisonData.teamB.name} - ${comparisonData.teamB.owner}):
 Type: ${comparisonData.teamB.type.toUpperCase()}${comparisonData.teamB.formation ? ` - ${comparisonData.teamB.formation}` : ''}
 Players: ${teamBPlayers}
 
-Return your analysis in this exact JSON format:
+Return this exact structure:
 {
   "prediction": "Team A",
   "winProbability": {
     "teamA": 60,
     "teamB": 40
   },
-  "keyMatchups": ["QB vs Secondary", "RB vs Front 7", "WR vs CB"],
-  "teamAAdvantages": ["Superior passing game", "Better depth"],
-  "teamBAdvantages": ["Stronger run defense", "Elite CB"],
-  "strategicInsights": ["Team A has edge in air", "Team B vulnerable to deep passes"],
-  "finalVerdict": "Team A should win based on superior offensive talent and matchup advantages."
+  "keyMatchups": ["matchup 1", "matchup 2", "matchup 3"],
+  "teamAAdvantages": ["advantage 1", "advantage 2"],
+  "teamBAdvantages": ["advantage 1", "advantage 2"],
+  "strategicInsights": ["insight 1", "insight 2", "insight 3"],
+  "finalVerdict": "Brief paragraph explaining the prediction"
 }
 
-Consider player OVR ratings and position matchups. Keep text concise and mention specific players.`;
+Keep all text concise. Mention specific player names and OVR ratings.`;
 
     // Call Gemini API (JSON mode ensures valid JSON response)
     const result = await model.generateContent(prompt);
     const response = await result.response;
     let responseText = response.text();
 
+    console.log('=== GEMINI RESPONSE ===');
+    console.log('Length:', responseText.length);
+    console.log('First 200 chars:', responseText.substring(0, 200));
+    console.log('Last 100 chars:', responseText.substring(Math.max(0, responseText.length - 100)));
+
     // Parse AI response as JSON (should be clean JSON due to JSON mode)
     let aiComparison: AIComparisonResponse;
     try {
       aiComparison = JSON.parse(responseText.trim());
+      console.log('✅ JSON parsed successfully on first try');
     } catch (parseError) {
       // Fallback: try extracting JSON if wrapped in markdown
       console.error('Failed to parse AI comparison as JSON:', parseError);
@@ -156,9 +167,11 @@ Consider player OVR ratings and position matchups. Keep text concise and mention
 
       try {
         aiComparison = JSON.parse(jsonText);
+        console.log('✅ JSON parsed successfully on second try');
       } catch (secondError) {
-        console.error('Second parse attempt failed:', secondError);
+        console.error('❌ Second parse attempt failed:', secondError);
         console.error('Extracted JSON attempt (first 500 chars):', jsonText.substring(0, 500));
+        console.error('=== END DEBUG ===');
         return {
           statusCode: 500,
           body: JSON.stringify({
@@ -168,6 +181,9 @@ Consider player OVR ratings and position matchups. Keep text concise and mention
         };
       }
     }
+
+    console.log('Parsed comparison - prediction:', aiComparison.prediction);
+    console.log('=== END DEBUG ===');
 
     // Validate response structure
     if (!aiComparison.prediction || !aiComparison.winProbability || !aiComparison.finalVerdict) {
