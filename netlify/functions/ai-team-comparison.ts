@@ -74,12 +74,11 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    // Initialize Gemini AI with JSON mode
+    // Initialize Gemini AI
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: {
-        responseMimeType: "application/json",
         maxOutputTokens: 2048,
         temperature: 0.7
       }
@@ -99,35 +98,33 @@ export const handler: Handler = async (event) => {
     console.log('Matchup Type:', comparisonData.matchupType);
 
     // Create AI prompt for matchup analysis
-    const prompt = `Analyze this fantasy football matchup.
+    const prompt = `Analyze this fantasy football matchup. Return ONLY valid JSON (no markdown, no extra text).
 
 MATCHUP: ${comparisonData.matchupType}
 
-TEAM A (${comparisonData.teamA.name} - ${comparisonData.teamA.owner}):
-Type: ${comparisonData.teamA.type.toUpperCase()}${comparisonData.teamA.formation ? ` - ${comparisonData.teamA.formation}` : ''}
-Players: ${teamAPlayers}
+TEAM A: ${comparisonData.teamA.name} (${comparisonData.teamA.owner}) - ${comparisonData.teamA.type.toUpperCase()}${comparisonData.teamA.formation ? ` ${comparisonData.teamA.formation}` : ''}
+PLAYERS: ${teamAPlayers}
 
-TEAM B (${comparisonData.teamB.name} - ${comparisonData.teamB.owner}):
-Type: ${comparisonData.teamB.type.toUpperCase()}${comparisonData.teamB.formation ? ` - ${comparisonData.teamB.formation}` : ''}
-Players: ${teamBPlayers}
+TEAM B: ${comparisonData.teamB.name} (${comparisonData.teamB.owner}) - ${comparisonData.teamB.type.toUpperCase()}${comparisonData.teamB.formation ? ` ${comparisonData.teamB.formation}` : ''}
+PLAYERS: ${teamBPlayers}
 
 Return this exact structure:
 {
-  "prediction": "Team A",
+  "prediction": "Team A or Team B",
   "winProbability": {
-    "teamA": 60,
-    "teamB": 40
+    "teamA": 55,
+    "teamB": 45
   },
   "keyMatchups": ["matchup 1", "matchup 2", "matchup 3"],
   "teamAAdvantages": ["advantage 1", "advantage 2"],
   "teamBAdvantages": ["advantage 1", "advantage 2"],
-  "strategicInsights": ["insight 1", "insight 2", "insight 3"],
-  "finalVerdict": "Brief paragraph explaining the prediction"
+  "strategicInsights": ["insight 1", "insight 2"],
+  "finalVerdict": "One paragraph prediction"
 }
 
-Keep all text concise. Mention specific player names and OVR ratings.`;
+Keep all text concise. Mention 2-3 player names. Output ONLY the JSON.`;
 
-    // Call Gemini API (JSON mode ensures valid JSON response)
+    // Call Gemini API
     const result = await model.generateContent(prompt);
     const response = await result.response;
     let responseText = response.text();
@@ -137,49 +134,42 @@ Keep all text concise. Mention specific player names and OVR ratings.`;
     console.log('First 200 chars:', responseText.substring(0, 200));
     console.log('Last 100 chars:', responseText.substring(Math.max(0, responseText.length - 100)));
 
-    // Parse AI response as JSON (should be clean JSON due to JSON mode)
+    // Extract JSON from response - try multiple strategies
+    let jsonText = responseText.trim();
+
+    // Strategy 1: Remove markdown code blocks
+    if (jsonText.includes('```')) {
+      const codeBlockMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+      if (codeBlockMatch) {
+        jsonText = codeBlockMatch[1].trim();
+      }
+    }
+
+    // Strategy 2: Find JSON object by looking for { ... }
+    if (!jsonText.startsWith('{')) {
+      const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        jsonText = jsonMatch[0];
+      }
+    }
+
+    // Parse AI response as JSON
     let aiComparison: AIComparisonResponse;
     try {
-      aiComparison = JSON.parse(responseText.trim());
-      console.log('✅ JSON parsed successfully on first try');
+      aiComparison = JSON.parse(jsonText);
+      console.log('✅ JSON parsed successfully');
     } catch (parseError) {
-      // Fallback: try extracting JSON if wrapped in markdown
-      console.error('Failed to parse AI comparison as JSON:', parseError);
+      console.error('❌ Failed to parse AI comparison as JSON:', parseError);
       console.error('Raw response (first 500 chars):', responseText.substring(0, 500));
-
-      let jsonText = responseText.trim();
-
-      // Remove markdown code blocks if present
-      if (jsonText.includes('```')) {
-        const codeBlockMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-        if (codeBlockMatch) {
-          jsonText = codeBlockMatch[1].trim();
-        }
-      }
-
-      // Find JSON object
-      if (!jsonText.startsWith('{')) {
-        const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          jsonText = jsonMatch[0];
-        }
-      }
-
-      try {
-        aiComparison = JSON.parse(jsonText);
-        console.log('✅ JSON parsed successfully on second try');
-      } catch (secondError) {
-        console.error('❌ Second parse attempt failed:', secondError);
-        console.error('Extracted JSON attempt (first 500 chars):', jsonText.substring(0, 500));
-        console.error('=== END DEBUG ===');
-        return {
-          statusCode: 500,
-          body: JSON.stringify({
-            error: 'AI response format error',
-            fallback: true
-          })
-        };
-      }
+      console.error('Extracted JSON attempt (first 500 chars):', jsonText.substring(0, 500));
+      console.error('=== END DEBUG ===');
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          error: 'AI response format error',
+          fallback: true
+        })
+      };
     }
 
     console.log('Parsed comparison - prediction:', aiComparison.prediction);
