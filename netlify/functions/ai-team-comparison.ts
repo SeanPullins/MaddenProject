@@ -93,6 +93,11 @@ export const handler: Handler = async (event) => {
       .map(p => `${p.name} ${p.position} (${p.ovr})`)
       .join(', ');
 
+    console.log('=== AI COMPARISON DEBUG ===');
+    console.log('Team A:', comparisonData.teamA.name, '- Players:', teamAPlayers.substring(0, 100));
+    console.log('Team B:', comparisonData.teamB.name, '- Players:', teamBPlayers.substring(0, 100));
+    console.log('Matchup Type:', comparisonData.matchupType);
+
     // Create AI prompt for matchup analysis
     const prompt = `Analyze this fantasy football matchup.
 
@@ -127,10 +132,16 @@ Keep all text concise. Mention specific player names and OVR ratings.`;
     const response = await result.response;
     let responseText = response.text();
 
+    console.log('=== GEMINI RESPONSE ===');
+    console.log('Length:', responseText.length);
+    console.log('First 200 chars:', responseText.substring(0, 200));
+    console.log('Last 100 chars:', responseText.substring(Math.max(0, responseText.length - 100)));
+
     // Parse AI response as JSON (should be clean JSON due to JSON mode)
     let aiComparison: AIComparisonResponse;
     try {
       aiComparison = JSON.parse(responseText.trim());
+      console.log('✅ JSON parsed successfully on first try');
     } catch (parseError) {
       // Fallback: try extracting JSON if wrapped in markdown
       console.error('Failed to parse AI comparison as JSON:', parseError);
@@ -156,9 +167,11 @@ Keep all text concise. Mention specific player names and OVR ratings.`;
 
       try {
         aiComparison = JSON.parse(jsonText);
+        console.log('✅ JSON parsed successfully on second try');
       } catch (secondError) {
-        console.error('Second parse attempt failed:', secondError);
+        console.error('❌ Second parse attempt failed:', secondError);
         console.error('Extracted JSON attempt (first 500 chars):', jsonText.substring(0, 500));
+        console.error('=== END DEBUG ===');
         return {
           statusCode: 500,
           body: JSON.stringify({
@@ -168,6 +181,9 @@ Keep all text concise. Mention specific player names and OVR ratings.`;
         };
       }
     }
+
+    console.log('Parsed comparison - prediction:', aiComparison.prediction);
+    console.log('=== END DEBUG ===');
 
     // Validate response structure
     if (!aiComparison.prediction || !aiComparison.winProbability || !aiComparison.finalVerdict) {
