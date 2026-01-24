@@ -74,11 +74,12 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    // Initialize Gemini AI
+    // Initialize Gemini AI with JSON mode
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: {
+        responseMimeType: "application/json",
         maxOutputTokens: 2048,
         temperature: 0.7
       }
@@ -93,7 +94,7 @@ export const handler: Handler = async (event) => {
       .join(', ');
 
     // Create AI prompt for matchup analysis
-    const prompt = `Analyze this fantasy football matchup. Return ONLY valid JSON (no markdown, no extra text).
+    const prompt = `Analyze this fantasy football matchup.
 
 MATCHUP: ${comparisonData.matchupType}
 
@@ -105,61 +106,67 @@ TEAM B (${comparisonData.teamB.name} - ${comparisonData.teamB.owner}):
 Type: ${comparisonData.teamB.type.toUpperCase()}${comparisonData.teamB.formation ? ` - ${comparisonData.teamB.formation}` : ''}
 Players: ${teamBPlayers}
 
-Return this exact structure with actual numbers:
+Return your analysis in this exact JSON format:
 {
   "prediction": "Team A",
   "winProbability": {
-    "teamA": 65,
-    "teamB": 35
+    "teamA": 60,
+    "teamB": 40
   },
-  "keyMatchups": ["matchup 1", "matchup 2", "matchup 3"],
-  "teamAAdvantages": ["advantage 1", "advantage 2"],
-  "teamBAdvantages": ["advantage 1", "advantage 2"],
-  "strategicInsights": ["insight 1", "insight 2", "insight 3"],
-  "finalVerdict": "Brief paragraph explaining who wins and why"
+  "keyMatchups": ["QB vs Secondary", "RB vs Front 7", "WR vs CB"],
+  "teamAAdvantages": ["Superior passing game", "Better depth"],
+  "teamBAdvantages": ["Stronger run defense", "Elite CB"],
+  "strategicInsights": ["Team A has edge in air", "Team B vulnerable to deep passes"],
+  "finalVerdict": "Team A should win based on superior offensive talent and matchup advantages."
 }
 
-Keep text concise. Mention specific player names. Output ONLY the JSON.`;
+Consider player OVR ratings and position matchups. Keep text concise and mention specific players.`;
 
-    // Call Gemini API
+    // Call Gemini API (JSON mode ensures valid JSON response)
     const result = await model.generateContent(prompt);
     const response = await result.response;
     let responseText = response.text();
 
-    // Extract JSON from response - try multiple strategies
-    let jsonText = responseText.trim();
-
-    // Strategy 1: Remove markdown code blocks
-    if (jsonText.includes('```')) {
-      const codeBlockMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-      if (codeBlockMatch) {
-        jsonText = codeBlockMatch[1].trim();
-      }
-    }
-
-    // Strategy 2: Find JSON object by looking for { ... }
-    if (!jsonText.startsWith('{')) {
-      const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        jsonText = jsonMatch[0];
-      }
-    }
-
-    // Parse AI response as JSON
+    // Parse AI response as JSON (should be clean JSON due to JSON mode)
     let aiComparison: AIComparisonResponse;
     try {
-      aiComparison = JSON.parse(jsonText);
+      aiComparison = JSON.parse(responseText.trim());
     } catch (parseError) {
+      // Fallback: try extracting JSON if wrapped in markdown
       console.error('Failed to parse AI comparison as JSON:', parseError);
       console.error('Raw response (first 500 chars):', responseText.substring(0, 500));
-      console.error('Extracted JSON attempt (first 500 chars):', jsonText.substring(0, 500));
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          error: 'AI response format error',
-          fallback: true
-        })
-      };
+
+      let jsonText = responseText.trim();
+
+      // Remove markdown code blocks if present
+      if (jsonText.includes('```')) {
+        const codeBlockMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+        if (codeBlockMatch) {
+          jsonText = codeBlockMatch[1].trim();
+        }
+      }
+
+      // Find JSON object
+      if (!jsonText.startsWith('{')) {
+        const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          jsonText = jsonMatch[0];
+        }
+      }
+
+      try {
+        aiComparison = JSON.parse(jsonText);
+      } catch (secondError) {
+        console.error('Second parse attempt failed:', secondError);
+        console.error('Extracted JSON attempt (first 500 chars):', jsonText.substring(0, 500));
+        return {
+          statusCode: 500,
+          body: JSON.stringify({
+            error: 'AI response format error',
+            fallback: true
+          })
+        };
+      }
     }
 
     // Validate response structure
