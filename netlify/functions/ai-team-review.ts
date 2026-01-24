@@ -82,20 +82,28 @@ ROSTER: ${teamData.roster.map(p => `${p.name} ${p.position} ${p.ovr}`).join(', '
 
 Return this exact structure:
 {
-  "overallGrade": "A+ to D-",
-  "strengths": ["point 1", "point 2", "point 3"],
-  "weaknesses": ["point 1", "point 2"],
-  "positionalNotes": ["QB/RB/WR note", "defense note"],
-  "draftAnalysis": "Brief paragraph on draft strategy",
-  "recommendations": ["tip 1", "tip 2", "tip 3"]
+  "overallGrade": "B+",
+  "strengths": ["Strong QB play", "Elite defensive backfield", "Good depth at RB"],
+  "weaknesses": ["Weak offensive line", "No elite WR"],
+  "positionalNotes": ["QB shows promise", "Defense needs depth"],
+  "draftAnalysis": "Team focused on defense early and built offensive depth in later rounds",
+  "recommendations": ["Add elite WR", "Improve OL", "Build depth at CB"]
 }
 
 Keep all text concise. Mention 2-3 key player names. Output ONLY the JSON.`;
+
+    console.log('=== AI TEAM REVIEW DEBUG ===');
+    console.log('Team:', teamData.teamName, '- Roster count:', teamData.roster.length);
 
     // Call Gemini API
     const result = await model.generateContent(prompt);
     const response = await result.response;
     let responseText = response.text();
+
+    console.log('=== GEMINI RESPONSE ===');
+    console.log('Length:', responseText.length);
+    console.log('First 200 chars:', responseText.substring(0, 200));
+    console.log('Last 100 chars:', responseText.substring(Math.max(0, responseText.length - 100)));
 
     // Extract JSON from response - try multiple strategies
     let jsonText = responseText.trim();
@@ -120,10 +128,12 @@ Keep all text concise. Mention 2-3 key player names. Output ONLY the JSON.`;
     let aiReview: AIReviewResponse;
     try {
       aiReview = JSON.parse(jsonText);
+      console.log('✅ JSON parsed successfully');
     } catch (parseError) {
-      console.error('Failed to parse AI response as JSON:', parseError);
+      console.error('❌ Failed to parse AI response as JSON:', parseError);
       console.error('Raw response (first 500 chars):', responseText.substring(0, 500));
       console.error('Extracted JSON attempt (first 500 chars):', jsonText.substring(0, 500));
+      console.error('=== END DEBUG ===');
       return {
         statusCode: 500,
         body: JSON.stringify({
@@ -132,6 +142,9 @@ Keep all text concise. Mention 2-3 key player names. Output ONLY the JSON.`;
         })
       };
     }
+
+    console.log('Parsed review - grade:', aiReview.overallGrade);
+    console.log('=== END DEBUG ===');
 
     // Validate response structure
     if (!aiReview.overallGrade || !aiReview.strengths || !aiReview.weaknesses) {
