@@ -136,15 +136,15 @@ export const MyTeam: React.FC = () => {
       <div className="flex items-center gap-4 mb-8">
         <TeamLogo src={team.avatarUrl} alt={team.name} size="xl" />
         <div>
-          <h1 className="text-4xl font-display font-bold text-white">{team.name}</h1>
+          <h1 className="text-3xl sm:text-4xl font-display font-bold text-white">{team.name}</h1>
           <p className="text-slate-400">Owner: {team.owner}</p>
         </div>
       </div>
 
       {/* Team Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6">
         <div
-          className="bg-slate-800 rounded-lg p-6 border border-slate-700 relative cursor-pointer hover:border-brand-500 transition-colors"
+          className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700 relative cursor-pointer hover:border-brand-500 transition-colors"
           onMouseEnter={() => setHoveredScore(true)}
           onMouseLeave={() => setHoveredScore(false)}
           onClick={() => setModalTeamId(team.id)}
@@ -240,11 +240,11 @@ export const MyTeam: React.FC = () => {
           )}
         </div>
 
-        <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
+        <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
           <p className="text-slate-400 text-sm mb-1">Active Roster</p>
           <p className="text-2xl font-bold text-white">{team.roster.length}</p>
         </div>
-        <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
+        <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
           <p className="text-slate-400 text-sm mb-1">Practice Squad</p>
           <p className="text-2xl font-bold text-white">{team.practiceSquad.length}</p>
         </div>
@@ -276,7 +276,7 @@ export const MyTeam: React.FC = () => {
       {/* Roster by Position */}
       <div className="space-y-6">
         {groupedRoster.map((positionGroup) => (
-          <div key={positionGroup.position} className="bg-slate-800 rounded-lg p-6 border border-slate-700">
+          <div key={positionGroup.position} className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
             <h2 className="text-2xl font-display font-bold text-white mb-4">{positionGroup.label.toUpperCase()}</h2>
             <div className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
               <table className="w-full min-w-max">

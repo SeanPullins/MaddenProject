@@ -202,9 +202,9 @@ export const Standings: React.FC = () => {
                       <Info size={14} className="text-slate-500 group-hover:text-brand-400 transition-colors" />
                     </button>
 
-                    {/* Hover Tooltip - Fixed positioning to avoid clipping */}
+                    {/* Hover Tooltip - Hidden on mobile, click opens modal instead */}
                     {isHovered && teamScore && (
-                      <div className="fixed z-[100] pointer-events-none" style={{
+                      <div className="hidden md:block fixed z-[100] pointer-events-none" style={{
                         left: '50%',
                         top: '50%',
                         transform: 'translate(-50%, -50%)'

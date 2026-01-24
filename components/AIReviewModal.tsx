@@ -185,7 +185,7 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ team, onClose }) =
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-purple-600 to-purple-700 p-6 relative flex-shrink-0">
+          <div className="bg-gradient-to-r from-purple-600 to-purple-700 p-4 sm:p-6 relative flex-shrink-0">
             <button
               onClick={onClose}
               className="absolute top-4 right-4 text-white hover:text-slate-200 transition-colors"
@@ -204,7 +204,7 @@ export const AIReviewModal: React.FC<AIReviewModalProps> = ({ team, onClose }) =
           </div>
 
           {/* Content */}
-          <div className="p-6 space-y-6 overflow-y-auto flex-1">
+          <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto flex-1">
             {/* Loading State */}
             {loading && (
               <div className="flex flex-col items-center justify-center py-12">
