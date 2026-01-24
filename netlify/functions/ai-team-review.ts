@@ -64,12 +64,11 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    // Initialize Gemini AI with JSON mode
+    // Initialize Gemini AI
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: {
-        responseMimeType: "application/json",
         maxOutputTokens: 2048, // Increased from 800 to allow full response
         temperature: 0.7
       }
@@ -93,51 +92,45 @@ Return this exact structure:
 
 Keep all text concise. Mention 2-3 key player names. Output ONLY the JSON.`;
 
-    // Call Gemini API (JSON mode ensures valid JSON response)
+    // Call Gemini API
     const result = await model.generateContent(prompt);
     const response = await result.response;
     let responseText = response.text();
 
-    // Parse AI response as JSON (should be clean JSON due to JSON mode)
+    // Extract JSON from response - try multiple strategies
+    let jsonText = responseText.trim();
+
+    // Strategy 1: Remove markdown code blocks
+    if (jsonText.includes('```')) {
+      const codeBlockMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+      if (codeBlockMatch) {
+        jsonText = codeBlockMatch[1].trim();
+      }
+    }
+
+    // Strategy 2: Find JSON object by looking for { ... }
+    if (!jsonText.startsWith('{')) {
+      const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        jsonText = jsonMatch[0];
+      }
+    }
+
+    // Parse AI response as JSON
     let aiReview: AIReviewResponse;
     try {
-      aiReview = JSON.parse(responseText.trim());
+      aiReview = JSON.parse(jsonText);
     } catch (parseError) {
-      // Fallback: try extracting JSON if wrapped in markdown
       console.error('Failed to parse AI response as JSON:', parseError);
       console.error('Raw response (first 500 chars):', responseText.substring(0, 500));
-
-      let jsonText = responseText.trim();
-
-      // Remove markdown code blocks if present
-      if (jsonText.includes('```')) {
-        const codeBlockMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-        if (codeBlockMatch) {
-          jsonText = codeBlockMatch[1].trim();
-        }
-      }
-
-      // Find JSON object
-      if (!jsonText.startsWith('{')) {
-        const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          jsonText = jsonMatch[0];
-        }
-      }
-
-      try {
-        aiReview = JSON.parse(jsonText);
-      } catch (secondError) {
-        console.error('Second parse attempt failed:', secondError);
-        console.error('Extracted JSON attempt (first 500 chars):', jsonText.substring(0, 500));
-        return {
-          statusCode: 500,
-          body: JSON.stringify({
-            error: 'AI response format error',
-            fallback: true
-          })
-        };
-      }
+      console.error('Extracted JSON attempt (first 500 chars):', jsonText.substring(0, 500));
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          error: 'AI response format error',
+          fallback: true
+        })
+      };
     }
 
     // Validate response structure
