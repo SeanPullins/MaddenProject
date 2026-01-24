@@ -94,20 +94,7 @@ export const handler: Handler = async (event) => {
       .join(', ');
 
     // Create AI prompt for matchup analysis
-    const prompt = `Analyze this fantasy football matchup and return your analysis in this JSON structure:
-
-{
-  "prediction": "Team A or Team B",
-  "winProbability": {
-    "teamA": number (0-100),
-    "teamB": number (0-100)
-  },
-  "keyMatchups": ["3-4 key position matchups with player names"],
-  "teamAAdvantages": ["2-3 advantages"],
-  "teamBAdvantages": ["2-3 advantages"],
-  "strategicInsights": ["2-3 strategic points"],
-  "finalVerdict": "One paragraph explaining the prediction"
-}
+    const prompt = `Analyze this fantasy football matchup.
 
 MATCHUP: ${comparisonData.matchupType}
 
@@ -119,7 +106,21 @@ TEAM B (${comparisonData.teamB.name} - ${comparisonData.teamB.owner}):
 Type: ${comparisonData.teamB.type.toUpperCase()}${comparisonData.teamB.formation ? ` - ${comparisonData.teamB.formation}` : ''}
 Players: ${teamBPlayers}
 
-Consider player quality (OVR ratings), position matchups, and formation advantages. Keep all text concise.`;
+Return your analysis in this exact JSON format:
+{
+  "prediction": "Team A",
+  "winProbability": {
+    "teamA": 60,
+    "teamB": 40
+  },
+  "keyMatchups": ["QB vs Secondary", "RB vs Front 7", "WR vs CB"],
+  "teamAAdvantages": ["Superior passing game", "Better depth"],
+  "teamBAdvantages": ["Stronger run defense", "Elite CB"],
+  "strategicInsights": ["Team A has edge in air", "Team B vulnerable to deep passes"],
+  "finalVerdict": "Team A should win based on superior offensive talent and matchup advantages."
+}
+
+Consider player OVR ratings and position matchups. Keep text concise and mention specific players.`;
 
     // Call Gemini API (JSON mode ensures valid JSON response)
     const result = await model.generateContent(prompt);
