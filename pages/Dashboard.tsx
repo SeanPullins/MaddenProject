@@ -52,12 +52,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-4xl font-display font-bold text-white mb-4">
+      <h1 className="text-3xl sm:text-4xl font-display font-bold text-white mb-4">
         DASHBOARD
       </h1>
 
       {/* Intro */}
-      <p className="text-slate-300 text-lg mb-8 max-w-3xl">
+      <p className="text-slate-300 text-base sm:text-lg mb-8 max-w-3xl">
         Welcome to <span className="text-brand-500 font-bold">FanLeague — Where the Best GM Meets Madden</span>.
         A premium fantasy football platform powered by <span className="text-brand-500 font-semibold">Madden NFL ratings and attributes</span>.
         Manage your franchise, track player performance, analyze draft success, and compete in a league
@@ -65,9 +65,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       </p>
 
       {/* Quick Actions */}
-      <div className="bg-slate-800 rounded-lg p-6 border border-slate-700 mb-8">
+      <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700 mb-8">
         <h2 className="text-xl font-display font-bold text-white mb-4">QUICK ACTIONS</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <button
             onClick={() => onNavigate(Page.PLAYERS)}
             className="flex items-center justify-between p-4 bg-slate-900 hover:bg-slate-700 border border-slate-700 hover:border-brand-500 rounded-lg transition-colors group"
@@ -119,7 +119,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-brand-500/20 rounded-lg">

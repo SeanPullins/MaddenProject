@@ -50,12 +50,12 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-4xl font-display font-bold text-white mb-8">LEAGUE TEAMS</h1>
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto">
+      <h1 className="text-3xl sm:text-4xl font-display font-bold text-white mb-6 sm:mb-8">LEAGUE TEAMS</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Team List */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 order-2 lg:order-1">
           <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
             <h2 className="text-xl font-display font-bold text-white mb-4">TEAMS</h2>
             <div className="space-y-2">
@@ -91,7 +91,7 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
         </div>
 
         {/* Team Details */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 order-1 lg:order-2">
           <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
             <div className="flex items-center gap-4 mb-6">
               <TeamLogo
@@ -107,7 +107,7 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
               {/* League Score Card with Tooltip */}
               <div
                 className="bg-slate-900 rounded-lg p-4 border border-slate-700 relative cursor-pointer hover:border-brand-500 transition-colors"
@@ -127,7 +127,7 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
 
                 {/* Hover Tooltip */}
                 {hoveredScore && teamScore && (
-                  <div className="absolute left-0 top-full mt-2 z-50 w-80">
+                  <div className="absolute left-0 top-full mt-2 z-50 w-72 sm:w-80">
                     <div className="bg-slate-900 rounded-lg shadow-2xl border border-slate-700 p-4">
                       <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-700">
                         <Target size={14} className="text-brand-500" />

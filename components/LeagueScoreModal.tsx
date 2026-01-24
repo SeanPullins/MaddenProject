@@ -34,7 +34,7 @@ export const LeagueScoreModal: React.FC<LeagueScoreModalProps> = ({
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-brand-500 to-brand-600 p-6 relative">
+          <div className="bg-gradient-to-r from-brand-500 to-brand-600 p-4 sm:p-6 relative">
             <button
               onClick={onClose}
               className="absolute top-4 right-4 text-white hover:text-slate-200 transition-colors"
@@ -53,7 +53,7 @@ export const LeagueScoreModal: React.FC<LeagueScoreModalProps> = ({
           </div>
 
           {/* Content */}
-          <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+          <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 max-h-[70vh] overflow-y-auto">
             {/* Total Score */}
             <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
               <div className="flex items-center justify-between">
