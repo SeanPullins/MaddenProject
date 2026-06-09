@@ -1,4 +1,5 @@
 import { Player, Team, FormerPlayer } from './types';
+import { publicAsset } from './utils/publicAsset';
 
 const createPlayer = (id: string, name: string, pos: string, ovr: number, team: string, draft: string, fa: string, depth: number, status: 'ACTIVE' | 'PRACTICE_SQUAD' = 'ACTIVE'): Player => ({
     id,
@@ -597,7 +598,7 @@ export const CRUISE_SHIP_CRUSADERS: Team = {
   id: 'csc',
   name: 'Cruise Ship Crusaders',
   owner: 'Bullard',
-  avatarUrl: '/teams/Cruise Ship Crusaders Logo 2025 1.png',
+  avatarUrl: publicAsset('teams/Cruise Ship Crusaders Logo 2025 1.png'),
   record: '0-0',
   tagsSaved: 2,
   roster: ROSTER_CSC,
@@ -609,7 +610,7 @@ export const KEY_WEST_KILLAS: Team = {
   id: 'kwk',
   name: 'Key West Killas',
   owner: 'Kurt',
-  avatarUrl: '/teams/Key West Killas Logo 2025 1.png',
+  avatarUrl: publicAsset('teams/Key West Killas Logo 2025 1.png'),
   record: '0-0',
   tagsSaved: 2,
   roster: ROSTER_KILLAS,
@@ -621,7 +622,7 @@ export const NEW_LEXINGTON_LEGENDS: Team = {
   id: 'nll',
   name: 'New Lexington Legends',
   owner: 'Rugg',
-  avatarUrl: '/teams/New Lexington Legends Logo 2025 1.png',
+  avatarUrl: publicAsset('teams/New Lexington Legends Logo 2025 1.png'),
   record: '0-0',
   tagsSaved: 0,
   roster: ROSTER_LEGENDS,
@@ -633,7 +634,7 @@ export const DUSTY_TEAM: Team = {
     id: 'dusty',
     name: 'Port Charlotte Pythons',
     owner: 'Dusty',
-    avatarUrl: '/teams/Port Charlotte Pythons Logo 2025 1.png',
+    avatarUrl: publicAsset('teams/Port Charlotte Pythons Logo 2025 1.png'),
     record: '0-0',
     tagsSaved: 0,
     roster: ROSTER_DUSTY,
@@ -645,7 +646,7 @@ export const ROAD_WARRIORS: Team = {
     id: 'trw',
     name: 'Team Road Warriors',
     owner: 'Foss',
-    avatarUrl: '/teams/Road Warriors Logo 2025 1.png',
+    avatarUrl: publicAsset('teams/Road Warriors Logo 2025 1.png'),
     record: '0-0',
     tagsSaved: 0,
     roster: ROSTER_FOSS,

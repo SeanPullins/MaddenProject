@@ -1,5 +1,6 @@
 import React from 'react';
 import { Page } from '../types';
+import { publicAsset } from '../utils/publicAsset';
 
 interface LandingProps {
   onNavigate: (page: Page) => void;
@@ -11,7 +12,7 @@ export const Landing: React.FC<LandingProps> = ({ onNavigate }) => {
       {/* Hero Section */}
       <div className="relative w-full">
         <img
-          src="/LandingPage.jpg"
+          src={publicAsset('LandingPage.jpg')}
           alt="Madden Fantasy Football"
           className="w-full h-[60vh] md:h-[70vh] object-cover"
         />
