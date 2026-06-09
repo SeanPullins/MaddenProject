@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ALL_TEAMS } from '../constants';
+import React, { useMemo, useState } from 'react';
+import { useTeams } from '../utils/rosterStore';
 import { Team, Player } from '../types';
 import { TeamLogo } from '../components/TeamLogo';
 import { Sparkles, TrendingUp, TrendingDown, Target, AlertCircle } from 'lucide-react';
@@ -19,7 +19,12 @@ const simplifyRoster = (players: Player[]) => {
 };
 
 export const AIEvaluation: React.FC = () => {
-  const [selectedTeam, setSelectedTeam] = useState<Team>(ALL_TEAMS[0]);
+  const ALL_TEAMS = useTeams();
+  const [selectedTeamId, setSelectedTeamId] = useState(ALL_TEAMS[0]?.id ?? '');
+  const selectedTeam = useMemo(
+    () => ALL_TEAMS.find(team => team.id === selectedTeamId) ?? ALL_TEAMS[0],
+    [ALL_TEAMS, selectedTeamId]
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [aiResponse, setAiResponse] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -45,6 +50,7 @@ Identify scoring opportunities for League Year Winner.`;
   };
 
   const runAIEvaluation = async () => {
+    if (!selectedTeam) return;
     setIsLoading(true);
     setError('');
     setAiResponse('');
@@ -111,6 +117,8 @@ Identify scoring opportunities for League Year Winner.`;
 
   const sections = aiResponse ? parseAIResponse(aiResponse) : null;
 
+  if (!selectedTeam) return null;
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
       {/* Header */}
@@ -130,10 +138,7 @@ Identify scoring opportunities for League Year Winner.`;
         <div className="flex items-center gap-4">
           <select
             value={selectedTeam.id}
-            onChange={(e) => {
-              const team = ALL_TEAMS.find(t => t.id === e.target.value);
-              if (team) setSelectedTeam(team);
-            }}
+            onChange={(e) => setSelectedTeamId(e.target.value)}
             className="flex-1 px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500 text-lg"
           >
             {ALL_TEAMS.map(team => (

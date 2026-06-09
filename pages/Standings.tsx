@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from 'react';
-import { ALL_TEAMS } from '../constants';
+import { useTeams } from '../utils/rosterStore';
 import { Trophy, Medal, Award, Users, ArrowDown, ArrowUp, Target, Star, Zap, Shield, TrendingUp, Info } from 'lucide-react';
 import { TeamLogo } from '../components/TeamLogo';
 import { calculateLeagueScores } from '../utils/leagueScoring';
 import { LeagueScoreModal } from '../components/LeagueScoreModal';
 
 export const Standings: React.FC = () => {
+  const ALL_TEAMS = useTeams();
   const [sortDirection, setSortDirection] = useState<'DESC' | 'ASC'>('DESC');
   const [hoveredTeamId, setHoveredTeamId] = useState<string | null>(null);
   const [modalTeamId, setModalTeamId] = useState<string | null>(null);
@@ -18,7 +19,7 @@ export const Standings: React.FC = () => {
       console.error('Failed to calculate league scores:', error);
       return [];
     }
-  }, []);
+  }, [ALL_TEAMS]);
 
   // Sort teams by League Score
   const sortedTeams = useMemo(() => {

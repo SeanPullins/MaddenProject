@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ALL_TEAMS, POSITIONS } from '../constants';
+import { POSITIONS } from '../constants';
+import { useTeams } from '../utils/rosterStore';
 import { Player } from '../types';
 import { Star, Award, Users, UserCheck } from 'lucide-react';
 import { PlayerCard } from '../components/PlayerCard';
@@ -52,6 +53,7 @@ const getTierConfig = (tier: PlayerTier) => {
 };
 
 export const Players: React.FC = () => {
+  const ALL_TEAMS = useTeams();
   const [positionFilter, setPositionFilter] = useState<string>('ALL');
   const [tierFilter, setTierFilter] = useState<string>('ALL');
   const [teamFilter, setTeamFilter] = useState<string>('ALL');

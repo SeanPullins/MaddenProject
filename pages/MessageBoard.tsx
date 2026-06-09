@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, Send, Shield, Edit2, Check, X } from 'lucide-react';
-import { ALL_TEAMS } from '../constants';
 import { getMyTeam } from '../utils/myTeamContext';
 
 interface Message {

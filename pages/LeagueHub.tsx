@@ -12,7 +12,6 @@ import {
   Trophy
 } from 'lucide-react';
 import { League, LeagueRules, Page } from '../types';
-import { ALL_TEAMS } from '../constants';
 import {
   getLeagues,
   saveLeague,

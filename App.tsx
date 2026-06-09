@@ -12,24 +12,14 @@ import { PlayerComparison } from './pages/PlayerComparison';
 import { Drafts } from './pages/Drafts';
 import { HitRates } from './pages/HitRates'; // Added
 import { Settings } from './pages/Settings';
+import { ControlPanel } from './pages/ControlPanel';
 import { Page } from './types';
-import { Loader2 } from 'lucide-react';
-import { CRUISE_SHIP_CRUSADERS } from './constants';
 
 const THEME_STORAGE_KEY = 'fanleague_theme_preference';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>(Page.LANDING);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-        setIsLoading(false);
-        console.log("UI complete. Data loaded.");
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Apply theme on app load
   useEffect(() => {
@@ -53,18 +43,10 @@ const App: React.FC = () => {
       case Page.STANDINGS: return <Standings />;
       case Page.COMPARISON: return <PlayerComparison />;
       case Page.SETTINGS: return <Settings />;
+      case Page.CONTROL_PANEL: return <ControlPanel />;
       default: return <Dashboard onNavigate={setCurrentPage} />;
     }
   };
-
-  if (isLoading) {
-      return (
-          <div className="h-screen w-screen bg-slate-950 flex flex-col items-center justify-center text-slate-400">
-              <Loader2 className="w-10 h-10 animate-spin text-brand-500 mb-4" />
-              <p className="font-display tracking-widest text-sm">LOADING FANTASY SHELL...</p>
-          </div>
-      );
-  }
 
   // Landing page has its own layout without navigation
   if (currentPage === Page.LANDING) {

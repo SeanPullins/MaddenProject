@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from 'react';
-import { DRAFT_CSV, ALL_TEAMS } from '../constants';
+import { DRAFT_CSV } from '../constants';
+import { useTeams } from '../utils/rosterStore';
 import { TrendingUp, TrendingDown, AlertCircle, Award, Search, Filter } from 'lucide-react';
 import { PlayerCard } from '../components/PlayerCard';
 import { Player } from '../types';
 
 export const Drafts: React.FC = () => {
+  const ALL_TEAMS = useTeams();
   const [yearFilter, setYearFilter] = useState<string>('ALL');
   const [roundFilter, setRoundFilter] = useState<string>('ALL');
   const [userFilter, setUserFilter] = useState<string>('ALL');
@@ -50,7 +52,7 @@ export const Drafts: React.FC = () => {
   // Get all players from all teams for OVR lookup
   const allPlayers = useMemo(() => {
     return ALL_TEAMS.flatMap((team) => team.roster);
-  }, []);
+  }, [ALL_TEAMS]);
 
   // Extract year from data (years are marked with standalone rows like "2025,,,Order is,...")
   const extractYear = (rows: string[][]): Map<number, string> => {
