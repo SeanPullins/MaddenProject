@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { ALL_TEAMS } from '../constants';
-import { Team, Player } from '../types';
+import { useTeams } from '../utils/rosterStore';
+import { Player } from '../types';
 import { TeamLogo } from '../components/TeamLogo';
 import { PlayerCard } from '../components/PlayerCard';
 import { FormerPlayersPanel } from '../components/FormerPlayersPanel';
@@ -30,15 +30,16 @@ const POSITION_LABELS: Record<string, string> = {
 };
 
 export const MyTeam: React.FC = () => {
+  const ALL_TEAMS = useTeams();
   // Load saved team from localStorage or default to first team
-  const [team, setTeam] = useState<Team>(() => {
+  const [teamId, setTeamId] = useState(() => {
     const savedTeamId = localStorage.getItem(SELECTED_TEAM_KEY);
-    if (savedTeamId) {
-      const savedTeam = ALL_TEAMS.find(t => t.id === savedTeamId);
-      if (savedTeam) return savedTeam;
-    }
-    return ALL_TEAMS[0];
+    return savedTeamId || ALL_TEAMS[0]?.id || '';
   });
+  const team = useMemo(
+    () => ALL_TEAMS.find(t => t.id === teamId) ?? ALL_TEAMS[0],
+    [ALL_TEAMS, teamId]
+  );
 
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [showFormerPlayers, setShowFormerPlayers] = useState<boolean>(false);
@@ -48,14 +49,11 @@ export const MyTeam: React.FC = () => {
 
   // Persist team selection to localStorage
   useEffect(() => {
-    localStorage.setItem(SELECTED_TEAM_KEY, team.id);
-  }, [team]);
+    if (team?.id) localStorage.setItem(SELECTED_TEAM_KEY, team.id);
+  }, [team?.id]);
 
   const handleTeamChange = (teamId: string) => {
-    const selectedTeam = ALL_TEAMS.find(t => t.id === teamId);
-    if (selectedTeam) {
-      setTeam(selectedTeam);
-    }
+    setTeamId(teamId);
   };
 
   // Calculate league scores and get current team's score (safely)
@@ -66,18 +64,20 @@ export const MyTeam: React.FC = () => {
       console.error('Failed to calculate league scores:', error);
       return [];
     }
-  }, []);
+  }, [ALL_TEAMS]);
   const teamScore = useMemo(() =>
-    leagueScores.find(ts => ts.teamId === team.id),
-    [leagueScores, team.id]
+    team ? leagueScores.find(ts => ts.teamId === team.id) : undefined,
+    [leagueScores, team]
   );
   const teamRank = useMemo(() => {
+    if (!team) return null;
     const index = leagueScores.findIndex(ts => ts.teamId === team.id);
     return index !== -1 ? index + 1 : null;
-  }, [leagueScores, team.id]);
+  }, [leagueScores, team]);
 
   // Group and sort roster by position and depth chart
   const groupedRoster = useMemo(() => {
+    if (!team) return [];
     // Combine roster and practice squad
     const allPlayers = [...team.roster, ...team.practiceSquad];
 
@@ -113,7 +113,9 @@ export const MyTeam: React.FC = () => {
       label: POSITION_LABELS[pos] || pos,
       players: grouped[pos] || []
     })).filter(group => group.players.length > 0);
-  }, [team.roster, team.practiceSquad]);
+  }, [team]);
+
+  if (!team) return null;
 
   return (
     <div className="p-6 max-w-7xl mx-auto">

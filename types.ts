@@ -10,6 +10,7 @@ export enum Page {
   DRAFTS = 'DRAFTS', // New Draft History
   HIT_RATES = 'HIT_RATES', // New Hit Rates Page
   SETTINGS = 'SETTINGS',
+  CONTROL_PANEL = 'CONTROL_PANEL', // Commissioner roster/score editor
   // AI_EVAL = 'AI_EVAL', // DISABLED - AI Evaluation not working
   LEAGUE_HUB = 'LEAGUE_HUB', // NEW: League management
   MESSAGE_BOARD = 'MESSAGE_BOARD', // NEW: Global message board

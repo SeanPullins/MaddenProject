@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ALL_TEAMS } from '../constants';
+import { useTeams } from '../utils/rosterStore';
 import { Player, Team } from '../types';
 import { TrendingUp, TrendingDown, Minus, AlertCircle, Users, User, Shield, Zap, Info, Brain } from 'lucide-react';
 import { PlayerCard } from '../components/PlayerCard';
@@ -17,18 +17,35 @@ const OFFENSIVE_POSITIONS = ['QB', 'RB', 'WR', 'TE', 'OL', 'OT', 'OG', 'C'];
 const DEFENSIVE_POSITIONS = ['ED', 'DT', 'LB', 'CB', 'S'];
 
 export const PlayerComparison: React.FC = () => {
+  const ALL_TEAMS = useTeams();
   const allPlayers: Player[] = ALL_TEAMS.flatMap((team) => team.roster);
 
   // Mode selection
   const [comparisonMode, setComparisonMode] = useState<ComparisonMode>('player-vs-player');
 
   // Player vs Player state
-  const [player1, setPlayer1] = useState<Player | null>(allPlayers[0] || null);
-  const [player2, setPlayer2] = useState<Player | null>(allPlayers[1] || null);
+  const [player1Id, setPlayer1Id] = useState(allPlayers[0]?.id ?? '');
+  const [player2Id, setPlayer2Id] = useState(allPlayers[1]?.id ?? '');
+  const player1 = useMemo(
+    () => allPlayers.find((player) => player.id === player1Id) ?? allPlayers[0] ?? null,
+    [allPlayers, player1Id]
+  );
+  const player2 = useMemo(
+    () => allPlayers.find((player) => player.id === player2Id) ?? allPlayers[1] ?? null,
+    [allPlayers, player2Id]
+  );
 
   // Team vs Team state
-  const [teamA, setTeamA] = useState<Team | null>(ALL_TEAMS[0] || null);
-  const [teamB, setTeamB] = useState<Team | null>(ALL_TEAMS[1] || null);
+  const [teamAId, setTeamAId] = useState(ALL_TEAMS[0]?.id ?? '');
+  const [teamBId, setTeamBId] = useState(ALL_TEAMS[1]?.id ?? '');
+  const teamA = useMemo(
+    () => ALL_TEAMS.find((team) => team.id === teamAId) ?? ALL_TEAMS[0] ?? null,
+    [ALL_TEAMS, teamAId]
+  );
+  const teamB = useMemo(
+    () => ALL_TEAMS.find((team) => team.id === teamBId) ?? ALL_TEAMS[1] ?? null,
+    [ALL_TEAMS, teamBId]
+  );
   const [teamComparisonType, setTeamComparisonType] = useState<TeamComparisonType>('offense-vs-defense');
   const [offensiveFormation, setOffensiveFormation] = useState<Formation>(OFFENSIVE_FORMATIONS[0]);
   const [defensiveFormation, setDefensiveFormation] = useState<Formation>(DEFENSIVE_FORMATIONS[0]);
@@ -169,10 +186,7 @@ export const PlayerComparison: React.FC = () => {
               <label className="block text-slate-500 text-xs uppercase tracking-wider mb-2">Player 1</label>
               <select
                 value={player1?.id || ''}
-                onChange={(e) => {
-                  const p = allPlayers.find((p) => p.id === e.target.value);
-                  if (p) setPlayer1(p);
-                }}
+                onChange={(e) => setPlayer1Id(e.target.value)}
                 className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500"
               >
                 {allPlayers.map((p) => (
@@ -188,10 +202,7 @@ export const PlayerComparison: React.FC = () => {
               <label className="block text-slate-500 text-xs uppercase tracking-wider mb-2">Player 2</label>
               <select
                 value={player2?.id || ''}
-                onChange={(e) => {
-                  const p = allPlayers.find((p) => p.id === e.target.value);
-                  if (p) setPlayer2(p);
-                }}
+                onChange={(e) => setPlayer2Id(e.target.value)}
                 className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500"
               >
                 {allPlayers.map((p) => (
@@ -462,10 +473,7 @@ export const PlayerComparison: React.FC = () => {
                   <label className="block text-slate-600 text-xs uppercase tracking-wider mb-2">Team A</label>
                   <select
                     value={teamA?.id || ''}
-                    onChange={(e) => {
-                      const team = ALL_TEAMS.find(t => t.id === e.target.value);
-                      if (team) setTeamA(team);
-                    }}
+                    onChange={(e) => setTeamAId(e.target.value)}
                     className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500"
                   >
                     {ALL_TEAMS.map(t => (
@@ -477,10 +485,7 @@ export const PlayerComparison: React.FC = () => {
                   <label className="block text-slate-600 text-xs uppercase tracking-wider mb-2">Team B</label>
                   <select
                     value={teamB?.id || ''}
-                    onChange={(e) => {
-                      const team = ALL_TEAMS.find(t => t.id === e.target.value);
-                      if (team) setTeamB(team);
-                    }}
+                    onChange={(e) => setTeamBId(e.target.value)}
                     className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500"
                   >
                     {ALL_TEAMS.map(t => (

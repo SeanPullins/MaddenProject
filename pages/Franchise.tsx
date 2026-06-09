@@ -1,7 +1,8 @@
 import React from 'react';
-import { ALL_TEAMS } from '../constants';
+import { useTeams } from '../utils/rosterStore';
 
 export const Franchise: React.FC = () => {
+  const ALL_TEAMS = useTeams();
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <h1 className="text-4xl font-display font-bold text-white mb-8">FRANCHISE MODE</h1>

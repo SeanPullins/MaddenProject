@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ALL_TEAMS } from '../constants';
+import { useTeams } from '../utils/rosterStore';
 import { TeamLogo } from '../components/TeamLogo';
 import { FormerPlayersPanel } from '../components/FormerPlayersPanel';
 import { LeagueScoreModal } from '../components/LeagueScoreModal';
@@ -16,11 +16,16 @@ interface LeagueTeamsProps {
 const SELECTED_TEAM_KEY = 'fanleague_selected_team_id';
 
 export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
-  const [selectedTeam, setSelectedTeam] = useState(ALL_TEAMS[0]);
+  const ALL_TEAMS = useTeams();
+  const [selectedTeamId, setSelectedTeamId] = useState(ALL_TEAMS[0]?.id ?? '');
   const [showFormerPlayers, setShowFormerPlayers] = useState<boolean>(false);
   const [hoveredScore, setHoveredScore] = useState<boolean>(false);
   const [modalTeamId, setModalTeamId] = useState<string | null>(null);
   const [showAIReview, setShowAIReview] = useState<boolean>(false);
+  const selectedTeam = useMemo(
+    () => ALL_TEAMS.find((team) => team.id === selectedTeamId) ?? ALL_TEAMS[0],
+    [ALL_TEAMS, selectedTeamId]
+  );
 
   // Calculate league scores
   const leagueScores = useMemo(() => {
@@ -30,11 +35,11 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
       console.error('Failed to calculate league scores:', error);
       return [];
     }
-  }, []);
+  }, [ALL_TEAMS]);
 
   const teamScore = useMemo(() =>
-    leagueScores.find(ts => ts.teamId === selectedTeam.id),
-    [leagueScores, selectedTeam.id]
+    selectedTeam ? leagueScores.find(ts => ts.teamId === selectedTeam.id) : undefined,
+    [leagueScores, selectedTeam]
   );
 
   const handleTeamClick = (teamId: string) => {
@@ -49,6 +54,8 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
     return score?.totalScore.toFixed(1) || '0.0';
   };
 
+  if (!selectedTeam) return null;
+
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto">
       <h1 className="text-3xl sm:text-4xl font-display font-bold text-white mb-6 sm:mb-8">LEAGUE TEAMS</h1>
@@ -62,7 +69,7 @@ export const LeagueTeams: React.FC<LeagueTeamsProps> = ({ onNavigate }) => {
               {ALL_TEAMS.map((team) => (
                 <button
                   key={team.id}
-                  onClick={() => setSelectedTeam(team)}
+                  onClick={() => setSelectedTeamId(team.id)}
                   onDoubleClick={() => handleTeamClick(team.id)}
                   className={`w-full p-3 rounded-lg text-left transition-colors ${
                     selectedTeam.id === team.id

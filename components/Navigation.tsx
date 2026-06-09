@@ -1,6 +1,6 @@
 import React from 'react';
 import { Page } from '../types';
-import { Menu, X, Home, Users, UserCircle, Trophy, GitCompare, FileText, TrendingUp, Settings, MessageCircle } from 'lucide-react';
+import { Menu, X, Home, Users, UserCircle, Trophy, GitCompare, FileText, TrendingUp, Settings, MessageCircle, Sliders } from 'lucide-react';
 
 interface NavigationProps {
   currentPage: Page;
@@ -25,6 +25,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     { page: Page.DRAFTS, label: 'Drafts', icon: FileText },
     { page: Page.HIT_RATES, label: 'Hit Rates', icon: TrendingUp },
     { page: Page.MESSAGE_BOARD, label: 'Message Board', icon: MessageCircle },
+    { page: Page.CONTROL_PANEL, label: 'Control Panel', icon: Sliders },
     { page: Page.SETTINGS, label: 'Settings', icon: Settings },
   ];
 

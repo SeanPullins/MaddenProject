@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Page } from '../types';
-import { ALL_TEAMS } from '../constants';
+import { useTeams } from '../utils/rosterStore';
 import { TrendingUp, Users, Trophy, Search, GitCompare, Award, ArrowRight, Target, Info, Star, Shield, ChevronRight } from 'lucide-react';
 import { TeamLogo } from '../components/TeamLogo';
 import { calculateLeagueScores } from '../utils/leagueScoring';
@@ -11,6 +11,7 @@ interface DashboardProps {
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
+  const ALL_TEAMS = useTeams();
   const [hoveredTeamId, setHoveredTeamId] = useState<string | null>(null);
   const [modalTeamId, setModalTeamId] = useState<string | null>(null);
 
@@ -22,7 +23,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       console.error('Failed to calculate league scores:', error);
       return [];
     }
-  }, []);
+  }, [ALL_TEAMS]);
 
   const getTeamScore = (teamId: string) => {
     const score = leagueScores.find(ts => ts.teamId === teamId);
