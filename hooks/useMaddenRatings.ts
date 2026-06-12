@@ -6,6 +6,7 @@ export interface MaddenRatingInfo {
   confidence?: string;
   source?: string;
   sourceUrl?: string;
+  playerKey?: string;
   playerId?: string;
   name?: string;
   team?: string;
@@ -44,6 +45,28 @@ const emptyRatings: MaddenRatingsData = {
   unmatchedCount: 0,
   players: {},
 };
+
+const teamAliases: Record<string, string> = {
+  ARZ: 'ARI',
+  JAC: 'JAX',
+  WSH: 'WAS',
+};
+
+const normalizeName = (value = '') =>
+  value
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\b(jr|sr|ii|iii|iv|v)\b/g, '')
+    .replace(/[^a-z0-9]/g, '')
+    .trim();
+
+const normalizeTeam = (value = '') => {
+  const key = value.trim().toUpperCase();
+  return teamAliases[key] || key;
+};
+
+const getPlayerKey = (player: Player) => `${normalizeName(player.name)}|${normalizeTeam(player.team)}`;
 
 export function useMaddenRatings() {
   const [data, setData] = useState<MaddenRatingsData>(emptyRatings);
@@ -91,7 +114,7 @@ export function useMaddenRatings() {
   return useMemo(() => {
     const getRating = (player?: Player | null) => {
       if (!player) return undefined;
-      return data.players[player.id];
+      return data.players[getPlayerKey(player)] || data.players[player.id];
     };
 
     const getLiveOvr = (player?: Player | null) => {
