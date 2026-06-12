@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { User } from '@supabase/supabase-js';
-import { adminEmail, isSupabaseConfigured, supabase } from '../lib/supabaseClient';
+import { adminEmail, adminEmails, isSupabaseConfigured, supabase } from '../lib/supabaseClient';
 
 interface AdminAuthState {
   user: User | null;
@@ -8,6 +8,7 @@ interface AdminAuthState {
   configured: boolean;
   isAdmin: boolean;
   adminEmail: string;
+  adminEmails: string[];
   signIn: (email: string, password: string) => Promise<{ error?: string }>;
   signOut: () => Promise<void>;
 }
@@ -42,8 +43,8 @@ export function useAdminAuth(): AdminAuthState {
   }, []);
 
   const isAdmin = useMemo(() => {
-    if (!user?.email || !adminEmail) return false;
-    return user.email.toLowerCase().trim() === adminEmail;
+    if (!user?.email || adminEmails.length === 0) return false;
+    return adminEmails.includes(user.email.toLowerCase().trim());
   }, [user]);
 
   const signIn = async (email: string, password: string) => {
@@ -69,6 +70,7 @@ export function useAdminAuth(): AdminAuthState {
     configured: isSupabaseConfigured,
     isAdmin,
     adminEmail,
+    adminEmails,
     signIn,
     signOut,
   };
