@@ -1,7 +1,10 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+const rawSupabaseUrl = (import.meta.env.VITE_SUPABASE_URL as string | undefined) || '';
+const rawSupabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) || '';
+
+const supabaseUrl = rawSupabaseUrl.trim();
+const supabaseAnonKey = rawSupabaseAnonKey.trim();
 
 const adminEmailCsv =
   ((import.meta.env.VITE_ADMIN_EMAILS as string | undefined) ||
@@ -15,16 +18,34 @@ export const adminEmails = adminEmailCsv
 
 export const adminEmail = adminEmails[0] || '';
 
+const isValidSupabaseUrl = (() => {
+  try {
+    const url = new URL(supabaseUrl);
+    return url.protocol === 'https:' && url.hostname.endsWith('.supabase.co');
+  } catch {
+    return false;
+  }
+})();
+
 export const isSupabaseConfigured = Boolean(
-  supabaseUrl && supabaseAnonKey && adminEmails.length > 0
+  isValidSupabaseUrl && supabaseAnonKey && adminEmails.length > 0
 );
 
-export const supabase = isSupabaseConfigured
-  ? createClient(supabaseUrl!, supabaseAnonKey!, {
+function createSafeSupabaseClient(): SupabaseClient | null {
+  if (!isSupabaseConfigured) return null;
+
+  try {
+    return createClient(supabaseUrl, supabaseAnonKey, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
         detectSessionInUrl: true,
       },
-    })
-  : null;
+    });
+  } catch (error) {
+    console.error('Supabase client failed to initialize:', error);
+    return null;
+  }
+}
+
+export const supabase = createSafeSupabaseClient();
