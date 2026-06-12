@@ -55,8 +55,18 @@ const POSITIONS = new Set([
   'K', 'P', 'LS',
 ]);
 
+const NOISE_LINES = new Set([
+  'PLAYER', 'ABILITY', 'POS', 'TEAM', 'OVR', 'SPD', 'STR', 'AGI', 'COD', 'INJ', 'AWR',
+  'FILTER', 'RESET ALL', 'LEAGUES & TEAMS', 'AFC EAST', 'AFC NORTH', 'AFC SOUTH', 'AFC WEST',
+  'NFC EAST', 'NFC NORTH', 'NFC SOUTH', 'NFC WEST', 'LANGUAGE', 'BACK TO TOP', 'PRE-ORDER NOW',
+]);
+
+function clean(value = '') {
+  return String(value).replace(/\s+/g, ' ').trim();
+}
+
 function normalizeName(value = '') {
-  return String(value)
+  return clean(value)
     .toLowerCase()
     .normalize('NFKD')
     .replace(/[\u0300-\u036f]/g, '')
@@ -66,7 +76,7 @@ function normalizeName(value = '') {
 }
 
 function normalizeTeam(value = '') {
-  const key = String(value).trim().toUpperCase();
+  const key = clean(value).toUpperCase();
   return TEAM_ALIASES[key] || key;
 }
 
@@ -93,7 +103,7 @@ function getValue(row, keys) {
 
 function getName(row) {
   const direct = getValue(row, ['player', 'playerName', 'fullName', 'displayName', 'name', 'commonName', 'full_name']);
-  if (direct) return String(direct).trim();
+  if (direct) return clean(direct);
   const first = getValue(row, ['firstName', 'first_name', 'first']);
   const last = getValue(row, ['lastName', 'last_name', 'last']);
   return [first, last].filter(Boolean).join(' ').trim();
@@ -102,13 +112,13 @@ function getName(row) {
 function normalizeRatingRow(row) {
   const name = getName(row);
   const ovr = parseNumber(getValue(row, ['ovr', 'overall', 'overallRating', 'overall_rating', 'rating']));
-  if (!name || ovr === null) return null;
+  if (!name || ovr === null || ovr < 40 || ovr > 99) return null;
 
   return {
     name,
-    ability: String(getValue(row, ['ability', 'archetype', 'playerAbility', 'trait']) || '').trim() || null,
-    position: String(getValue(row, ['pos', 'position', 'positionGroup']) || '').trim() || null,
-    team: normalizeTeam(String(getValue(row, ['team', 'teamAbbr', 'teamAbbreviation', 'teamName', 'club']) || '').trim()),
+    ability: clean(getValue(row, ['ability', 'archetype', 'playerAbility', 'trait']) || '') || null,
+    position: clean(getValue(row, ['pos', 'position', 'positionGroup']) || '') || null,
+    team: normalizeTeam(clean(getValue(row, ['team', 'teamAbbr', 'teamAbbreviation', 'teamName', 'club']) || '')),
     ovr,
     spd: parseNumber(getValue(row, ['spd', 'speed'])),
     str: parseNumber(getValue(row, ['str', 'strength'])),
@@ -117,6 +127,16 @@ function normalizeRatingRow(row) {
     inj: parseNumber(getValue(row, ['inj', 'injury'])),
     awr: parseNumber(getValue(row, ['awr', 'awareness'])),
   };
+}
+
+function dedupeRows(rows) {
+  const unique = new Map();
+  for (const row of rows) {
+    if (!row?.name || row.ovr === null || row.ovr === undefined) continue;
+    const key = `${normalizeName(row.name)}|${normalizeTeam(row.team) || ''}|${String(row.position || '').toUpperCase()}`;
+    unique.set(key, row);
+  }
+  return [...unique.values()];
 }
 
 function collectArrays(value, arrays = []) {
@@ -134,21 +154,13 @@ function extractRows(json) {
   const direct = [json, json?.items, json?.results, json?.data, json?.docs, json?.players, json?.entities].filter(Array.isArray);
   const arrays = direct.length ? direct : collectArrays(json);
   const rows = [];
-
   for (const array of arrays) {
     for (const item of array) {
       const row = normalizeRatingRow(item);
       if (row) rows.push(row);
     }
   }
-
   return dedupeRows(rows);
-}
-
-function dedupeRows(rows) {
-  const unique = new Map();
-  rows.forEach((row) => unique.set(`${normalizeName(row.name)}|${normalizeTeam(row.team) || ''}|${row.position || ''}`, row));
-  return [...unique.values()];
 }
 
 async function fetchJson(url) {
@@ -188,158 +200,106 @@ async function fetchFromApiCandidate(url) {
   return rows;
 }
 
-async function fetchFromEaPage() {
-  const response = await fetch(SOURCE_URL, {
-    headers: { 'User-Agent': 'MaddenProject ratings updater (+https://seanpullins.github.io/MaddenProject/)' },
+function tokenLooksLikeName(value) {
+  const text = clean(value);
+  const upper = text.toUpperCase();
+  if (text.length < 3 || text.length > 45) return false;
+  if (!/[A-Za-z]/.test(text)) return false;
+  if (NOISE_LINES.has(upper)) return false;
+  if (POSITIONS.has(upper)) return false;
+  if (TEAM_ALIASES[upper]) return false;
+  if (/^\d+$/.test(text)) return false;
+  if (/^(showing|enter|filter|reset|buy|games|news|community|positive play|language)/i.test(text)) return false;
+  return true;
+}
+
+function lineToRow(text) {
+  const parts = clean(text).split(/\s+/).filter(Boolean);
+  if (parts.length < 5) return null;
+  const posIndex = parts.findIndex((part) => POSITIONS.has(part.toUpperCase()));
+  if (posIndex <= 0) return null;
+  const teamIndex = parts.findIndex((part, index) => index > posIndex && TEAM_ALIASES[part.toUpperCase()]);
+  if (teamIndex < 0) return null;
+  const numbers = parts.slice(teamIndex + 1).map(parseNumber).filter((value) => Number.isFinite(value));
+  if (!numbers.length) return null;
+  const name = parts.slice(0, posIndex).join(' ');
+  return normalizeRatingRow({
+    player: name,
+    pos: parts[posIndex],
+    team: parts[teamIndex],
+    ovr: numbers[0],
+    spd: numbers[1],
+    str: numbers[2],
+    agi: numbers[3],
+    cod: numbers[4],
+    inj: numbers[5],
+    awr: numbers[6],
   });
-  if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
-  const html = await response.text();
-  const matches = [...html.matchAll(/<script[^>]*type=["']application\/json["'][^>]*>([\s\S]*?)<\/script>/gi)];
+}
+
+function parseRowsFromLines(rawLines) {
+  const lines = rawLines.map(clean).filter(Boolean);
   const rows = [];
 
-  for (const match of matches) {
-    try {
-      rows.push(...extractRows(JSON.parse(match[1])));
-    } catch {
-      // Ignore unrelated JSON.
+  for (const line of lines) {
+    const parsed = lineToRow(line);
+    if (parsed) rows.push(parsed);
+  }
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const name = lines[i];
+    if (!tokenLooksLikeName(name)) continue;
+
+    const max = Math.min(lines.length, i + 18);
+    let posIndex = -1;
+    let teamIndex = -1;
+    let ovrIndex = -1;
+
+    for (let j = i + 1; j < max; j += 1) {
+      if (POSITIONS.has(lines[j].toUpperCase())) {
+        posIndex = j;
+        break;
+      }
     }
+    if (posIndex < 0) continue;
+
+    for (let j = posIndex + 1; j < max; j += 1) {
+      if (TEAM_ALIASES[lines[j].toUpperCase()]) {
+        teamIndex = j;
+        break;
+      }
+    }
+    if (teamIndex < 0) continue;
+
+    for (let j = teamIndex + 1; j < max; j += 1) {
+      const n = parseNumber(lines[j]);
+      if (Number.isFinite(n) && n >= 40 && n <= 99) {
+        ovrIndex = j;
+        break;
+      }
+    }
+    if (ovrIndex < 0) continue;
+
+    const numbers = lines.slice(ovrIndex, Math.min(lines.length, ovrIndex + 8)).map(parseNumber).filter((value) => Number.isFinite(value));
+    const ability = lines.slice(i + 1, posIndex).filter((line) => !NOISE_LINES.has(line.toUpperCase())).join(' ') || null;
+
+    const parsed = normalizeRatingRow({
+      player: name,
+      ability,
+      pos: lines[posIndex],
+      team: lines[teamIndex],
+      ovr: numbers[0],
+      spd: numbers[1],
+      str: numbers[2],
+      agi: numbers[3],
+      cod: numbers[4],
+      inj: numbers[5],
+      awr: numbers[6],
+    });
+    if (parsed) rows.push(parsed);
   }
 
   return dedupeRows(rows);
-}
-
-async function clickExactText(page, text) {
-  const locator = page.getByText(text, { exact: true }).last();
-  if (!(await locator.count())) return false;
-  try {
-    await locator.scrollIntoViewIfNeeded({ timeout: 2000 });
-    await locator.click({ timeout: 3000 });
-    await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
-    await page.waitForTimeout(750);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-async function revealPaginatedRows(page) {
-  for (let pageNumber = 2; pageNumber <= 25; pageNumber += 1) {
-    await clickExactText(page, String(pageNumber));
-  }
-
-  for (let i = 0; i < 10; i += 1) {
-    await page.mouse.wheel(0, 1800).catch(() => {});
-    await page.waitForTimeout(500);
-  }
-}
-
-async function scrapeRowsFromDom(page) {
-  const rawRows = await page.evaluate(({ teamAliases, positions }) => {
-    const positionSet = new Set(positions);
-    const teamMap = teamAliases;
-    const seen = new Set();
-
-    function isElement(value) {
-      return value && value.nodeType === Node.ELEMENT_NODE;
-    }
-
-    function queryAllDeep(selector, root = document) {
-      const results = [];
-      const visit = (node) => {
-        if (!node) return;
-        if (node.querySelectorAll) {
-          results.push(...node.querySelectorAll(selector));
-        }
-        const elements = node.querySelectorAll ? [...node.querySelectorAll('*')] : [];
-        for (const element of elements) {
-          if (element.shadowRoot) visit(element.shadowRoot);
-        }
-      };
-      visit(root);
-      return results;
-    }
-
-    function clean(value) {
-      return String(value || '').replace(/\s+/g, ' ').trim();
-    }
-
-    function teamCode(value) {
-      const key = clean(value).toUpperCase();
-      return teamMap[key] || (key.length <= 4 ? key : '');
-    }
-
-    function parseCells(cells) {
-      const cleaned = cells.map(clean).filter(Boolean);
-      if (cleaned.length < 5) return null;
-
-      const posIndex = cleaned.findIndex((cell) => positionSet.has(cell.toUpperCase()));
-      if (posIndex <= 0) return null;
-
-      const teamIndex = cleaned.findIndex((cell, index) => index > posIndex && teamCode(cell));
-      if (teamIndex < 0) return null;
-
-      const ovrIndex = cleaned.findIndex((cell, index) => index > teamIndex && /^\d{2}$/.test(cell));
-      if (ovrIndex < 0) return null;
-
-      const name = cleaned[0];
-      const ability = cleaned.slice(1, posIndex).join(' ') || null;
-      const numbers = cleaned.slice(ovrIndex).map((value) => Number(value.replace(/[^0-9.-]/g, ''))).filter(Number.isFinite);
-      if (!name || !numbers.length) return null;
-
-      return {
-        name,
-        ability,
-        position: cleaned[posIndex],
-        team: teamCode(cleaned[teamIndex]),
-        ovr: numbers[0] ?? null,
-        spd: numbers[1] ?? null,
-        str: numbers[2] ?? null,
-        agi: numbers[3] ?? null,
-        cod: numbers[4] ?? null,
-        inj: numbers[5] ?? null,
-        awr: numbers[6] ?? null,
-      };
-    }
-
-    function cellsFromRow(row) {
-      const selectors = [
-        'td',
-        'th',
-        '[role="cell"]',
-        '[role="gridcell"]',
-        '[class*="cell" i]',
-        '[class*="column" i]',
-      ];
-      const cellNodes = selectors.flatMap((selector) => [...row.querySelectorAll(selector)]);
-      const uniqueNodes = [...new Set(cellNodes)].filter(isElement);
-      const cells = uniqueNodes.map((node) => node.innerText || node.textContent || '').map(clean).filter(Boolean);
-      if (cells.length >= 5) return cells;
-      return clean(row.innerText || row.textContent || '').split('\n').map(clean).filter(Boolean);
-    }
-
-    const rowSelectors = [
-      'tr',
-      '[role="row"]',
-      '[class*="row" i]',
-      '[class*="player" i]',
-    ].join(',');
-
-    const rowElements = queryAllDeep(rowSelectors);
-    const rows = [];
-
-    for (const row of rowElements) {
-      const parsed = parseCells(cellsFromRow(row));
-      if (!parsed || parsed.ovr === null) continue;
-      const key = `${parsed.name}|${parsed.team}|${parsed.position}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      rows.push(parsed);
-    }
-
-    return rows;
-  }, { teamAliases: TEAM_ALIASES, positions: [...POSITIONS] });
-
-  return dedupeRows(rawRows.map(normalizeRatingRow).filter(Boolean));
 }
 
 async function fetchFromPlaywright() {
@@ -347,75 +307,98 @@ async function fetchFromPlaywright() {
   try {
     playwright = await import('playwright');
   } catch (error) {
-    throw new Error(`Playwright fallback unavailable: ${error.message}`);
+    throw new Error(`Playwright unavailable: ${error.message}`);
   }
 
   const { chromium } = playwright;
-  const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({
-    viewport: { width: 1440, height: 1400 },
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36',
+  const browser = await chromium.launch({
+    headless: true,
+    args: ['--disable-blink-features=AutomationControlled', '--no-sandbox'],
   });
+
+  const context = await browser.newContext({
+    viewport: { width: 1600, height: 1800 },
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36',
+    locale: 'en-US',
+  });
+
   const page = await context.newPage();
-  const batches = [];
+  const responseRows = [];
   const discoveredUrls = new Set();
 
   page.on('response', async (response) => {
     try {
       const url = response.url();
       const contentType = response.headers()['content-type'] || '';
-      const shouldInspect = contentType.includes('json') || /rating|madden|player|drop|api|graphql/i.test(url);
-      if (!shouldInspect) return;
-
+      if (!contentType.includes('json') && !/rating|madden|player|drop|api|graphql/i.test(url)) return;
       const text = await response.text();
-      let json;
-      try {
-        json = JSON.parse(text);
-      } catch {
-        return;
-      }
-
+      const json = JSON.parse(text);
       const rows = extractRows(json);
       if (rows.length) {
-        batches.push({ url, rows });
+        responseRows.push(...rows);
         discoveredUrls.add(url);
-        console.log(`Discovered ${rows.length} Madden rows from ${url}`);
+        console.log(`Captured ${rows.length} rows from ${url}`);
       }
     } catch {
-      // Ignore noisy page assets.
+      // Most page assets are unrelated. Ignore them.
     }
   });
 
   try {
-    await page.goto(SOURCE_URL, { waitUntil: 'domcontentloaded', timeout: 60000 });
-    await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-    await page.waitForTimeout(3000);
-    await revealPaginatedRows(page);
+    await page.goto(SOURCE_URL, { waitUntil: 'domcontentloaded', timeout: 90000 });
 
-    let rows = dedupeRows(batches.flatMap((batch) => batch.rows));
-    let sourceUrl = batches.find((batch) => batch.rows.length)?.url || SOURCE_URL;
+    for (const text of ['Accept All Cookies', 'Accept All', 'I Accept', 'Accept']) {
+      await page.getByRole('button', { name: new RegExp(text, 'i') }).click({ timeout: 1500 }).catch(() => {});
+    }
+
+    await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+    await page.waitForTimeout(5000);
+
+    for (let i = 0; i < 14; i += 1) {
+      await page.mouse.wheel(0, 1800).catch(() => {});
+      await page.waitForTimeout(400);
+    }
+
+    for (let pageNumber = 2; pageNumber <= 21; pageNumber += 1) {
+      await page.getByText(String(pageNumber), { exact: true }).click({ timeout: 1200 }).catch(() => {});
+      await page.waitForTimeout(600);
+    }
+
+    let rows = dedupeRows(responseRows);
+    let sourceUrl = discoveredUrls.values().next().value || SOURCE_URL;
 
     for (const url of discoveredUrls) {
+      if (!/[?&](offset|page|limit)=/i.test(url)) continue;
       try {
-        if (!/[?&](offset|page|limit)=/i.test(url)) continue;
         const candidateRows = await fetchFromApiCandidate(url);
         if (candidateRows.length > rows.length) {
           rows = candidateRows;
           sourceUrl = url;
         }
       } catch {
-        // Continue with collected browser responses.
+        // Keep browser-captured rows.
       }
     }
 
-    const domRows = await scrapeRowsFromDom(page);
-    if (domRows.length > rows.length) {
-      rows = domRows;
+    const visibleText = await page.locator('body').innerText({ timeout: 10000 }).catch(() => '');
+    const visibleRows = parseRowsFromLines(visibleText.split('\n'));
+    if (visibleRows.length > rows.length) {
+      rows = visibleRows;
       sourceUrl = SOURCE_URL;
     }
 
+    const elementTexts = await page.evaluate(() => Array.from(document.querySelectorAll('*'))
+      .map((element) => element.innerText || element.textContent || '')
+      .filter(Boolean));
+    const elementRows = parseRowsFromLines(elementTexts.flatMap((text) => String(text).split('\n')));
+    if (elementRows.length > rows.length) {
+      rows = elementRows;
+      sourceUrl = SOURCE_URL;
+    }
+
+    console.log(`Browser scraper found ${rows.length} usable Madden rating rows.`);
     if (rows.length > 100) return { rows, sourceUrl };
-    throw new Error(`Playwright only found ${rows.length} usable ratings rows`);
+    throw new Error(`Browser scraper only found ${rows.length} usable rows.`);
   } finally {
     await browser.close();
   }
@@ -432,14 +415,6 @@ async function fetchRatings() {
     } catch (error) {
       errors.push(`${url}: ${error.message}`);
     }
-  }
-
-  try {
-    const rows = await fetchFromEaPage();
-    if (rows.length > 100) return { rows, sourceUrl: SOURCE_URL };
-    errors.push(`${SOURCE_URL}: only ${rows.length} usable rows from static HTML`);
-  } catch (error) {
-    errors.push(`${SOURCE_URL}: ${error.message}`);
   }
 
   try {
@@ -552,6 +527,12 @@ async function main() {
     matchedCount,
     unmatchedCount: rosterPlayers.length - matchedCount,
     players,
+    sampleSourceRatings: rows.slice(0, 8).map((row) => ({
+      name: row.name,
+      team: row.team,
+      position: row.position,
+      ovr: row.ovr,
+    })),
   };
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
