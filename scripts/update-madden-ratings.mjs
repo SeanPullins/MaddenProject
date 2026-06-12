@@ -49,6 +49,12 @@ const TEAM_ALIASES = {
   WAS: 'WAS', WSH: 'WAS', COMMANDERS: 'WAS', 'WASHINGTON COMMANDERS': 'WAS',
 };
 
+const POSITIONS = new Set([
+  'QB', 'HB', 'RB', 'FB', 'WR', 'TE', 'LT', 'LG', 'C', 'RG', 'RT', 'OL', 'OT', 'OG',
+  'LE', 'RE', 'DE', 'DT', 'LOLB', 'ROLB', 'OLB', 'MLB', 'ILB', 'LB', 'CB', 'FS', 'SS', 'S',
+  'K', 'P', 'LS',
+]);
+
 function normalizeName(value = '') {
   return String(value)
     .toLowerCase()
@@ -136,8 +142,12 @@ function extractRows(json) {
     }
   }
 
+  return dedupeRows(rows);
+}
+
+function dedupeRows(rows) {
   const unique = new Map();
-  rows.forEach((row) => unique.set(`${normalizeName(row.name)}|${row.team || ''}|${row.position || ''}`, row));
+  rows.forEach((row) => unique.set(`${normalizeName(row.name)}|${normalizeTeam(row.team) || ''}|${row.position || ''}`, row));
   return [...unique.values()];
 }
 
@@ -168,7 +178,7 @@ async function fetchFromApiCandidate(url) {
     try {
       const pageRows = extractRows(await fetchJson(setOffset(url, offset)));
       if (!pageRows.length) break;
-      rows = rows.concat(pageRows);
+      rows = dedupeRows(rows.concat(pageRows));
       offset += limit;
     } catch {
       break;
@@ -195,7 +205,220 @@ async function fetchFromEaPage() {
     }
   }
 
-  return rows;
+  return dedupeRows(rows);
+}
+
+async function clickExactText(page, text) {
+  const locator = page.getByText(text, { exact: true }).last();
+  if (!(await locator.count())) return false;
+  try {
+    await locator.scrollIntoViewIfNeeded({ timeout: 2000 });
+    await locator.click({ timeout: 3000 });
+    await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
+    await page.waitForTimeout(750);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function revealPaginatedRows(page) {
+  for (let pageNumber = 2; pageNumber <= 25; pageNumber += 1) {
+    await clickExactText(page, String(pageNumber));
+  }
+
+  for (let i = 0; i < 10; i += 1) {
+    await page.mouse.wheel(0, 1800).catch(() => {});
+    await page.waitForTimeout(500);
+  }
+}
+
+async function scrapeRowsFromDom(page) {
+  const rawRows = await page.evaluate(({ teamAliases, positions }) => {
+    const positionSet = new Set(positions);
+    const teamMap = teamAliases;
+    const seen = new Set();
+
+    function isElement(value) {
+      return value && value.nodeType === Node.ELEMENT_NODE;
+    }
+
+    function queryAllDeep(selector, root = document) {
+      const results = [];
+      const visit = (node) => {
+        if (!node) return;
+        if (node.querySelectorAll) {
+          results.push(...node.querySelectorAll(selector));
+        }
+        const elements = node.querySelectorAll ? [...node.querySelectorAll('*')] : [];
+        for (const element of elements) {
+          if (element.shadowRoot) visit(element.shadowRoot);
+        }
+      };
+      visit(root);
+      return results;
+    }
+
+    function clean(value) {
+      return String(value || '').replace(/\s+/g, ' ').trim();
+    }
+
+    function teamCode(value) {
+      const key = clean(value).toUpperCase();
+      return teamMap[key] || (key.length <= 4 ? key : '');
+    }
+
+    function parseCells(cells) {
+      const cleaned = cells.map(clean).filter(Boolean);
+      if (cleaned.length < 5) return null;
+
+      const posIndex = cleaned.findIndex((cell) => positionSet.has(cell.toUpperCase()));
+      if (posIndex <= 0) return null;
+
+      const teamIndex = cleaned.findIndex((cell, index) => index > posIndex && teamCode(cell));
+      if (teamIndex < 0) return null;
+
+      const ovrIndex = cleaned.findIndex((cell, index) => index > teamIndex && /^\d{2}$/.test(cell));
+      if (ovrIndex < 0) return null;
+
+      const name = cleaned[0];
+      const ability = cleaned.slice(1, posIndex).join(' ') || null;
+      const numbers = cleaned.slice(ovrIndex).map((value) => Number(value.replace(/[^0-9.-]/g, ''))).filter(Number.isFinite);
+      if (!name || !numbers.length) return null;
+
+      return {
+        name,
+        ability,
+        position: cleaned[posIndex],
+        team: teamCode(cleaned[teamIndex]),
+        ovr: numbers[0] ?? null,
+        spd: numbers[1] ?? null,
+        str: numbers[2] ?? null,
+        agi: numbers[3] ?? null,
+        cod: numbers[4] ?? null,
+        inj: numbers[5] ?? null,
+        awr: numbers[6] ?? null,
+      };
+    }
+
+    function cellsFromRow(row) {
+      const selectors = [
+        'td',
+        'th',
+        '[role="cell"]',
+        '[role="gridcell"]',
+        '[class*="cell" i]',
+        '[class*="column" i]',
+      ];
+      const cellNodes = selectors.flatMap((selector) => [...row.querySelectorAll(selector)]);
+      const uniqueNodes = [...new Set(cellNodes)].filter(isElement);
+      const cells = uniqueNodes.map((node) => node.innerText || node.textContent || '').map(clean).filter(Boolean);
+      if (cells.length >= 5) return cells;
+      return clean(row.innerText || row.textContent || '').split('\n').map(clean).filter(Boolean);
+    }
+
+    const rowSelectors = [
+      'tr',
+      '[role="row"]',
+      '[class*="row" i]',
+      '[class*="player" i]',
+    ].join(',');
+
+    const rowElements = queryAllDeep(rowSelectors);
+    const rows = [];
+
+    for (const row of rowElements) {
+      const parsed = parseCells(cellsFromRow(row));
+      if (!parsed || parsed.ovr === null) continue;
+      const key = `${parsed.name}|${parsed.team}|${parsed.position}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      rows.push(parsed);
+    }
+
+    return rows;
+  }, { teamAliases: TEAM_ALIASES, positions: [...POSITIONS] });
+
+  return dedupeRows(rawRows.map(normalizeRatingRow).filter(Boolean));
+}
+
+async function fetchFromPlaywright() {
+  let playwright;
+  try {
+    playwright = await import('playwright');
+  } catch (error) {
+    throw new Error(`Playwright fallback unavailable: ${error.message}`);
+  }
+
+  const { chromium } = playwright;
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 1400 },
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36',
+  });
+  const page = await context.newPage();
+  const batches = [];
+  const discoveredUrls = new Set();
+
+  page.on('response', async (response) => {
+    try {
+      const url = response.url();
+      const contentType = response.headers()['content-type'] || '';
+      const shouldInspect = contentType.includes('json') || /rating|madden|player|drop|api|graphql/i.test(url);
+      if (!shouldInspect) return;
+
+      const text = await response.text();
+      let json;
+      try {
+        json = JSON.parse(text);
+      } catch {
+        return;
+      }
+
+      const rows = extractRows(json);
+      if (rows.length) {
+        batches.push({ url, rows });
+        discoveredUrls.add(url);
+        console.log(`Discovered ${rows.length} Madden rows from ${url}`);
+      }
+    } catch {
+      // Ignore noisy page assets.
+    }
+  });
+
+  try {
+    await page.goto(SOURCE_URL, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+    await page.waitForTimeout(3000);
+    await revealPaginatedRows(page);
+
+    let rows = dedupeRows(batches.flatMap((batch) => batch.rows));
+    let sourceUrl = batches.find((batch) => batch.rows.length)?.url || SOURCE_URL;
+
+    for (const url of discoveredUrls) {
+      try {
+        if (!/[?&](offset|page|limit)=/i.test(url)) continue;
+        const candidateRows = await fetchFromApiCandidate(url);
+        if (candidateRows.length > rows.length) {
+          rows = candidateRows;
+          sourceUrl = url;
+        }
+      } catch {
+        // Continue with collected browser responses.
+      }
+    }
+
+    const domRows = await scrapeRowsFromDom(page);
+    if (domRows.length > rows.length) {
+      rows = domRows;
+      sourceUrl = SOURCE_URL;
+    }
+
+    if (rows.length > 100) return { rows, sourceUrl };
+    throw new Error(`Playwright only found ${rows.length} usable ratings rows`);
+  } finally {
+    await browser.close();
+  }
 }
 
 async function fetchRatings() {
@@ -214,9 +437,15 @@ async function fetchRatings() {
   try {
     const rows = await fetchFromEaPage();
     if (rows.length > 100) return { rows, sourceUrl: SOURCE_URL };
-    errors.push(`${SOURCE_URL}: only ${rows.length} usable rows`);
+    errors.push(`${SOURCE_URL}: only ${rows.length} usable rows from static HTML`);
   } catch (error) {
     errors.push(`${SOURCE_URL}: ${error.message}`);
+  }
+
+  try {
+    return await fetchFromPlaywright();
+  } catch (error) {
+    errors.push(`Playwright browser fallback: ${error.message}`);
   }
 
   throw new Error(`Unable to pull Madden ratings. Tried:\n${errors.join('\n')}`);
