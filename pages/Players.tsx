@@ -4,6 +4,7 @@ import { useTeams } from '../utils/rosterStore';
 import { Player } from '../types';
 import { Star, Award, Users, UserCheck } from 'lucide-react';
 import { PlayerCard } from '../components/PlayerCard';
+import { useLivePlayerData } from '../hooks/useLivePlayerData';
 
 // Tier classification
 type PlayerTier = 'Elite' | 'Starter' | 'Solid' | 'Depth';
@@ -54,6 +55,8 @@ const getTierConfig = (tier: PlayerTier) => {
 
 export const Players: React.FC = () => {
   const ALL_TEAMS = useTeams();
+  const livePlayerData = useLivePlayerData();
+
   const [positionFilter, setPositionFilter] = useState<string>('ALL');
   const [tierFilter, setTierFilter] = useState<string>('ALL');
   const [teamFilter, setTeamFilter] = useState<string>('ALL');
@@ -65,7 +68,7 @@ export const Players: React.FC = () => {
   const allPlayers: Player[] = ALL_TEAMS.flatMap((team) => team.roster);
 
   // Get unique NFL teams
-  const nflTeams = Array.from(new Set(allPlayers.map(p => p.team))).sort();
+  const nflTeams = Array.from(new Set(allPlayers.map((p) => p.team))).sort();
 
   // Filter players
   const filteredPlayers = allPlayers.filter((player) => {
@@ -73,10 +76,12 @@ export const Players: React.FC = () => {
     const matchesSearch = player.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesTier = tierFilter === 'ALL' || getPlayerTier(player.ovr) === tierFilter;
     const matchesTeam = teamFilter === 'ALL' || player.team === teamFilter;
-    const matchesDepth = depthFilter === 'ALL' ||
+    const matchesDepth =
+      depthFilter === 'ALL' ||
       (depthFilter === 'STARTER' && player.depthOrder === 1) ||
       (depthFilter === 'BACKUP' && player.depthOrder === 2) ||
       (depthFilter === 'DEPTH' && player.depthOrder && player.depthOrder > 2);
+
     return matchesPosition && matchesSearch && matchesTier && matchesTeam && matchesDepth;
   });
 
@@ -102,6 +107,7 @@ export const Players: React.FC = () => {
         {(['Elite', 'Starter', 'Solid', 'Depth'] as PlayerTier[]).map((tier) => {
           const config = getTierConfig(tier);
           const Icon = config.icon;
+
           return (
             <div
               key={tier}
@@ -136,6 +142,7 @@ export const Players: React.FC = () => {
               className="w-full px-4 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-brand-500"
             />
           </div>
+
           <div>
             <label className="block text-slate-400 text-sm mb-2">Position</label>
             <select
@@ -151,6 +158,7 @@ export const Players: React.FC = () => {
               ))}
             </select>
           </div>
+
           <div>
             <label className="block text-slate-400 text-sm mb-2">Player Tier</label>
             <select
@@ -166,6 +174,7 @@ export const Players: React.FC = () => {
             </select>
           </div>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-slate-400 text-sm mb-2">NFL Team</label>
@@ -182,6 +191,7 @@ export const Players: React.FC = () => {
               ))}
             </select>
           </div>
+
           <div>
             <label className="block text-slate-400 text-sm mb-2">Depth Chart</label>
             <select
@@ -201,7 +211,8 @@ export const Players: React.FC = () => {
       {/* Player Count */}
       <div className="mb-4">
         <p className="text-slate-400">
-          Showing <span className="text-white font-bold">{sortedPlayers.length}</span> of {allPlayers.length} players
+          Showing <span className="text-white font-bold">{sortedPlayers.length}</span> of{' '}
+          {allPlayers.length} players
         </p>
       </div>
 
@@ -220,6 +231,7 @@ export const Players: React.FC = () => {
                 <th className="text-left py-4 px-4 text-slate-400 font-medium">Draft</th>
               </tr>
             </thead>
+
             <tbody>
               {sortedPlayers.map((player, index) => {
                 const tier = getPlayerTier(player.ovr);
@@ -244,6 +256,7 @@ export const Players: React.FC = () => {
                         #{index + 1}
                       </span>
                     </td>
+
                     <td className="py-4 px-4">
                       <span
                         className={`font-medium ${
@@ -253,23 +266,30 @@ export const Players: React.FC = () => {
                         {player.name}
                       </span>
                     </td>
+
                     <td className="py-4 px-4">
                       <span className="px-2 py-1 bg-slate-900 text-slate-300 rounded text-sm font-medium">
                         {player.position}
                       </span>
                     </td>
+
                     <td className="py-4 px-4 text-slate-300 text-sm">{player.team}</td>
+
                     <td className="py-4 px-4">
-                      <span className={`inline-block px-3 py-1.5 rounded-lg font-bold text-sm ${tierConfig.color}`}>
+                      <span
+                        className={`inline-block px-3 py-1.5 rounded-lg font-bold text-sm ${tierConfig.color}`}
+                      >
                         {player.ovr}
                       </span>
                     </td>
+
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-2">
                         <TierIcon size={16} className="text-slate-500" />
                         <span className="text-slate-300 text-sm font-medium">{tier}</span>
                       </div>
                     </td>
+
                     <td className="py-4 px-4 text-slate-400 text-sm">{player.draftRound}</td>
                   </tr>
                 );
@@ -283,6 +303,7 @@ export const Players: React.FC = () => {
       {selectedPlayer && (
         <PlayerCard
           player={selectedPlayer}
+          live={livePlayerData?.players[selectedPlayer.name]}
           onClose={() => setSelectedPlayer(null)}
         />
       )}
