@@ -3,7 +3,8 @@ name: Update Madden Ratings
 on:
   workflow_dispatch:
   schedule:
-    - cron: '23 */6 * * *'
+    # Runs every 3 days at 10:23 UTC. GitHub Pages redeploys after this workflow pushes a changed ratings file.
+    - cron: '23 10 */3 * *'
   push:
     paths:
       - 'scripts/update-madden-ratings.mjs'
@@ -32,9 +33,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
 
       - name: Pull latest Madden ratings
         env:
