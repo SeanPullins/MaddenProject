@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navigation } from './components/Navigation';
+import { AdminGate } from './components/AdminGate';
 import { Landing } from './pages/Landing';
 import { Dashboard } from './pages/Dashboard';
 import { Franchise } from './pages/Franchise';
@@ -10,7 +11,7 @@ import { Players } from './pages/Players';
 import { Standings } from './pages/Standings';
 import { PlayerComparison } from './pages/PlayerComparison';
 import { Drafts } from './pages/Drafts';
-import { HitRates } from './pages/HitRates'; // Added
+import { HitRates } from './pages/HitRates';
 import { Settings } from './pages/Settings';
 import { ControlPanel } from './pages/ControlPanel';
 import { Page } from './types';
@@ -39,11 +40,16 @@ const App: React.FC = () => {
       case Page.MY_TEAM: return <MyTeam />;
       case Page.PLAYERS: return <Players />;
       case Page.DRAFTS: return <Drafts />;
-      case Page.HIT_RATES: return <HitRates />; // Added
+      case Page.HIT_RATES: return <HitRates />;
       case Page.STANDINGS: return <Standings />;
       case Page.COMPARISON: return <PlayerComparison />;
       case Page.SETTINGS: return <Settings />;
-      case Page.CONTROL_PANEL: return <ControlPanel />;
+      case Page.CONTROL_PANEL:
+        return (
+          <AdminGate>
+            <ControlPanel />
+          </AdminGate>
+        );
       default: return <Dashboard onNavigate={setCurrentPage} />;
     }
   };
