@@ -1,18 +1,21 @@
 /**
  * Roster Store — single source of truth for team/player data.
  *
- * Base data comes from constants.ts. Edits made in the Control Panel are
- * stored as a sparse "overrides" patch in localStorage and merged on read,
- * so code-level roster updates and website edits coexist safely.
+ * Base data comes from constants.ts. Commissioner edits are stored as sparse
+ * overrides. Overrides are cached in localStorage and, when Supabase is
+ * configured, synced through the league_roster_overrides table so every viewer
+ * sees the official commissioner-approved roster.
  *
  * All pages should consume teams via useTeams() (or getMergedTeams() outside
  * React) so OVR updates propagate instantly to Standings, Players, etc.
  */
-import { useSyncExternalStore } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import { ALL_TEAMS } from '../constants';
 import { Player, Team } from '../types';
+import { supabase } from '../lib/supabaseClient';
 
 const OVERRIDES_KEY = 'fanleague_roster_overrides_v1';
+const REMOTE_ROW_ID = 'main';
 
 export interface PlayerPatch {
   name?: string;
@@ -35,32 +38,100 @@ export interface RosterOverrides {
 
 const EMPTY: RosterOverrides = { patches: {}, added: {}, removed: [] };
 
+const normalizeOverrides = (value: any): RosterOverrides => ({
+  patches: value?.patches ?? {},
+  added: value?.added ?? {},
+  removed: Array.isArray(value?.removed) ? value.removed : [],
+  updatedAt: value?.updatedAt,
+});
+
+const cloneOverrides = (value: RosterOverrides): RosterOverrides => ({
+  patches: { ...value.patches },
+  added: Object.fromEntries(Object.entries(value.added).map(([teamId, players]) => [teamId, [...players]])),
+  removed: [...value.removed],
+  updatedAt: value.updatedAt,
+});
+
 // ----- persistence -----
-const loadOverrides = (): RosterOverrides => {
+const loadLocalOverrides = (): RosterOverrides => {
   try {
     const raw = localStorage.getItem(OVERRIDES_KEY);
     if (!raw) return EMPTY;
-    const parsed = JSON.parse(raw);
-    return {
-      patches: parsed.patches ?? {},
-      added: parsed.added ?? {},
-      removed: parsed.removed ?? [],
-      updatedAt: parsed.updatedAt,
-    };
+    return normalizeOverrides(JSON.parse(raw));
   } catch {
     return EMPTY;
   }
 };
 
-let overrides: RosterOverrides = typeof window !== 'undefined' ? loadOverrides() : EMPTY;
+let overrides: RosterOverrides = typeof window !== 'undefined' ? loadLocalOverrides() : EMPTY;
 let mergedCache: Team[] | null = null;
+let remoteLoaded = false;
+let remoteLoading = false;
 const listeners = new Set<() => void>();
+
+const emit = () => {
+  mergedCache = null;
+  listeners.forEach((l) => l());
+};
+
+const saveLocalOverrides = () => {
+  localStorage.setItem(OVERRIDES_KEY, JSON.stringify(overrides));
+};
+
+const saveRemoteOverrides = async (snapshot: RosterOverrides) => {
+  if (!supabase) return;
+
+  const { error } = await supabase
+    .from('league_roster_overrides')
+    .update({
+      data: snapshot,
+      updated_at: snapshot.updatedAt ?? new Date().toISOString(),
+    })
+    .eq('id', REMOTE_ROW_ID);
+
+  if (error) {
+    console.warn('Could not sync roster overrides to Supabase:', error.message);
+  }
+};
+
+const loadRemoteOverrides = async () => {
+  if (!supabase || remoteLoaded || remoteLoading) return;
+
+  remoteLoading = true;
+
+  const { data, error } = await supabase
+    .from('league_roster_overrides')
+    .select('data, updated_at')
+    .eq('id', REMOTE_ROW_ID)
+    .maybeSingle();
+
+  remoteLoading = false;
+  remoteLoaded = true;
+
+  if (error || !data?.data) {
+    if (error) console.warn('Could not load Supabase roster overrides:', error.message);
+    return;
+  }
+
+  overrides = normalizeOverrides({
+    ...data.data,
+    updatedAt: data.data.updatedAt ?? data.updated_at,
+  });
+
+  saveLocalOverrides();
+  emit();
+};
+
+export const refreshRosterOverrides = async () => {
+  remoteLoaded = false;
+  await loadRemoteOverrides();
+};
 
 const persist = () => {
   overrides.updatedAt = new Date().toISOString();
-  localStorage.setItem(OVERRIDES_KEY, JSON.stringify(overrides));
-  mergedCache = null;
-  listeners.forEach((l) => l());
+  saveLocalOverrides();
+  emit();
+  void saveRemoteOverrides(cloneOverrides(overrides));
 };
 
 // ----- merge -----
@@ -90,11 +161,21 @@ const subscribe = (cb: () => void) => {
 };
 
 /** React hook: live-updating merged teams. Drop-in replacement for ALL_TEAMS. */
-export const useTeams = (): Team[] =>
-  useSyncExternalStore(subscribe, getMergedTeams, getMergedTeams);
+export const useTeams = (): Team[] => {
+  useEffect(() => {
+    void loadRemoteOverrides();
+  }, []);
 
-export const useOverrides = (): RosterOverrides =>
-  useSyncExternalStore(subscribe, () => overrides, () => overrides);
+  return useSyncExternalStore(subscribe, getMergedTeams, getMergedTeams);
+};
+
+export const useOverrides = (): RosterOverrides => {
+  useEffect(() => {
+    void loadRemoteOverrides();
+  }, []);
+
+  return useSyncExternalStore(subscribe, () => overrides, () => overrides);
+};
 
 // ----- mutations (used by Control Panel) -----
 export const updatePlayer = (playerId: string, patch: PlayerPatch): void => {
