@@ -6,12 +6,14 @@ interface LandingProps {
 }
 
 export const Landing: React.FC<LandingProps> = ({ onNavigate }) => {
+  const landingImageUrl = `${import.meta.env.BASE_URL}LandingPage.jpg`;
+
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col">
       {/* Hero Section */}
       <div className="relative w-full">
         <img
-          src="/LandingPage.jpg"
+          src={landingImageUrl}
           alt="Madden Fantasy Football"
           className="w-full h-[60vh] md:h-[70vh] object-cover"
         />
