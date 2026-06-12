@@ -49,6 +49,13 @@ export interface LivePlayerInfo {
   rosterStatusNote?: string;
   availabilityNote?: string;
 
+  latestNews?: {
+    title: string;
+    source?: string;
+    url: string;
+    publishedAt?: string;
+  }[];
+
   newsLinks?: {
     googleNewsUrl?: string;
     espnUrl?: string;
