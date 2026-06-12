@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "source": "EA Madden Ratings",
+  "sourceUrl": "https://www.ea.com/games/madden-nfl/ratings",
+  "updatedAt": "",
+  "totalSourceRatings": 0,
+  "rosterPlayerCount": 0,
+  "matchedCount": 0,
+  "unmatchedCount": 0,
+  "players": {}
+}
