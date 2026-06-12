@@ -6,6 +6,7 @@ const CONSTANTS_PATH = path.join(ROOT, 'constants.ts');
 const OUT_DIR = path.join(ROOT, 'public', 'data');
 const OUT_FILE = path.join(OUT_DIR, 'madden-ratings.json');
 const SOURCE_URL = 'https://www.ea.com/games/madden-nfl/ratings';
+const TEAM_SOURCE_BASE = 'https://www.ea.com/games/madden-nfl/ratings/teams-ratings';
 
 const API_CANDIDATES = [
   process.env.MADDEN_RATINGS_API_URL,
@@ -13,6 +14,41 @@ const API_CANDIDATES = [
   'https://drop-api.ea.com/rating/madden-nfl?locale=en&limit=100&offset=0',
   'https://drop-api.ea.com/rating/madden-nfl-25?locale=en&limit=100&offset=0',
 ].filter(Boolean);
+
+const TEAM_PAGES = [
+  ['ARI', 'Arizona Cardinals', 'arizona-cardinals'],
+  ['ATL', 'Atlanta Falcons', 'atlanta-falcons'],
+  ['BAL', 'Baltimore Ravens', 'baltimore-ravens'],
+  ['BUF', 'Buffalo Bills', 'buffalo-bills'],
+  ['CAR', 'Carolina Panthers', 'carolina-panthers'],
+  ['CHI', 'Chicago Bears', 'chicago-bears'],
+  ['CIN', 'Cincinnati Bengals', 'cincinnati-bengals'],
+  ['CLE', 'Cleveland Browns', 'cleveland-browns'],
+  ['DAL', 'Dallas Cowboys', 'dallas-cowboys'],
+  ['DEN', 'Denver Broncos', 'denver-broncos'],
+  ['DET', 'Detroit Lions', 'detroit-lions'],
+  ['GB', 'Green Bay Packers', 'green-bay-packers'],
+  ['HOU', 'Houston Texans', 'houston-texans'],
+  ['IND', 'Indianapolis Colts', 'indianapolis-colts'],
+  ['JAX', 'Jacksonville Jaguars', 'jacksonville-jaguars'],
+  ['KC', 'Kansas City Chiefs', 'kansas-city-chiefs'],
+  ['LV', 'Las Vegas Raiders', 'las-vegas-raiders'],
+  ['LAC', 'Los Angeles Chargers', 'los-angeles-chargers'],
+  ['LAR', 'Los Angeles Rams', 'los-angeles-rams'],
+  ['MIA', 'Miami Dolphins', 'miami-dolphins'],
+  ['MIN', 'Minnesota Vikings', 'minnesota-vikings'],
+  ['NE', 'New England Patriots', 'new-england-patriots'],
+  ['NO', 'New Orleans Saints', 'new-orleans-saints'],
+  ['NYG', 'New York Giants', 'new-york-giants'],
+  ['NYJ', 'New York Jets', 'new-york-jets'],
+  ['PHI', 'Philadelphia Eagles', 'philadelphia-eagles'],
+  ['PIT', 'Pittsburgh Steelers', 'pittsburgh-steelers'],
+  ['SF', 'San Francisco 49ers', 'san-francisco-49ers'],
+  ['SEA', 'Seattle Seahawks', 'seattle-seahawks'],
+  ['TB', 'Tampa Bay Buccaneers', 'tampa-bay-buccaneers'],
+  ['TEN', 'Tennessee Titans', 'tennessee-titans'],
+  ['WAS', 'Washington Commanders', 'washington-commanders'],
+].map(([abbr, name, slug]) => ({ abbr, name, slug }));
 
 const TEAM_ALIASES = {
   ARZ: 'ARI', ARI: 'ARI', CARDINALS: 'ARI', 'ARIZONA CARDINALS': 'ARI',
@@ -51,18 +87,47 @@ const TEAM_ALIASES = {
 
 const POSITIONS = new Set([
   'QB', 'HB', 'RB', 'FB', 'WR', 'TE', 'LT', 'LG', 'C', 'RG', 'RT', 'OL', 'OT', 'OG',
-  'LE', 'RE', 'DE', 'DT', 'LOLB', 'ROLB', 'OLB', 'MLB', 'ILB', 'LB', 'CB', 'FS', 'SS', 'S',
-  'K', 'P', 'LS',
+  'LE', 'RE', 'DE', 'ED', 'DT', 'LOLB', 'ROLB', 'OLB', 'MLB', 'ILB', 'LB', 'CB', 'FS', 'SS', 'S',
+  'K', 'P', 'LS', 'REDG', 'LEDG', 'RDT', 'RRE', 'RLE', 'SUBLB', 'NCB', 'MIKE', 'WILL', 'SAM',
 ]);
+
+const RATING_LABELS = ['OVR', 'SPD', 'STR', 'AGI', 'COD', 'INJ', 'AWR'];
 
 const NOISE_LINES = new Set([
   'PLAYER', 'ABILITY', 'POS', 'TEAM', 'OVR', 'SPD', 'STR', 'AGI', 'COD', 'INJ', 'AWR',
   'FILTER', 'RESET ALL', 'LEAGUES & TEAMS', 'AFC EAST', 'AFC NORTH', 'AFC SOUTH', 'AFC WEST',
   'NFC EAST', 'NFC NORTH', 'NFC SOUTH', 'NFC WEST', 'LANGUAGE', 'BACK TO TOP', 'PRE-ORDER NOW',
+  'HOME', 'RATINGS', 'NEWS', 'COMMUNITY', 'POSITIVE PLAY', '*',
 ]);
 
 function clean(value = '') {
   return String(value).replace(/\s+/g, ' ').trim();
+}
+
+function decodeEntities(value = '') {
+  return String(value)
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&rsquo;/gi, "'")
+    .replace(/&lsquo;/gi, "'")
+    .replace(/&ndash;|&mdash;/gi, '-')
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(parseInt(dec, 10)));
+}
+
+function htmlToLines(html = '') {
+  return decodeEntities(html)
+    .replace(/<script[\s\S]*?<\/script>/gi, '\n')
+    .replace(/<style[\s\S]*?<\/style>/gi, '\n')
+    .replace(/<noscript[\s\S]*?<\/noscript>/gi, '\n')
+    .replace(/<br\s*\/?\s*>/gi, '\n')
+    .replace(/<\/(p|div|li|a|span|h\d|button|td|th|tr|section|article)>/gi, '\n')
+    .replace(/<[^>]+>/g, '\n')
+    .split('\n')
+    .map(clean)
+    .filter(Boolean);
 }
 
 function normalizeName(value = '') {
@@ -174,6 +239,18 @@ async function fetchJson(url) {
   return response.json();
 }
 
+async function fetchText(url) {
+  const response = await fetch(url, {
+    headers: {
+      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'User-Agent': 'Mozilla/5.0 MaddenProject ratings updater (+https://seanpullins.github.io/MaddenProject/)',
+    },
+    redirect: 'follow',
+  });
+  if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+  return { text: await response.text(), finalUrl: response.url || url };
+}
+
 function setOffset(url, offset) {
   const parsed = new URL(url);
   parsed.searchParams.set('offset', String(offset));
@@ -203,48 +280,49 @@ async function fetchFromApiCandidate(url) {
 function tokenLooksLikeName(value) {
   const text = clean(value);
   const upper = text.toUpperCase();
-  if (text.length < 3 || text.length > 45) return false;
+  if (text.length < 3 || text.length > 55) return false;
   if (!/[A-Za-z]/.test(text)) return false;
   if (NOISE_LINES.has(upper)) return false;
   if (POSITIONS.has(upper)) return false;
   if (TEAM_ALIASES[upper]) return false;
   if (/^\d+$/.test(text)) return false;
-  if (/^(showing|enter|filter|reset|buy|games|news|community|positive play|language)/i.test(text)) return false;
+  if (/^(image:|showing|enter|filter|reset|buy|games|news|community|positive play|language|ea sports|madden nfl|the highest rated|official|continue to|pre-order|home$)/i.test(text)) return false;
+  if (/^(ovr|spd|str|agi|cod|inj|awr)\s+\d+$/i.test(text)) return false;
   return true;
 }
 
-function lineToRow(text) {
-  const parts = clean(text).split(/\s+/).filter(Boolean);
-  if (parts.length < 5) return null;
-  const posIndex = parts.findIndex((part) => POSITIONS.has(part.toUpperCase()));
-  if (posIndex <= 0) return null;
-  const teamIndex = parts.findIndex((part, index) => index > posIndex && TEAM_ALIASES[part.toUpperCase()]);
-  if (teamIndex < 0) return null;
-  const numbers = parts.slice(teamIndex + 1).map(parseNumber).filter((value) => Number.isFinite(value));
-  if (!numbers.length) return null;
-  const name = parts.slice(0, posIndex).join(' ');
-  return normalizeRatingRow({
-    player: name,
-    pos: parts[posIndex],
-    team: parts[teamIndex],
-    ovr: numbers[0],
-    spd: numbers[1],
-    str: numbers[2],
-    agi: numbers[3],
-    cod: numbers[4],
-    inj: numbers[5],
-    awr: numbers[6],
-  });
+function readRatingLines(lines, startIndex) {
+  const values = {};
+  const endIndex = Math.min(lines.length, startIndex + 60);
+
+  for (let i = startIndex; i < endIndex; i += 1) {
+    const line = clean(lines[i]);
+    const upper = line.toUpperCase();
+
+    for (const label of RATING_LABELS) {
+      if (values[label.toLowerCase()] !== undefined) continue;
+
+      const inline = upper.match(new RegExp(`^${label}\\s*:?\\s*(\\d{1,3})$`));
+      if (inline) {
+        values[label.toLowerCase()] = parseNumber(inline[1]);
+        continue;
+      }
+
+      if (upper === label) {
+        const next = parseNumber(lines[i + 1]);
+        if (Number.isFinite(next)) values[label.toLowerCase()] = next;
+      }
+    }
+
+    if (values.ovr !== undefined && i > startIndex + 6 && tokenLooksLikeName(line)) break;
+  }
+
+  return values;
 }
 
-function parseRowsFromLines(rawLines) {
+function parseRowsFromLines(rawLines, forcedTeam = '') {
   const lines = rawLines.map(clean).filter(Boolean);
   const rows = [];
-
-  for (const line of lines) {
-    const parsed = lineToRow(line);
-    if (parsed) rows.push(parsed);
-  }
 
   for (let i = 0; i < lines.length; i += 1) {
     const name = lines[i];
@@ -252,8 +330,6 @@ function parseRowsFromLines(rawLines) {
 
     const max = Math.min(lines.length, i + 18);
     let posIndex = -1;
-    let teamIndex = -1;
-    let ovrIndex = -1;
 
     for (let j = i + 1; j < max; j += 1) {
       if (POSITIONS.has(lines[j].toUpperCase())) {
@@ -263,145 +339,79 @@ function parseRowsFromLines(rawLines) {
     }
     if (posIndex < 0) continue;
 
-    for (let j = posIndex + 1; j < max; j += 1) {
-      if (TEAM_ALIASES[lines[j].toUpperCase()]) {
-        teamIndex = j;
-        break;
-      }
-    }
-    if (teamIndex < 0) continue;
+    const ratings = readRatingLines(lines, posIndex + 1);
+    if (!Number.isFinite(ratings.ovr) || ratings.ovr < 40 || ratings.ovr > 99) continue;
 
-    for (let j = teamIndex + 1; j < max; j += 1) {
-      const n = parseNumber(lines[j]);
-      if (Number.isFinite(n) && n >= 40 && n <= 99) {
-        ovrIndex = j;
-        break;
-      }
-    }
-    if (ovrIndex < 0) continue;
-
-    const numbers = lines.slice(ovrIndex, Math.min(lines.length, ovrIndex + 8)).map(parseNumber).filter((value) => Number.isFinite(value));
-    const ability = lines.slice(i + 1, posIndex).filter((line) => !NOISE_LINES.has(line.toUpperCase())).join(' ') || null;
+    const ability = lines
+      .slice(i + 1, posIndex)
+      .filter((line) => !NOISE_LINES.has(line.toUpperCase()) && !/^image:/i.test(line))
+      .join(' ') || null;
 
     const parsed = normalizeRatingRow({
       player: name,
       ability,
       pos: lines[posIndex],
-      team: lines[teamIndex],
-      ovr: numbers[0],
-      spd: numbers[1],
-      str: numbers[2],
-      agi: numbers[3],
-      cod: numbers[4],
-      inj: numbers[5],
-      awr: numbers[6],
+      team: forcedTeam,
+      ovr: ratings.ovr,
+      spd: ratings.spd,
+      str: ratings.str,
+      agi: ratings.agi,
+      cod: ratings.cod,
+      inj: ratings.inj,
+      awr: ratings.awr,
     });
+
     if (parsed) rows.push(parsed);
   }
 
   return dedupeRows(rows);
 }
 
-async function fetchFromPlaywright() {
-  let playwright;
-  try {
-    playwright = await import('playwright');
-  } catch (error) {
-    throw new Error(`Playwright unavailable: ${error.message}`);
-  }
+async function fetchTeamWithKnownUrl(team) {
+  const url = `${TEAM_SOURCE_BASE}/${team.slug}`;
+  const { text, finalUrl } = await fetchText(url);
+  const rows = parseRowsFromLines(htmlToLines(text), team.abbr);
+  if (rows.length < 10) throw new Error(`${team.name}: only ${rows.length} rows from ${finalUrl}`);
+  return { rows, sourceUrl: finalUrl };
+}
 
-  const { chromium } = playwright;
-  const browser = await chromium.launch({
-    headless: true,
-    args: ['--disable-blink-features=AutomationControlled', '--no-sandbox'],
-  });
-
-  const context = await browser.newContext({
-    viewport: { width: 1600, height: 1800 },
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36',
-    locale: 'en-US',
-  });
-
-  const page = await context.newPage();
-  const responseRows = [];
-  const discoveredUrls = new Set();
-
-  page.on('response', async (response) => {
+async function fetchTeamByProbingIds(team) {
+  for (let id = 0; id <= 40; id += 1) {
+    const url = `${TEAM_SOURCE_BASE}/${team.slug}/${id}`;
     try {
-      const url = response.url();
-      const contentType = response.headers()['content-type'] || '';
-      if (!contentType.includes('json') && !/rating|madden|player|drop|api|graphql/i.test(url)) return;
-      const text = await response.text();
-      const json = JSON.parse(text);
-      const rows = extractRows(json);
-      if (rows.length) {
-        responseRows.push(...rows);
-        discoveredUrls.add(url);
-        console.log(`Captured ${rows.length} rows from ${url}`);
-      }
+      const { text, finalUrl } = await fetchText(url);
+      if (!new RegExp(team.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i').test(text)) continue;
+      const rows = parseRowsFromLines(htmlToLines(text), team.abbr);
+      if (rows.length >= 10) return { rows, sourceUrl: finalUrl };
     } catch {
-      // Most page assets are unrelated. Ignore them.
+      // Keep probing; EA uses numeric ids in the URL and they can change by release.
     }
-  });
-
-  try {
-    await page.goto(SOURCE_URL, { waitUntil: 'domcontentloaded', timeout: 90000 });
-
-    for (const text of ['Accept All Cookies', 'Accept All', 'I Accept', 'Accept']) {
-      await page.getByRole('button', { name: new RegExp(text, 'i') }).click({ timeout: 1500 }).catch(() => {});
-    }
-
-    await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-    await page.waitForTimeout(5000);
-
-    for (let i = 0; i < 14; i += 1) {
-      await page.mouse.wheel(0, 1800).catch(() => {});
-      await page.waitForTimeout(400);
-    }
-
-    for (let pageNumber = 2; pageNumber <= 21; pageNumber += 1) {
-      await page.getByText(String(pageNumber), { exact: true }).click({ timeout: 1200 }).catch(() => {});
-      await page.waitForTimeout(600);
-    }
-
-    let rows = dedupeRows(responseRows);
-    let sourceUrl = discoveredUrls.values().next().value || SOURCE_URL;
-
-    for (const url of discoveredUrls) {
-      if (!/[?&](offset|page|limit)=/i.test(url)) continue;
-      try {
-        const candidateRows = await fetchFromApiCandidate(url);
-        if (candidateRows.length > rows.length) {
-          rows = candidateRows;
-          sourceUrl = url;
-        }
-      } catch {
-        // Keep browser-captured rows.
-      }
-    }
-
-    const visibleText = await page.locator('body').innerText({ timeout: 10000 }).catch(() => '');
-    const visibleRows = parseRowsFromLines(visibleText.split('\n'));
-    if (visibleRows.length > rows.length) {
-      rows = visibleRows;
-      sourceUrl = SOURCE_URL;
-    }
-
-    const elementTexts = await page.evaluate(() => Array.from(document.querySelectorAll('*'))
-      .map((element) => element.innerText || element.textContent || '')
-      .filter(Boolean));
-    const elementRows = parseRowsFromLines(elementTexts.flatMap((text) => String(text).split('\n')));
-    if (elementRows.length > rows.length) {
-      rows = elementRows;
-      sourceUrl = SOURCE_URL;
-    }
-
-    console.log(`Browser scraper found ${rows.length} usable Madden rating rows.`);
-    if (rows.length > 100) return { rows, sourceUrl };
-    throw new Error(`Browser scraper only found ${rows.length} usable rows.`);
-  } finally {
-    await browser.close();
   }
+  throw new Error(`${team.name}: no working team page id found`);
+}
+
+async function fetchFromTeamPages() {
+  const allRows = [];
+  const sourceUrls = [];
+  const errors = [];
+
+  for (const team of TEAM_PAGES) {
+    try {
+      const result = await fetchTeamWithKnownUrl(team).catch(() => fetchTeamByProbingIds(team));
+      allRows.push(...result.rows);
+      sourceUrls.push(result.sourceUrl);
+      console.log(`Fetched ${result.rows.length} ${team.name} Madden ratings.`);
+    } catch (error) {
+      errors.push(error.message);
+      console.warn(error.message);
+    }
+  }
+
+  const rows = dedupeRows(allRows);
+  console.log(`Static EA team pages produced ${rows.length} unique Madden rating rows.`);
+
+  if (rows.length > 300) return { rows, sourceUrl: SOURCE_URL, sourceUrls };
+  throw new Error(`Static team pages only produced ${rows.length} rows. ${errors.join(' | ')}`);
 }
 
 async function fetchRatings() {
@@ -410,7 +420,7 @@ async function fetchRatings() {
   for (const url of API_CANDIDATES) {
     try {
       const rows = await fetchFromApiCandidate(url);
-      if (rows.length > 100) return { rows, sourceUrl: url };
+      if (rows.length > 100) return { rows, sourceUrl: url, sourceUrls: [url] };
       errors.push(`${url}: only ${rows.length} usable rows`);
     } catch (error) {
       errors.push(`${url}: ${error.message}`);
@@ -418,9 +428,9 @@ async function fetchRatings() {
   }
 
   try {
-    return await fetchFromPlaywright();
+    return await fetchFromTeamPages();
   } catch (error) {
-    errors.push(`Playwright browser fallback: ${error.message}`);
+    errors.push(`EA static team pages: ${error.message}`);
   }
 
   throw new Error(`Unable to pull Madden ratings. Tried:\n${errors.join('\n')}`);
@@ -480,7 +490,7 @@ function matchPlayer(player, indexes) {
 }
 
 async function main() {
-  const { rows, sourceUrl } = await fetchRatings();
+  const { rows, sourceUrl, sourceUrls = [] } = await fetchRatings();
   const rosterPlayers = parseRosterPlayers();
   const indexes = buildIndexes(rows);
   const updatedAt = new Date().toISOString();
@@ -518,16 +528,17 @@ async function main() {
   }
 
   const output = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     source: 'EA Madden Ratings',
     sourceUrl,
+    sourceUrls: sourceUrls.slice(0, 40),
     updatedAt,
     totalSourceRatings: rows.length,
     rosterPlayerCount: rosterPlayers.length,
     matchedCount,
     unmatchedCount: rosterPlayers.length - matchedCount,
     players,
-    sampleSourceRatings: rows.slice(0, 8).map((row) => ({
+    sampleSourceRatings: rows.slice(0, 12).map((row) => ({
       name: row.name,
       team: row.team,
       position: row.position,
