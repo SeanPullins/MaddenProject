@@ -31,6 +31,39 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
+      - name: Verify Supabase build env
+        run: |
+          missing=0
+          if [ -z "$VITE_SUPABASE_URL" ]; then
+            echo "Missing VITE_SUPABASE_URL"
+            missing=1
+          else
+            echo "Found VITE_SUPABASE_URL"
+          fi
+
+          if [ -z "$VITE_SUPABASE_ANON_KEY" ]; then
+            echo "Missing VITE_SUPABASE_ANON_KEY"
+            missing=1
+          else
+            echo "Found VITE_SUPABASE_ANON_KEY"
+          fi
+
+          if [ -z "$VITE_ADMIN_EMAILS" ] && [ -z "$VITE_ADMIN_EMAIL" ]; then
+            echo "Missing VITE_ADMIN_EMAILS or VITE_ADMIN_EMAIL"
+            missing=1
+          else
+            echo "Found admin email setting"
+          fi
+
+          if [ "$missing" -eq 1 ]; then
+            exit 1
+          fi
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_ADMIN_EMAIL: ${{ secrets.VITE_ADMIN_EMAIL }}
+          VITE_ADMIN_EMAILS: ${{ secrets.VITE_ADMIN_EMAILS }}
+
       - name: Build site
         run: npm run build
         env:
