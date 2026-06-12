@@ -8,6 +8,7 @@ on:
     paths:
       - 'scripts/update-madden-ratings.mjs'
       - '.github/workflows/update-madden-ratings.yml'
+      - 'package.json'
 
 permissions:
   contents: write
@@ -31,6 +32,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
 
       - name: Pull latest Madden ratings
         env:
