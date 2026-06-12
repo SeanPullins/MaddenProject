@@ -238,6 +238,12 @@ export const Players: React.FC = () => {
                 const tierConfig = getTierConfig(tier);
                 const TierIcon = tierConfig.icon;
                 const isTopTier = tier === 'Elite' || tier === 'Starter';
+                const live = livePlayerData?.players[player.name];
+                const displayTeam =
+                  live?.matched && (live.currentTeam || live.team)
+                    ? live.currentTeam || live.team
+                    : player.team;
+                const teamWasUpdated = Boolean(displayTeam && displayTeam !== player.team);
 
                 return (
                   <tr
@@ -273,7 +279,16 @@ export const Players: React.FC = () => {
                       </span>
                     </td>
 
-                    <td className="py-4 px-4 text-slate-300 text-sm">{player.team}</td>
+                    <td className="py-4 px-4 text-slate-300 text-sm">
+                      <span className={teamWasUpdated ? 'text-yellow-300 font-semibold' : ''}>
+                        {displayTeam}
+                      </span>
+                      {teamWasUpdated && (
+                        <span className="block text-xs text-slate-500">
+                          Madden: {player.team}
+                        </span>
+                      )}
+                    </td>
 
                     <td className="py-4 px-4">
                       <span

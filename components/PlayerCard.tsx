@@ -1,7 +1,22 @@
 import React from 'react';
 import { Player } from '../types';
 import { getTeamColors } from '../utils/teamColors';
-import { X, Activity, AlertTriangle, MapPin, Shield, UserRound, TrendingUp } from 'lucide-react';
+import {
+  X,
+  Activity,
+  AlertTriangle,
+  MapPin,
+  Shield,
+  UserRound,
+  TrendingUp,
+  Newspaper,
+  ExternalLink,
+  HeartPulse,
+  Hash,
+  Scale,
+  Ruler,
+  GraduationCap,
+} from 'lucide-react';
 import type { LivePlayerInfo } from '../hooks/useLivePlayerData';
 
 interface PlayerCardProps {
@@ -28,6 +43,26 @@ const formatValue = (value?: string | number | null) => {
   return value;
 };
 
+const formatHeight = (height?: string | null) => {
+  if (!height) return '—';
+
+  const inches = Number(height);
+  if (!Number.isFinite(inches)) return height;
+
+  const feet = Math.floor(inches / 12);
+  const remaining = inches % 12;
+
+  return `${feet}'${remaining}"`;
+};
+
+const getCurrentTeam = (player: Player, live?: LivePlayerInfo) => {
+  if (live?.matched && (live.currentTeam || live.team)) {
+    return live.currentTeam || live.team || player.team;
+  }
+
+  return player.team;
+};
+
 const getAvailabilityBadge = (live?: LivePlayerInfo) => {
   const status = live?.status?.toLowerCase() || '';
   const injury = live?.injuryStatus?.toLowerCase() || '';
@@ -35,7 +70,7 @@ const getAvailabilityBadge = (live?: LivePlayerInfo) => {
 
   if (!live?.matched) {
     return {
-      label: 'No Match',
+      label: 'No Live Match',
       className: 'bg-slate-700 text-slate-200 border-slate-600',
     };
   }
@@ -81,12 +116,25 @@ const getAvailabilityBadge = (live?: LivePlayerInfo) => {
   };
 };
 
+const getTrendingText = (live?: LivePlayerInfo) => {
+  if (!live?.matched) return 'No trend data';
+
+  const adds = live.trendingAddCount ?? 0;
+  const drops = live.trendingDropCount ?? 0;
+
+  if (adds === 0 && drops === 0) return 'No major Sleeper movement in the last 24 hours.';
+  if (adds > drops) return `Trending up: ${adds} adds vs ${drops} drops in the last 24 hours.`;
+  if (drops > adds) return `Trending down: ${drops} drops vs ${adds} adds in the last 24 hours.`;
+
+  return `Even movement: ${adds} adds and ${drops} drops in the last 24 hours.`;
+};
+
 const getPlayerSituationSummary = (player: Player, live?: LivePlayerInfo) => {
   if (!live?.matched) {
-    return `${player.name} is listed in your Madden database as a ${player.position} for ${player.team}, but no current live NFL match was found from the live data source yet.`;
+    return `${player.name} is listed in your Madden database as a ${player.position} for ${player.team}, but no current live NFL match was found yet.`;
   }
 
-  const liveTeam = live.team || player.team;
+  const displayTeam = getCurrentTeam(player, live);
   const livePosition = live.position || player.position;
   const status = titleCase(live.status) || 'Rostered';
   const injury = live.injuryStatus ? titleCase(live.injuryStatus) : null;
@@ -94,47 +142,45 @@ const getPlayerSituationSummary = (player: Player, live?: LivePlayerInfo) => {
   const depth = live.depthChartOrder ? `No. ${live.depthChartOrder}` : null;
   const depthPosition = live.depthChartPosition || livePosition;
   const college = live.college ? ` out of ${live.college}` : '';
+
   const years =
     live.yearsExp !== null && live.yearsExp !== undefined
       ? `${live.yearsExp} year${live.yearsExp === 1 ? '' : 's'} of NFL experience`
       : null;
 
-  const teamMismatch =
-    live.team && live.team !== player.team
-      ? ` His live team is currently ${live.team}, while your Madden file still has him on ${player.team}.`
-      : '';
-
   const depthSentence = depth
-    ? ` He is currently listed around ${depth} on the ${depthPosition} depth chart.`
+    ? ` He is listed around ${depth} on the ${depthPosition} depth chart.`
     : '';
 
   const injurySentence = injury
-    ? ` His current injury designation is ${injury}.`
+    ? ` Current injury designation: ${injury}.`
     : practice
-      ? ` His latest practice status is ${practice}.`
-      : '';
+      ? ` Latest practice status: ${practice}.`
+      : ' No current injury designation is listed.';
 
   const profileSentence = years
     ? ` He is a ${livePosition}${college} with ${years}.`
     : ` He is a ${livePosition}${college}.`;
 
-  return `${player.name} is currently tied to ${liveTeam} as a ${livePosition}. His live roster status is ${status}.${teamMismatch}${depthSentence} ${profileSentence}${injurySentence}`.replace(
+  return `${player.name} is currently listed with ${displayTeam} as a ${livePosition}. Live roster status: ${status}.${depthSentence} ${profileSentence}${injurySentence}`.replace(
     /\s+/g,
     ' '
   );
 };
 
 export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose }) => {
-  const colors = getTeamColors(player.team);
+  const displayTeam = getCurrentTeam(player, live);
+  const colors = getTeamColors(displayTeam);
   const badge = getAvailabilityBadge(live);
   const situationSummary = getPlayerSituationSummary(player, live);
 
-  const liveTeam = live?.team || player.team;
-  const teamMismatch = Boolean(live?.team && live.team !== player.team);
+  const teamMismatch = Boolean(live?.matched && displayTeam && displayTeam !== player.team);
 
   const formattedLiveStatus = titleCase(live?.status);
   const formattedPractice = titleCase(live?.practiceParticipation);
   const formattedInjury = titleCase(live?.injuryStatus);
+  const formattedBodyPart = titleCase(live?.injuryBodyPart);
+  const trendingText = getTrendingText(live);
 
   return (
     <>
@@ -144,11 +190,11 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
       {/* Modal */}
       <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
         <div
-          className="bg-slate-900 rounded-lg shadow-2xl max-w-lg w-full border-2 overflow-hidden max-h-[90vh] overflow-y-auto"
+          className="bg-slate-900 rounded-lg shadow-2xl max-w-xl w-full border-2 overflow-hidden max-h-[90vh] overflow-y-auto"
           style={{ borderColor: colors.secondary }}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Header with team colors */}
+          {/* Header with LIVE team colors */}
           <div className="p-6 relative" style={{ backgroundColor: colors.primary }}>
             <button
               onClick={onClose}
@@ -170,20 +216,29 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
                 <h2 className="text-2xl font-bold text-white mb-1">{player.name}</h2>
 
                 <div className="flex flex-wrap items-center gap-2 text-white/90">
-                  <span className="font-semibold">{player.position}</span>
+                  <span className="font-semibold">{live?.position || player.position}</span>
                   <span>•</span>
-                  <span>{player.team}</span>
+                  <span>{displayTeam}</span>
 
-                  {teamMismatch && (
+                  {live?.number && (
                     <>
                       <span>•</span>
-                      <span className="text-yellow-200">Live: {liveTeam}</span>
+                      <span>#{live.number}</span>
                     </>
                   )}
                 </div>
 
+                {teamMismatch && (
+                  <div className="mt-2 text-xs text-yellow-100">
+                    Madden listed team: <strong>{player.team}</strong>. Live data now shows:{' '}
+                    <strong>{displayTeam}</strong>.
+                  </div>
+                )}
+
                 <div className="mt-3">
-                  <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border ${badge.className}`}>
+                  <span
+                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border ${badge.className}`}
+                  >
                     <Activity size={13} />
                     {badge.label}
                   </span>
@@ -201,18 +256,64 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
                 <div className="text-white font-semibold">Current Situation</div>
               </div>
 
-              <p className="text-slate-300 text-sm leading-relaxed">
-                {situationSummary}
-              </p>
+              <p className="text-slate-300 text-sm leading-relaxed">{situationSummary}</p>
+            </div>
 
-              {teamMismatch && (
-                <div className="mt-3 flex items-start gap-2 rounded-lg bg-yellow-500/10 border border-yellow-500/20 p-3">
-                  <AlertTriangle size={16} className="text-yellow-300 mt-0.5 shrink-0" />
-                  <div className="text-yellow-100 text-xs leading-relaxed">
-                    Your Madden roster has him on <strong>{player.team}</strong>, but the live data source lists him with <strong>{live?.team}</strong>. This may mean your Madden file needs a roster update.
+            {/* Roster Status & News */}
+            <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
+              <div className="flex items-center gap-2 mb-3">
+                <Newspaper size={18} className="text-brand-400" />
+                <div className="text-white font-semibold">Roster Status & News</div>
+              </div>
+
+              <div className="space-y-3 text-sm">
+                <div className="rounded-lg bg-slate-900/70 border border-slate-700 p-3">
+                  <div className="text-slate-500 mb-1">Roster note</div>
+                  <div className="text-slate-200 leading-relaxed">
+                    {live?.rosterStatusNote || 'No roster note available.'}
                   </div>
                 </div>
-              )}
+
+                <div className="rounded-lg bg-slate-900/70 border border-slate-700 p-3">
+                  <div className="text-slate-500 mb-1">Availability note</div>
+                  <div className="text-slate-200 leading-relaxed">
+                    {live?.availabilityNote || 'No availability note available.'}
+                  </div>
+                </div>
+
+                <div className="rounded-lg bg-slate-900/70 border border-slate-700 p-3">
+                  <div className="text-slate-500 mb-1">Fantasy / market movement</div>
+                  <div className="text-slate-200 leading-relaxed">{trendingText}</div>
+                </div>
+
+                {(live?.newsLinks?.espnUrl || live?.newsLinks?.googleNewsUrl) && (
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {live?.newsLinks?.espnUrl && (
+                      <a
+                        href={live.newsLinks.espnUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold transition-colors"
+                      >
+                        ESPN profile
+                        <ExternalLink size={13} />
+                      </a>
+                    )}
+
+                    {live?.newsLinks?.googleNewsUrl && (
+                      <a
+                        href={live.newsLinks.googleNewsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold transition-colors"
+                      >
+                        Latest news search
+                        <ExternalLink size={13} />
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* OVR Rating */}
@@ -234,18 +335,18 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
               <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
                 <div className="flex items-center gap-2 text-slate-400 text-sm mb-1">
                   <Shield size={15} />
-                  Madden Team
+                  Current Team
                 </div>
-                <div className="text-white font-semibold">{player.team}</div>
+                <div className="text-white font-semibold">{displayTeam}</div>
               </div>
 
               <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
                 <div className="flex items-center gap-2 text-slate-400 text-sm mb-1">
-                  <MapPin size={15} />
-                  Live Team
+                  <Shield size={15} />
+                  Madden Team
                 </div>
                 <div className={`font-semibold ${teamMismatch ? 'text-yellow-300' : 'text-white'}`}>
-                  {formatValue(live?.team || player.team)}
+                  {player.team}
                 </div>
               </div>
 
@@ -270,51 +371,10 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
               </div>
             </div>
 
-            {/* Draft Info */}
-            {player.draftRound && (
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
-                  <div className="text-slate-400 text-sm mb-1">Draft Round</div>
-                  <div className="text-white font-semibold">{player.draftRound}</div>
-                </div>
-
-                {player.faYear && (
-                  <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
-                    <div className="text-slate-400 text-sm mb-1">FA Year</div>
-                    <div className="text-white font-semibold">{player.faYear}</div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Madden Depth Order */}
-            {player.depthOrder && (
-              <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
-                <div className="text-slate-400 text-sm mb-1">Madden Depth Chart</div>
-                <div className="text-white font-semibold">
-                  {player.depthOrder === 1
-                    ? 'Starter'
-                    : player.depthOrder === 2
-                      ? 'Backup'
-                      : `Depth ${player.depthOrder}`}
-                </div>
-              </div>
-            )}
-
-            {/* Madden Status */}
-            {player.status && (
-              <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
-                <div className="text-slate-400 text-sm mb-1">Madden Status</div>
-                <div className="text-white font-semibold">
-                  {titleCase(player.status)}
-                </div>
-              </div>
-            )}
-
-            {/* Live NFL Info */}
+            {/* Live NFL Details */}
             <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
               <div className="flex items-center justify-between mb-3">
-                <div className="text-slate-400 text-sm font-medium">Live NFL Info</div>
+                <div className="text-slate-400 text-sm font-medium">Live NFL Details</div>
                 <div className="text-xs text-slate-500">{live?.source || 'No live match'}</div>
               </div>
 
@@ -323,13 +383,29 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div>
                       <div className="text-slate-500">Current Team</div>
-                      <div className="text-white font-semibold">{live.team || '—'}</div>
+                      <div className="text-white font-semibold">{displayTeam}</div>
                     </div>
 
                     <div>
                       <div className="text-slate-500">NFL Status</div>
+                      <div className="text-white font-semibold">{formattedLiveStatus || '—'}</div>
+                    </div>
+
+                    <div>
+                      <div className="text-slate-500">Active</div>
                       <div className="text-white font-semibold">
-                        {formattedLiveStatus || '—'}
+                        {live.active === null || live.active === undefined
+                          ? '—'
+                          : live.active
+                            ? 'Yes'
+                            : 'No'}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="text-slate-500">Jersey</div>
+                      <div className="text-white font-semibold">
+                        {live.number ? `#${live.number}` : '—'}
                       </div>
                     </div>
 
@@ -341,10 +417,13 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
                     </div>
 
                     <div>
+                      <div className="text-slate-500">Body Part</div>
+                      <div className="text-white font-semibold">{formattedBodyPart || '—'}</div>
+                    </div>
+
+                    <div>
                       <div className="text-slate-500">Practice</div>
-                      <div className="text-white font-semibold">
-                        {formattedPractice || '—'}
-                      </div>
+                      <div className="text-white font-semibold">{formattedPractice || '—'}</div>
                     </div>
 
                     <div>
@@ -356,8 +435,31 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
 
                     <div>
                       <div className="text-slate-500">Depth Position</div>
+                      <div className="text-white font-semibold">{live.depthChartPosition || '—'}</div>
+                    </div>
+
+                    <div>
+                      <div className="text-slate-500">Fantasy Positions</div>
                       <div className="text-white font-semibold">
-                        {live.depthChartPosition || '—'}
+                        {live.fantasyPositions?.length ? live.fantasyPositions.join(', ') : '—'}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-1 text-slate-500">
+                        <Ruler size={13} />
+                        Height
+                      </div>
+                      <div className="text-white font-semibold">{formatHeight(live.height)}</div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-1 text-slate-500">
+                        <Scale size={13} />
+                        Weight
+                      </div>
+                      <div className="text-white font-semibold">
+                        {live.weight ? `${live.weight} lbs` : '—'}
                       </div>
                     </div>
 
@@ -367,34 +469,36 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
                     </div>
 
                     <div>
-                      <div className="text-slate-500">College</div>
+                      <div className="flex items-center gap-1 text-slate-500">
+                        <GraduationCap size={13} />
+                        College
+                      </div>
                       <div className="text-white font-semibold">{live.college || '—'}</div>
                     </div>
 
                     <div>
-                      <div className="text-slate-500">Height</div>
-                      <div className="text-white font-semibold">{live.height || '—'}</div>
-                    </div>
-
-                    <div>
-                      <div className="text-slate-500">Weight</div>
-                      <div className="text-white font-semibold">
-                        {live.weight ? `${live.weight} lbs` : '—'}
-                      </div>
-                    </div>
-
-                    <div>
                       <div className="text-slate-500">Years Exp.</div>
-                      <div className="text-white font-semibold">
-                        {live.yearsExp ?? '—'}
-                      </div>
+                      <div className="text-white font-semibold">{live.yearsExp ?? '—'}</div>
                     </div>
 
                     <div>
-                      <div className="text-slate-500">ESPN ID</div>
-                      <div className="text-white font-semibold">{live.espnId || '—'}</div>
+                      <div className="flex items-center gap-1 text-slate-500">
+                        <Hash size={13} />
+                        Search Rank
+                      </div>
+                      <div className="text-white font-semibold">{live.searchRank ?? '—'}</div>
                     </div>
                   </div>
+
+                  {live.injuryNotes && (
+                    <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-3">
+                      <div className="flex items-center gap-2 text-red-300 text-sm font-semibold mb-1">
+                        <HeartPulse size={15} />
+                        Injury Notes
+                      </div>
+                      <div className="text-red-100 text-sm">{live.injuryNotes}</div>
+                    </div>
+                  )}
 
                   {live.updatedAt && (
                     <div className="text-xs text-slate-500 pt-2 border-t border-slate-700">
@@ -405,6 +509,43 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
               ) : (
                 <div className="text-slate-400 text-sm">
                   No live data match found yet for this player.
+                </div>
+              )}
+            </div>
+
+            {/* Madden Info */}
+            <div className="grid grid-cols-2 gap-3">
+              {player.draftRound && (
+                <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
+                  <div className="text-slate-400 text-sm mb-1">Draft Round</div>
+                  <div className="text-white font-semibold">{player.draftRound}</div>
+                </div>
+              )}
+
+              {player.faYear && (
+                <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
+                  <div className="text-slate-400 text-sm mb-1">FA Year</div>
+                  <div className="text-white font-semibold">{player.faYear}</div>
+                </div>
+              )}
+
+              {player.depthOrder && (
+                <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
+                  <div className="text-slate-400 text-sm mb-1">Madden Depth Chart</div>
+                  <div className="text-white font-semibold">
+                    {player.depthOrder === 1
+                      ? 'Starter'
+                      : player.depthOrder === 2
+                        ? 'Backup'
+                        : `Depth ${player.depthOrder}`}
+                  </div>
+                </div>
+              )}
+
+              {player.status && (
+                <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
+                  <div className="text-slate-400 text-sm mb-1">Madden Status</div>
+                  <div className="text-white font-semibold">{titleCase(player.status)}</div>
                 </div>
               )}
             </div>

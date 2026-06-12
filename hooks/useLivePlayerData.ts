@@ -4,23 +4,55 @@ export interface LivePlayerInfo {
   matched: boolean;
   source?: string;
   updatedAt?: string;
+
   sleeperId?: string | null;
   espnId?: string | null;
+  yahooId?: string | null;
+  rotowireId?: string | null;
+  sportradarId?: string | null;
+
   fullName?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+
+  currentTeam?: string | null;
   team?: string | null;
   position?: string | null;
+  number?: number | string | null;
+  active?: boolean | null;
   status?: string | null;
+
   injuryStatus?: string | null;
   injuryStartDate?: string | null;
+  injuryBodyPart?: string | null;
+  injuryNotes?: string | null;
   practiceParticipation?: string | null;
+
   age?: number | null;
+  birthDate?: string | null;
   height?: string | null;
   weight?: string | null;
   college?: string | null;
   yearsExp?: number | null;
+
   depthChartOrder?: number | null;
   depthChartPosition?: string | null;
   fantasyPositions?: string[];
+
+  searchRank?: number | null;
+  hashtag?: string | null;
+
+  trendingAddCount?: number;
+  trendingDropCount?: number;
+  trendingDirection?: 'rising' | 'falling' | 'neutral' | string;
+
+  rosterStatusNote?: string;
+  availabilityNote?: string;
+
+  newsLinks?: {
+    googleNewsUrl?: string;
+    espnUrl?: string;
+  };
 }
 
 interface LivePlayerData {
