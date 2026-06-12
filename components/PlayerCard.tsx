@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Player } from '../types';
 import { getTeamColors } from '../utils/teamColors';
 import {
   X,
   Activity,
-  AlertTriangle,
   MapPin,
   Shield,
   UserRound,
@@ -16,8 +15,12 @@ import {
   Scale,
   Ruler,
   GraduationCap,
+  Sparkles,
+  Loader2,
+  Brain,
 } from 'lucide-react';
 import type { LivePlayerInfo } from '../hooks/useLivePlayerData';
+import { evaluatePlayerWithAi } from '../services/playerAi';
 
 interface PlayerCardProps {
   player: Player;
@@ -174,6 +177,11 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
   const badge = getAvailabilityBadge(live);
   const situationSummary = getPlayerSituationSummary(player, live);
 
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiAnalysis, setAiAnalysis] = useState<string | null>(null);
+  const [aiMeta, setAiMeta] = useState<string | null>(null);
+  const [aiError, setAiError] = useState<string | null>(null);
+
   const teamMismatch = Boolean(live?.matched && displayTeam && displayTeam !== player.team);
 
   const formattedLiveStatus = titleCase(live?.status);
@@ -181,6 +189,25 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
   const formattedInjury = titleCase(live?.injuryStatus);
   const formattedBodyPart = titleCase(live?.injuryBodyPart);
   const trendingText = getTrendingText(live);
+
+  const handleAiEvaluation = async () => {
+    setAiLoading(true);
+    setAiError(null);
+
+    try {
+      const result = await evaluatePlayerWithAi(player, live);
+      setAiAnalysis(result.analysis);
+      setAiMeta(
+        [result.model, result.generatedAt ? new Date(result.generatedAt).toLocaleString() : null]
+          .filter(Boolean)
+          .join(' • ')
+      );
+    } catch (error) {
+      setAiError(error instanceof Error ? error.message : 'AI evaluation failed.');
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   return (
     <>
@@ -235,13 +262,22 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
                   </div>
                 )}
 
-                <div className="mt-3">
+                <div className="mt-3 flex flex-wrap gap-2">
                   <span
                     className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border ${badge.className}`}
                   >
                     <Activity size={13} />
                     {badge.label}
                   </span>
+
+                  <button
+                    onClick={handleAiEvaluation}
+                    disabled={aiLoading}
+                    className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border border-white/20 bg-white/10 text-white hover:bg-white/20 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {aiLoading ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />}
+                    {aiLoading ? 'Evaluating...' : 'AI Evaluate'}
+                  </button>
                 </div>
               </div>
             </div>
@@ -249,6 +285,48 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
 
           {/* Content */}
           <div className="p-6 space-y-4">
+            {/* AI Evaluation */}
+            <div className="bg-slate-800 rounded-lg p-4 border border-brand-500/40">
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-2">
+                  <Brain size={18} className="text-brand-400" />
+                  <div>
+                    <div className="text-white font-semibold">AI Player Evaluation</div>
+                    <div className="text-xs text-slate-500">Projection, recent-news read, franchise use, and risk level</div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleAiEvaluation}
+                  disabled={aiLoading}
+                  className="shrink-0 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {aiLoading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+                  {aiLoading ? 'Running' : 'Evaluate'}
+                </button>
+              </div>
+
+              {aiError && (
+                <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">
+                  {aiError}
+                  <div className="mt-2 text-xs text-red-200/80">
+                    Make sure the Supabase Edge Function is deployed and OPENROUTER_API_KEY is saved in Supabase Function Secrets.
+                  </div>
+                </div>
+              )}
+
+              {aiAnalysis ? (
+                <div className="rounded-lg bg-slate-950/70 border border-slate-700 p-3">
+                  <div className="text-slate-200 text-sm leading-relaxed whitespace-pre-wrap">{aiAnalysis}</div>
+                  {aiMeta && <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-800">{aiMeta}</div>}
+                </div>
+              ) : !aiError ? (
+                <div className="text-slate-400 text-sm leading-relaxed">
+                  Click <strong>Evaluate</strong> to have AI analyze this player using the Madden rating, live roster status, injury data, depth chart info, market movement, and available headlines.
+                </div>
+              ) : null}
+            </div>
+
             {/* Current Situation Summary */}
             <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
@@ -285,6 +363,28 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, live, onClose })
                   <div className="text-slate-500 mb-1">Fantasy / market movement</div>
                   <div className="text-slate-200 leading-relaxed">{trendingText}</div>
                 </div>
+
+                {live?.latestNews && live.latestNews.length > 0 && (
+                  <div className="rounded-lg bg-slate-900/70 border border-slate-700 p-3">
+                    <div className="text-slate-500 mb-2">Latest headlines</div>
+                    <div className="space-y-2">
+                      {live.latestNews.slice(0, 3).map((item, index) => (
+                        <a
+                          key={`${item.url}-${index}`}
+                          href={item.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="block rounded-lg border border-slate-700 bg-slate-950/60 p-3 hover:bg-slate-700/40 transition-colors"
+                        >
+                          <div className="text-slate-100 text-sm font-semibold leading-snug">{item.title}</div>
+                          <div className="text-slate-500 text-xs mt-1">
+                            {item.source || 'News'}{item.publishedAt ? ` • ${item.publishedAt}` : ''}
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {(live?.newsLinks?.espnUrl || live?.newsLinks?.googleNewsUrl) && (
                   <div className="flex flex-wrap gap-2 pt-1">
