@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { POSITIONS } from '../constants';
 import { useTeams } from '../utils/rosterStore';
 import { Player } from '../types';
-import { Star, Award, Users, UserCheck } from 'lucide-react';
+import { Star, Award, Users, UserCheck, RefreshCw } from 'lucide-react';
 import { PlayerCard } from '../components/PlayerCard';
 import { useLivePlayerData } from '../hooks/useLivePlayerData';
+import { useMaddenRatings } from '../hooks/useMaddenRatings';
 
 // Tier classification
 type PlayerTier = 'Elite' | 'Starter' | 'Solid' | 'Depth';
@@ -53,9 +54,22 @@ const getTierConfig = (tier: PlayerTier) => {
   }
 };
 
+const formatDateTime = (value?: string) => {
+  if (!value) return null;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toLocaleString();
+};
+
+const formatDelta = (delta?: number | null) => {
+  if (typeof delta !== 'number' || delta === 0) return null;
+  return delta > 0 ? `+${delta}` : `${delta}`;
+};
+
 export const Players: React.FC = () => {
   const ALL_TEAMS = useTeams();
   const livePlayerData = useLivePlayerData();
+  const maddenRatings = useMaddenRatings();
 
   const [positionFilter, setPositionFilter] = useState<string>('ALL');
   const [tierFilter, setTierFilter] = useState<string>('ALL');
@@ -64,8 +78,8 @@ export const Players: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
-  // Get all players from all teams
-  const allPlayers: Player[] = ALL_TEAMS.flatMap((team) => team.roster);
+  // Get all players from all teams and apply the latest EA Madden rating when matched.
+  const allPlayers: Player[] = ALL_TEAMS.flatMap((team) => team.roster).map((player) => maddenRatings.applyRating(player));
 
   // Get unique NFL teams
   const nflTeams = Array.from(new Set(allPlayers.map((p) => p.team))).sort();
@@ -85,10 +99,10 @@ export const Players: React.FC = () => {
     return matchesPosition && matchesSearch && matchesTier && matchesTeam && matchesDepth;
   });
 
-  // Sort by OVR descending
+  // Sort by live Madden OVR descending, falling back to site OVR.
   const sortedPlayers = [...filteredPlayers].sort((a, b) => b.ovr - a.ovr);
 
-  // Calculate tier distribution
+  // Calculate tier distribution using live Madden OVR when available.
   const tierCounts = allPlayers.reduce(
     (acc, player) => {
       const tier = getPlayerTier(player.ovr);
@@ -98,9 +112,46 @@ export const Players: React.FC = () => {
     { Elite: 0, Starter: 0, Solid: 0, Depth: 0 } as Record<PlayerTier, number>
   );
 
+  const ratingsUpdatedAt = formatDateTime(maddenRatings.updatedAt);
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <h1 className="text-4xl font-display font-bold text-white mb-8">PLAYERS</h1>
+
+      {/* Live Madden ratings status */}
+      <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 mb-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div className="flex items-start gap-3">
+            <div className="p-2 rounded-lg bg-brand-500/15 border border-brand-500/30 text-brand-300">
+              <RefreshCw size={18} className={maddenRatings.loading ? 'animate-spin' : ''} />
+            </div>
+            <div>
+              <div className="text-white font-semibold">Live Madden Ratings</div>
+              <div className="text-sm text-slate-400">
+                {maddenRatings.loading
+                  ? 'Checking the latest ratings feed...'
+                  : ratingsUpdatedAt
+                    ? `Last updated ${ratingsUpdatedAt}`
+                    : 'Waiting for the first automated ratings pull.'}
+              </div>
+              {maddenRatings.error && (
+                <div className="text-xs text-yellow-300 mt-1">
+                  Ratings feed not loaded yet. Existing site ratings are still being used.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2 text-xs">
+            <span className="px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-slate-300">
+              Matched: {maddenRatings.data.matchedCount ?? 0}
+            </span>
+            <span className="px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-slate-300">
+              Source rows: {maddenRatings.data.totalSourceRatings ?? 0}
+            </span>
+          </div>
+        </div>
+      </div>
 
       {/* Tier Distribution Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -226,7 +277,7 @@ export const Players: React.FC = () => {
                 <th className="text-left py-4 px-4 text-slate-400 font-medium">Name</th>
                 <th className="text-left py-4 px-4 text-slate-400 font-medium">Position</th>
                 <th className="text-left py-4 px-4 text-slate-400 font-medium">NFL Team</th>
-                <th className="text-left py-4 px-4 text-slate-400 font-medium">Rating</th>
+                <th className="text-left py-4 px-4 text-slate-400 font-medium">Live Madden Rating</th>
                 <th className="text-left py-4 px-4 text-slate-400 font-medium">Tier</th>
                 <th className="text-left py-4 px-4 text-slate-400 font-medium">Draft</th>
               </tr>
@@ -239,6 +290,9 @@ export const Players: React.FC = () => {
                 const TierIcon = tierConfig.icon;
                 const isTopTier = tier === 'Elite' || tier === 'Starter';
                 const live = livePlayerData?.players[player.name];
+                const maddenRating = maddenRatings.getRating(player);
+                const ratingDelta = formatDelta(maddenRating?.delta);
+                const hasLiveRating = Boolean(maddenRating?.matched && typeof maddenRating.ovr === 'number');
                 const displayTeam =
                   live?.matched && (live.currentTeam || live.team)
                     ? live.currentTeam || live.team
@@ -247,7 +301,7 @@ export const Players: React.FC = () => {
 
                 return (
                   <tr
-                    key={`${player.id}-${index}`}
+                    key={`${player.id}-${player.name}-${index}`}
                     onClick={() => setSelectedPlayer(player)}
                     className={`border-b border-slate-800 hover:bg-slate-700/50 transition-colors cursor-pointer ${
                       tier === 'Elite' ? 'bg-yellow-500/5' : tierConfig.bgAccent
@@ -291,11 +345,27 @@ export const Players: React.FC = () => {
                     </td>
 
                     <td className="py-4 px-4">
-                      <span
-                        className={`inline-block px-3 py-1.5 rounded-lg font-bold text-sm ${tierConfig.color}`}
-                      >
-                        {player.ovr}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`inline-block px-3 py-1.5 rounded-lg font-bold text-sm ${tierConfig.color}`}
+                        >
+                          {player.ovr}
+                        </span>
+
+                        {hasLiveRating && ratingDelta && (
+                          <span className={`text-xs font-bold ${maddenRating?.delta && maddenRating.delta > 0 ? 'text-emerald-300' : 'text-red-300'}`}>
+                            {ratingDelta}
+                          </span>
+                        )}
+                      </div>
+
+                      {hasLiveRating ? (
+                        <div className="text-xs text-slate-500 mt-1">
+                          EA live{typeof maddenRating?.siteOvr === 'number' && maddenRating.siteOvr !== player.ovr ? ` • old ${maddenRating.siteOvr}` : ''}
+                        </div>
+                      ) : (
+                        <div className="text-xs text-slate-500 mt-1">site fallback</div>
+                      )}
                     </td>
 
                     <td className="py-4 px-4">
