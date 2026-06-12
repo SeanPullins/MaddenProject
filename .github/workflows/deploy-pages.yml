@@ -29,10 +29,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Generate live player data
-        run: node scripts/update-player-live-data.mjs
+        run: npm install --no-audit --no-fund
 
       - name: Build site
         run: npm run build
