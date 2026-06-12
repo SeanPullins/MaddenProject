@@ -7,7 +7,7 @@ interface AdminGateProps {
 }
 
 export const AdminGate: React.FC<AdminGateProps> = ({ children }) => {
-  const { user, loading, configured, isAdmin, adminEmail, signIn, signOut } = useAdminAuth();
+  const { user, loading, configured, isAdmin, adminEmail, adminEmails, signIn, signOut } = useAdminAuth();
   const [email, setEmail] = useState(adminEmail || '');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -53,8 +53,12 @@ export const AdminGate: React.FC<AdminGateProps> = ({ children }) => {
           <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 text-sm text-slate-200 font-mono space-y-1">
             <div>VITE_SUPABASE_URL</div>
             <div>VITE_SUPABASE_ANON_KEY</div>
-            <div>VITE_ADMIN_EMAIL</div>
+            <div>VITE_ADMIN_EMAILS</div>
           </div>
+
+          <p className="text-slate-400 text-sm mt-4">
+            Use a comma-separated list for multiple commissioners, like: first@example.com,second@example.com
+          </p>
         </div>
       </div>
     );
@@ -93,13 +97,19 @@ export const AdminGate: React.FC<AdminGateProps> = ({ children }) => {
           </div>
           <div>
             <h1 className="text-2xl font-display font-bold text-white">Commissioner Login</h1>
-            <p className="text-slate-400 text-sm">Control Panel is restricted.</p>
+            <p className="text-slate-400 text-sm">Control Panel is restricted to approved commissioners.</p>
           </div>
         </div>
 
         {user && !isAdmin && (
           <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">
             {user.email} is signed in, but this account is not approved as commissioner.
+          </div>
+        )}
+
+        {adminEmails.length > 1 && (
+          <div className="mb-4 rounded-lg border border-slate-700 bg-slate-950 p-3 text-xs text-slate-400">
+            Approved commissioner accounts: {adminEmails.join(', ')}
           </div>
         )}
 
