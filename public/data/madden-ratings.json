@@ -5,7 +5,7 @@
   "sourceUrls": [
     "https://drop-api.ea.com/rating/madden-nfl?locale=en&limit=100&offset=0"
   ],
-  "updatedAt": "2026-07-10T12:38:26.801Z",
+  "updatedAt": "2026-07-13T12:43:04.583Z",
   "totalSourceRatings": 399,
   "rosterPlayerCount": 337,
   "matchedCount": 43,
@@ -31,7 +31,7 @@
       "awr": null,
       "siteOvr": 62,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "devinneal|NO": {
       "matched": false,
@@ -53,7 +53,7 @@
       "awr": null,
       "siteOvr": 72,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "roschonjohnson|CHI": {
       "matched": false,
@@ -75,7 +75,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "djgiddens|IND": {
       "matched": false,
@@ -97,7 +97,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "rasheenali|BAL": {
       "matched": false,
@@ -119,7 +119,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "seantucker|TB": {
       "matched": false,
@@ -141,7 +141,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "ajbrown|PHI": {
       "matched": true,
@@ -163,7 +163,7 @@
       "awr": null,
       "siteOvr": 89,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "adonaimitchell|IND": {
       "matched": false,
@@ -185,7 +185,7 @@
       "awr": null,
       "siteOvr": 75,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "khalilshakir|BUF": {
       "matched": true,
@@ -207,7 +207,7 @@
       "awr": null,
       "siteOvr": 82,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "skyymoore|KC": {
       "matched": false,
@@ -229,7 +229,7 @@
       "awr": null,
       "siteOvr": 72,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaydenhiggins|HOU": {
       "matched": false,
@@ -251,7 +251,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "isaiahbond|CLE": {
       "matched": false,
@@ -273,7 +273,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "noahgray|KC": {
       "matched": false,
@@ -295,7 +295,7 @@
       "awr": null,
       "siteOvr": 75,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "gunnarhelm|TEN": {
       "matched": false,
@@ -317,7 +317,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "bensims|MIN": {
       "matched": false,
@@ -339,7 +339,7 @@
       "awr": null,
       "siteOvr": 62,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "chigokonkwo|TEN": {
       "matched": false,
@@ -361,7 +361,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "charliekolar|BAL": {
       "matched": false,
@@ -383,7 +383,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tannermclachlan|CIN": {
       "matched": false,
@@ -405,7 +405,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "rashawnslater|LAC": {
       "matched": true,
@@ -427,7 +427,7 @@
       "awr": null,
       "siteOvr": 92,
       "delta": 1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "ktlevingston|LAR": {
       "matched": false,
@@ -449,7 +449,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "masonmccormick|PIT": {
       "matched": false,
@@ -471,7 +471,7 @@
       "awr": null,
       "siteOvr": 77,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "robertjones|MIA": {
       "matched": false,
@@ -493,7 +493,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "creedhumphrey|KC": {
       "matched": true,
@@ -515,7 +515,7 @@
       "awr": null,
       "siteOvr": 95,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "lukewypler|CLE": {
       "matched": false,
@@ -537,7 +537,7 @@
       "awr": null,
       "siteOvr": 66,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "chrispaul|WAS": {
       "matched": false,
@@ -559,7 +559,7 @@
       "awr": null,
       "siteOvr": 75,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jacksonslater|TEN": {
       "matched": false,
@@ -581,7 +581,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "andrewthomas|NYG": {
       "matched": true,
@@ -603,7 +603,7 @@
       "awr": null,
       "siteOvr": 93,
       "delta": -2,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "frankcrum|DEN": {
       "matched": false,
@@ -625,7 +625,7 @@
       "awr": null,
       "siteOvr": 64,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "brianburns|NYG": {
       "matched": true,
@@ -647,7 +647,7 @@
       "awr": null,
       "siteOvr": 89,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "laiatulatu|IND": {
       "matched": false,
@@ -669,7 +669,7 @@
       "awr": null,
       "siteOvr": 81,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "isaiahmcguire|CLE": {
       "matched": false,
@@ -691,7 +691,7 @@
       "awr": null,
       "siteOvr": 72,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "joshsweat|PHI": {
       "matched": true,
@@ -713,7 +713,7 @@
       "awr": null,
       "siteOvr": 84,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "mikegreen|BAL": {
       "matched": false,
@@ -735,7 +735,7 @@
       "awr": null,
       "siteOvr": 75,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "xavierthomas|ARI": {
       "matched": false,
@@ -757,7 +757,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "gradyjarrett|ATL": {
       "matched": true,
@@ -779,7 +779,7 @@
       "awr": null,
       "siteOvr": 80,
       "delta": 1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "joshuafarmer|NE": {
       "matched": false,
@@ -801,7 +801,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "aeneaspeebles|BAL": {
       "matched": false,
@@ -823,7 +823,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "javonhargrave|PIT": {
       "matched": true,
@@ -845,7 +845,7 @@
       "awr": null,
       "siteOvr": 80,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "cjwest|SF": {
       "matched": false,
@@ -867,7 +867,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "desjuanjohnson|LAR": {
       "matched": false,
@@ -889,7 +889,7 @@
       "awr": null,
       "siteOvr": 65,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "keeanubenton|PIT": {
       "matched": false,
@@ -911,7 +911,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "zackbaun|PHI": {
       "matched": true,
@@ -933,7 +933,7 @@
       "awr": null,
       "siteOvr": 90,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "henrytootoo|HOU": {
       "matched": false,
@@ -955,7 +955,7 @@
       "awr": null,
       "siteOvr": 75,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "damoneclark|DAL": {
       "matched": false,
@@ -977,7 +977,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "nakobedean|PHI": {
       "matched": false,
@@ -999,7 +999,7 @@
       "awr": null,
       "siteOvr": 78,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "derrickbarnes|DET": {
       "matched": false,
@@ -1021,7 +1021,7 @@
       "awr": null,
       "siteOvr": 74,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "shaundolac|LAR": {
       "matched": false,
@@ -1043,7 +1043,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "christiangonzalez|NE": {
       "matched": true,
@@ -1065,7 +1065,7 @@
       "awr": null,
       "siteOvr": 96,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "camhart|LAC": {
       "matched": false,
@@ -1087,7 +1087,7 @@
       "awr": null,
       "siteOvr": 73,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "cobeebryant|ATL": {
       "matched": false,
@@ -1109,7 +1109,7 @@
       "awr": null,
       "siteOvr": 65,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jarvisbrownlee|TEN": {
       "matched": false,
@@ -1131,7 +1131,7 @@
       "awr": null,
       "siteOvr": 75,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "bomelton|GB": {
       "matched": false,
@@ -1153,7 +1153,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "benjaminmorrison|TB": {
       "matched": false,
@@ -1175,7 +1175,7 @@
       "awr": null,
       "siteOvr": 75,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "trebrown|SEA": {
       "matched": false,
@@ -1197,7 +1197,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "kylehamilton|BAL": {
       "matched": true,
@@ -1219,7 +1219,7 @@
       "awr": null,
       "siteOvr": 93,
       "delta": -2,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jiayirbrown|SF": {
       "matched": false,
@@ -1241,7 +1241,7 @@
       "awr": null,
       "siteOvr": 74,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "xavierwoods|DAL": {
       "matched": true,
@@ -1263,7 +1263,7 @@
       "awr": null,
       "siteOvr": 81,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "darrickforrest|WAS": {
       "matched": false,
@@ -1285,7 +1285,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "millardbradford|NO": {
       "matched": false,
@@ -1307,7 +1307,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "rakimjarrett|TB": {
       "matched": false,
@@ -1329,7 +1329,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "javonbaker|NE": {
       "matched": false,
@@ -1351,7 +1351,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "garretgreenfield|SEA": {
       "matched": false,
@@ -1373,7 +1373,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "atoniomafi|NE": {
       "matched": false,
@@ -1395,7 +1395,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "joshuagray|ATL": {
       "matched": false,
@@ -1417,7 +1417,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "brendenjaimes|NE": {
       "matched": false,
@@ -1439,7 +1439,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "carllawson|RETIRED": {
       "matched": false,
@@ -1461,7 +1461,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "chrispaul|LAR": {
       "matched": false,
@@ -1483,7 +1483,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "desmondking|HOU": {
       "matched": false,
@@ -1505,7 +1505,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jcjackson|RETIRED": {
       "matched": false,
@@ -1527,7 +1527,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "shedeursanders|CLE": {
       "matched": false,
@@ -1549,7 +1549,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "malikwillis|TEN": {
       "matched": false,
@@ -1571,7 +1571,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "samhowell|WAS": {
       "matched": false,
@@ -1593,7 +1593,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "omarionhampton|LAC": {
       "matched": true,
@@ -1615,7 +1615,7 @@
       "awr": null,
       "siteOvr": 80,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaylenwright|MIA": {
       "matched": false,
@@ -1637,7 +1637,7 @@
       "awr": null,
       "siteOvr": 73,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "christiankirk|JAX": {
       "matched": false,
@@ -1659,7 +1659,7 @@
       "awr": null,
       "siteOvr": 77,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jacobcowing|SF": {
       "matched": false,
@@ -1681,7 +1681,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "cedrictillman|CLE": {
       "matched": false,
@@ -1703,7 +1703,7 @@
       "awr": null,
       "siteOvr": 74,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "isaiahwilliams|DET": {
       "matched": false,
@@ -1725,7 +1725,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "malikwashington|MIA": {
       "matched": false,
@@ -1747,7 +1747,7 @@
       "awr": null,
       "siteOvr": 73,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "ihmirsmithmarsette|MIN": {
       "matched": false,
@@ -1769,7 +1769,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "lukemusgrave|GB": {
       "matched": false,
@@ -1791,7 +1791,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "dallinholker|NO": {
       "matched": false,
@@ -1813,7 +1813,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jakebriningstool|KC": {
       "matched": false,
@@ -1835,7 +1835,7 @@
       "awr": null,
       "siteOvr": 63,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "noahgrindorf|SEA": {
       "matched": false,
@@ -1857,7 +1857,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "warrenmcclendon|LAR": {
       "matched": false,
@@ -1879,7 +1879,7 @@
       "awr": null,
       "siteOvr": 73,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "camwilliams|PHI": {
       "matched": false,
@@ -1901,7 +1901,7 @@
       "awr": null,
       "siteOvr": 66,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "kevindotson|PIT": {
       "matched": true,
@@ -1923,7 +1923,7 @@
       "awr": null,
       "siteOvr": 87,
       "delta": -2,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "cameronwilliams|BAL": {
       "matched": false,
@@ -1945,7 +1945,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tylerlinderbaum|BAL": {
       "matched": true,
@@ -1967,7 +1967,7 @@
       "awr": null,
       "siteOvr": 87,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jedrickwills|CLE": {
       "matched": false,
@@ -1989,7 +1989,7 @@
       "awr": null,
       "siteOvr": 45,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "andrewvorhees|BAL": {
       "matched": false,
@@ -2011,7 +2011,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "loganbrown|MIN": {
       "matched": false,
@@ -2033,7 +2033,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jamareesalyer|LAC": {
       "matched": false,
@@ -2055,7 +2055,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "carterwarren|NYJ": {
       "matched": false,
@@ -2077,7 +2077,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "montezsweat|WAS": {
       "matched": true,
@@ -2099,7 +2099,7 @@
       "awr": null,
       "siteOvr": 82,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "josiahstewart|LAR": {
       "matched": false,
@@ -2121,7 +2121,7 @@
       "awr": null,
       "siteOvr": 73,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaredivey|SEA": {
       "matched": false,
@@ -2143,7 +2143,7 @@
       "awr": null,
       "siteOvr": 59,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaelanphillips|MIA": {
       "matched": true,
@@ -2165,7 +2165,7 @@
       "awr": null,
       "siteOvr": 81,
       "delta": 1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "bradynswinson|NE": {
       "matched": false,
@@ -2187,7 +2187,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "byronmurphy|SEA": {
       "matched": true,
@@ -2209,7 +2209,7 @@
       "awr": null,
       "siteOvr": 81,
       "delta": -2,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "adetomiwaadebawore|IND": {
       "matched": false,
@@ -2231,7 +2231,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "levidrakerodriguez|MIN": {
       "matched": false,
@@ -2253,7 +2253,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "leonardtaylor|NYJ": {
       "matched": false,
@@ -2275,7 +2275,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "micahmcfadden|NYG": {
       "matched": false,
@@ -2297,7 +2297,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jackcampbell|DET": {
       "matched": true,
@@ -2319,7 +2319,7 @@
       "awr": null,
       "siteOvr": 87,
       "delta": -1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jamaladams|NYJ": {
       "matched": false,
@@ -2341,7 +2341,7 @@
       "awr": null,
       "siteOvr": 72,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jeremiahowusukoramoah|CLE": {
       "matched": true,
@@ -2363,7 +2363,7 @@
       "awr": null,
       "siteOvr": 83,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "codysimon|ARI": {
       "matched": false,
@@ -2385,7 +2385,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "kamarilassiter|HOU": {
       "matched": true,
@@ -2407,7 +2407,7 @@
       "awr": null,
       "siteOvr": 85,
       "delta": -4,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "marcusharris|TEN": {
       "matched": false,
@@ -2429,7 +2429,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "paulsonadebo|NO": {
       "matched": false,
@@ -2451,7 +2451,7 @@
       "awr": null,
       "siteOvr": 78,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "andrewbooth|MIN": {
       "matched": false,
@@ -2473,7 +2473,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "clarkphillips|ATL": {
       "matched": false,
@@ -2495,7 +2495,7 @@
       "awr": null,
       "siteOvr": 75,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "eliricks|PHI": {
       "matched": false,
@@ -2517,7 +2517,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "calenbullock|HOU": {
       "matched": false,
@@ -2539,7 +2539,7 @@
       "awr": null,
       "siteOvr": 80,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "malachimoore|NYJ": {
       "matched": false,
@@ -2561,7 +2561,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "markquesebell|DAL": {
       "matched": false,
@@ -2583,7 +2583,7 @@
       "awr": null,
       "siteOvr": 72,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jjroberts|TB": {
       "matched": false,
@@ -2605,7 +2605,7 @@
       "awr": null,
       "siteOvr": 64,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "blakewatson|DEN": {
       "matched": false,
@@ -2627,7 +2627,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "israelabanikanda|NYJ": {
       "matched": false,
@@ -2649,7 +2649,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "dewaynemcbride|MIN": {
       "matched": false,
@@ -2671,7 +2671,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "abramsmith|XFL": {
       "matched": false,
@@ -2693,7 +2693,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "justynross|KC": {
       "matched": false,
@@ -2715,7 +2715,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "kylephilips|TEN": {
       "matched": false,
@@ -2737,7 +2737,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "austinwatkins|CLE": {
       "matched": false,
@@ -2759,7 +2759,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tamorrianterry|SEA": {
       "matched": false,
@@ -2781,7 +2781,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "davidmoore|CLE": {
       "matched": false,
@@ -2803,7 +2803,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "marvinwilson|CLE": {
       "matched": false,
@@ -2825,7 +2825,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jerrodclark|LAC": {
       "matched": false,
@@ -2847,7 +2847,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "cammcgrone|NE": {
       "matched": false,
@@ -2869,7 +2869,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jeremiahgemmel|SF": {
       "matched": false,
@@ -2891,7 +2891,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "thomasgraham|CHI": {
       "matched": false,
@@ -2913,7 +2913,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "shaunwade|NE": {
       "matched": false,
@@ -2935,7 +2935,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "kendallfuller|WAS": {
       "matched": false,
@@ -2957,7 +2957,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "sidneyjones|PHI": {
       "matched": false,
@@ -2979,7 +2979,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "djjames|SEA": {
       "matched": false,
@@ -3001,7 +3001,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "juanthornhill|KC": {
       "matched": false,
@@ -3023,7 +3023,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "cadensterns|DEN": {
       "matched": false,
@@ -3045,7 +3045,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaxsondart|NYG": {
       "matched": false,
@@ -3067,7 +3067,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "macjones|NE": {
       "matched": false,
@@ -3089,7 +3089,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "spencerrattler|NO": {
       "matched": false,
@@ -3111,7 +3111,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jonathantaylor|IND": {
       "matched": true,
@@ -3133,7 +3133,7 @@
       "awr": null,
       "siteOvr": 97,
       "delta": -2,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaxsonsmithnjigba|SEA": {
       "matched": false,
@@ -3155,7 +3155,7 @@
       "awr": null,
       "siteOvr": 94,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "nicocollins|HOU": {
       "matched": true,
@@ -3177,7 +3177,7 @@
       "awr": null,
       "siteOvr": 89,
       "delta": -1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "chrisolave|NO": {
       "matched": true,
@@ -3199,7 +3199,7 @@
       "awr": null,
       "siteOvr": 86,
       "delta": -1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jalennailor|MIN": {
       "matched": false,
@@ -3221,7 +3221,7 @@
       "awr": null,
       "siteOvr": 77,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "brycefordwheaton|NYG": {
       "matched": false,
@@ -3243,7 +3243,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "trenixon|NE": {
       "matched": false,
@@ -3265,7 +3265,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "brockbowers|LV": {
       "matched": true,
@@ -3287,7 +3287,7 @@
       "awr": null,
       "siteOvr": 93,
       "delta": -2,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "joshwhyle|TEN": {
       "matched": false,
@@ -3309,7 +3309,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "brevinjordan|HOU": {
       "matched": false,
@@ -3331,7 +3331,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tristianwirfs|TB": {
       "matched": false,
@@ -3353,7 +3353,7 @@
       "awr": null,
       "siteOvr": 96,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "treysmith|KC": {
       "matched": true,
@@ -3375,7 +3375,7 @@
       "awr": null,
       "siteOvr": 91,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "kiranamegadjie|CHI": {
       "matched": false,
@@ -3397,7 +3397,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "milesfrazier|DET": {
       "matched": false,
@@ -3419,7 +3419,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "dariankinnard|KC": {
       "matched": false,
@@ -3441,7 +3441,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jakeandrews|NE": {
       "matched": false,
@@ -3463,7 +3463,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "sedrickvanprangranger|BUF": {
       "matched": false,
@@ -3485,7 +3485,7 @@
       "awr": null,
       "siteOvr": 66,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "myleshinton|PHI": {
       "matched": false,
@@ -3507,7 +3507,7 @@
       "awr": null,
       "siteOvr": 65,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "chaselundt|BUF": {
       "matched": false,
@@ -3529,7 +3529,7 @@
       "awr": null,
       "siteOvr": 65,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "stoneforsythe|SEA": {
       "matched": false,
@@ -3551,7 +3551,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "willielampkin|LAR": {
       "matched": false,
@@ -3573,7 +3573,7 @@
       "awr": null,
       "siteOvr": 63,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "taviusrobinson|BAL": {
       "matched": false,
@@ -3595,7 +3595,7 @@
       "awr": null,
       "siteOvr": 74,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "kingsleyenagbare|GB": {
       "matched": false,
@@ -3617,7 +3617,7 @@
       "awr": null,
       "siteOvr": 72,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "mekhiwingo|DET": {
       "matched": false,
@@ -3639,7 +3639,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "mattjudon|NE": {
       "matched": false,
@@ -3661,7 +3661,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "gervondexter|CHI": {
       "matched": false,
@@ -3683,7 +3683,7 @@
       "awr": null,
       "siteOvr": 79,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "travisjones|BAL": {
       "matched": false,
@@ -3705,7 +3705,7 @@
       "awr": null,
       "siteOvr": 79,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jjpegues|LV": {
       "matched": false,
@@ -3727,7 +3727,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tyrioningramdawkins|MIN": {
       "matched": false,
@@ -3749,7 +3749,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "ivanpace|MIN": {
       "matched": false,
@@ -3771,7 +3771,7 @@
       "awr": null,
       "siteOvr": 77,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "nathanielwatson|CLE": {
       "matched": false,
@@ -3793,7 +3793,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jayhiggins|BAL": {
       "matched": false,
@@ -3815,7 +3815,7 @@
       "awr": null,
       "siteOvr": 61,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jawhaunbentley|NE": {
       "matched": false,
@@ -3837,7 +3837,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tariqwoolen|SEA": {
       "matched": true,
@@ -3859,7 +3859,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": 82,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "asantesamuel|LAC": {
       "matched": false,
@@ -3881,7 +3881,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "mekhiblackmon|MIN": {
       "matched": false,
@@ -3903,7 +3903,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "joshjobe|PHI": {
       "matched": false,
@@ -3925,7 +3925,7 @@
       "awr": null,
       "siteOvr": 75,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "shavonrevel|DAL": {
       "matched": false,
@@ -3947,7 +3947,7 @@
       "awr": null,
       "siteOvr": 72,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "damarrimathis|DEN": {
       "matched": false,
@@ -3969,7 +3969,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tjtampa|BAL": {
       "matched": false,
@@ -3991,7 +3991,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "corytrice|PIT": {
       "matched": false,
@@ -4013,7 +4013,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaquanbrisker|CHI": {
       "matched": true,
@@ -4035,7 +4035,7 @@
       "awr": null,
       "siteOvr": 85,
       "delta": -2,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "javonbullard|GB": {
       "matched": false,
@@ -4057,7 +4057,7 @@
       "awr": null,
       "siteOvr": 75,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jordanbattle|CIN": {
       "matched": false,
@@ -4079,7 +4079,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "xavierwatts|ATL": {
       "matched": false,
@@ -4101,7 +4101,7 @@
       "awr": null,
       "siteOvr": 79,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "lathanransom|CAR": {
       "matched": false,
@@ -4123,7 +4123,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jlskinner|DEN": {
       "matched": false,
@@ -4145,7 +4145,7 @@
       "awr": null,
       "siteOvr": 66,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "michaelpratt|GB": {
       "matched": false,
@@ -4167,7 +4167,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "kevinaustin|JAX": {
       "matched": false,
@@ -4189,7 +4189,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "samoritoure|GB": {
       "matched": false,
@@ -4211,7 +4211,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "michaelgallup|DAL": {
       "matched": false,
@@ -4233,7 +4233,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "cadejohnson|SEA": {
       "matched": false,
@@ -4255,7 +4255,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaxsonkirkland|CIN": {
       "matched": false,
@@ -4277,7 +4277,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "garrettdellinger|BAL": {
       "matched": false,
@@ -4299,7 +4299,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "codywhitehair|CHI": {
       "matched": false,
@@ -4321,7 +4321,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "dohnavonwest|SF": {
       "matched": false,
@@ -4343,7 +4343,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "lukekandra|CAR": {
       "matched": false,
@@ -4365,7 +4365,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jordanmcfadden|LAC": {
       "matched": false,
@@ -4387,7 +4387,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "mohamedkamara|MIA": {
       "matched": false,
@@ -4409,7 +4409,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "carllawson|CIN": {
       "matched": false,
@@ -4431,7 +4431,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "christianwilkins|MIA": {
       "matched": false,
@@ -4453,7 +4453,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "daviyonnixon|CAR": {
       "matched": false,
@@ -4475,7 +4475,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "christopherhinton|LAC": {
       "matched": false,
@@ -4497,7 +4497,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "andrecarter|MIN": {
       "matched": false,
@@ -4519,7 +4519,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "cjmosley|BAL": {
       "matched": false,
@@ -4541,7 +4541,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "shakurbrown|PIT": {
       "matched": false,
@@ -4563,7 +4563,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "bryanmills|MIN": {
       "matched": false,
@@ -4585,7 +4585,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jamarjohnson|DEN": {
       "matched": false,
@@ -4607,7 +4607,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "geraldwillis|MIA": {
       "matched": false,
@@ -4629,7 +4629,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tuatagovailoa|MIA": {
       "matched": false,
@@ -4651,7 +4651,7 @@
       "awr": null,
       "siteOvr": 74,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "willhoward|PIT": {
       "matched": false,
@@ -4673,7 +4673,7 @@
       "awr": null,
       "siteOvr": 64,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "kennethwalker|SEA": {
       "matched": true,
@@ -4695,7 +4695,7 @@
       "awr": null,
       "siteOvr": 87,
       "delta": 1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "camskattebo|NYG": {
       "matched": true,
@@ -4717,7 +4717,7 @@
       "awr": null,
       "siteOvr": 81,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jonathonbrooks|CAR": {
       "matched": false,
@@ -4739,7 +4739,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "scottmatlock|LAC": {
       "matched": false,
@@ -4761,7 +4761,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "garrettwilson|NYJ": {
       "matched": true,
@@ -4783,7 +4783,7 @@
       "awr": null,
       "siteOvr": 86,
       "delta": 1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "elicayomanor|TEN": {
       "matched": false,
@@ -4805,7 +4805,7 @@
       "awr": null,
       "siteOvr": 77,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jalenroyals|KC": {
       "matched": false,
@@ -4827,7 +4827,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tylanwallace|BAL": {
       "matched": false,
@@ -4849,7 +4849,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "johnnywilson|PHI": {
       "matched": false,
@@ -4871,7 +4871,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "brendanrice|LAC": {
       "matched": false,
@@ -4893,7 +4893,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jatavionsanders|CAR": {
       "matched": false,
@@ -4915,7 +4915,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jelaniwoods|IND": {
       "matched": false,
@@ -4937,7 +4937,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "willmallory|IND": {
       "matched": false,
@@ -4959,7 +4959,7 @@
       "awr": null,
       "siteOvr": 65,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "molikimatavao|NO": {
       "matched": false,
@@ -4981,7 +4981,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "rasheedwalker|GB": {
       "matched": false,
@@ -5003,7 +5003,7 @@
       "awr": null,
       "siteOvr": 79,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "christianjones|ARI": {
       "matched": false,
@@ -5025,7 +5025,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "thayermunford|LV": {
       "matched": false,
@@ -5047,7 +5047,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "justinshaffer|ATL": {
       "matched": false,
@@ -5069,7 +5069,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "codymauch|TB": {
       "matched": true,
@@ -5091,7 +5091,7 @@
       "awr": null,
       "siteOvr": 78,
       "delta": 1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "peterskoronski|TEN": {
       "matched": true,
@@ -5113,7 +5113,7 @@
       "awr": null,
       "siteOvr": 84,
       "delta": -4,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaredwilson|NE": {
       "matched": false,
@@ -5135,7 +5135,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tjbass|DAL": {
       "matched": false,
@@ -5157,7 +5157,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "joehuber|MIN": {
       "matched": false,
@@ -5179,7 +5179,7 @@
       "awr": null,
       "siteOvr": 62,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "javioncohen|CLE": {
       "matched": false,
@@ -5201,7 +5201,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "emilekiyor|IND": {
       "matched": false,
@@ -5223,7 +5223,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tylerbiadasz|DAL": {
       "matched": true,
@@ -5245,7 +5245,7 @@
       "awr": null,
       "siteOvr": 80,
       "delta": 1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "sethmclaughlin|CIN": {
       "matched": false,
@@ -5267,7 +5267,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "dallasturner|MIN": {
       "matched": false,
@@ -5289,7 +5289,7 @@
       "awr": null,
       "siteOvr": 77,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "azeezojulari|NYG": {
       "matched": false,
@@ -5311,7 +5311,7 @@
       "awr": null,
       "siteOvr": 73,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "zachharrison|ATL": {
       "matched": false,
@@ -5333,7 +5333,7 @@
       "awr": null,
       "siteOvr": 73,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "amarebarno|CAR": {
       "matched": false,
@@ -5355,7 +5355,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "adetokunboogundeji|ATL": {
       "matched": false,
@@ -5377,7 +5377,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "nnamdimadubuike|BAL": {
       "matched": true,
@@ -5399,7 +5399,7 @@
       "awr": null,
       "siteOvr": 92,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "derrickharmon|PIT": {
       "matched": false,
@@ -5421,7 +5421,7 @@
       "awr": null,
       "siteOvr": 77,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "paytonwilson|PIT": {
       "matched": false,
@@ -5443,7 +5443,7 @@
       "awr": null,
       "siteOvr": 75,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tylerdavis|LAR": {
       "matched": false,
@@ -5465,7 +5465,7 @@
       "awr": null,
       "siteOvr": 74,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "dariusalexander|NYG": {
       "matched": false,
@@ -5487,7 +5487,7 @@
       "awr": null,
       "siteOvr": 72,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "micahparsons|DAL": {
       "matched": true,
@@ -5509,7 +5509,7 @@
       "awr": null,
       "siteOvr": 98,
       "delta": 0,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "divinedeablo|LV": {
       "matched": true,
@@ -5531,7 +5531,7 @@
       "awr": null,
       "siteOvr": 81,
       "delta": -1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jdbertrand|ATL": {
       "matched": false,
@@ -5553,7 +5553,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "smaelmondon|PHI": {
       "matched": false,
@@ -5575,7 +5575,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "noahsewell|CHI": {
       "matched": false,
@@ -5597,7 +5597,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "grantstuard|TB": {
       "matched": false,
@@ -5619,7 +5619,7 @@
       "awr": null,
       "siteOvr": 64,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "zyonmccollum|TB": {
       "matched": true,
@@ -5641,7 +5641,7 @@
       "awr": null,
       "siteOvr": 81,
       "delta": -1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "carringtonvalentine|GB": {
       "matched": false,
@@ -5663,7 +5663,7 @@
       "awr": null,
       "siteOvr": 78,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "keleeringo|PHI": {
       "matched": false,
@@ -5685,7 +5685,7 @@
       "awr": null,
       "siteOvr": 73,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jalynarmourdavis|BAL": {
       "matched": false,
@@ -5707,7 +5707,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "rejzhonwright|CAR": {
       "matched": false,
@@ -5729,7 +5729,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "karyvincent|DEN": {
       "matched": false,
@@ -5751,7 +5751,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "ardariuswashington|BAL": {
       "matched": true,
@@ -5773,7 +5773,7 @@
       "awr": null,
       "siteOvr": 78,
       "delta": 2,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "chamarriconner|KC": {
       "matched": false,
@@ -5795,7 +5795,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "antoniojohnson|JAX": {
       "matched": false,
@@ -5817,7 +5817,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jadenhicks|KC": {
       "matched": false,
@@ -5839,7 +5839,7 @@
       "awr": null,
       "siteOvr": 73,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "rjmickens|LAC": {
       "matched": false,
@@ -5861,7 +5861,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "kitanoladapo|GB": {
       "matched": false,
@@ -5883,7 +5883,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tommihill|MIN": {
       "matched": false,
@@ -5905,7 +5905,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "samhartman|WAS": {
       "matched": false,
@@ -5927,7 +5927,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jermarjefferson|DET": {
       "matched": false,
@@ -5949,7 +5949,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "atperry|NO": {
       "matched": false,
@@ -5971,7 +5971,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "sagesurratt|DET": {
       "matched": false,
@@ -5993,7 +5993,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "antoinegreen|DET": {
       "matched": false,
@@ -6015,7 +6015,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "malikknowles|MIN": {
       "matched": false,
@@ -6037,7 +6037,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "trajanjeffcoat|NO": {
       "matched": false,
@@ -6059,7 +6059,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "christopherallen|DEN": {
       "matched": false,
@@ -6081,7 +6081,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "matthenningsen|DEN": {
       "matched": false,
@@ -6103,7 +6103,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "garretthaskins|TEN": {
       "matched": false,
@@ -6125,7 +6125,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "fabienlovett|KC": {
       "matched": false,
@@ -6147,7 +6147,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "hamilcarrashad|NYJ": {
       "matched": false,
@@ -6169,7 +6169,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "curtisjacobs|KC": {
       "matched": false,
@@ -6191,7 +6191,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tonyfields|CLE": {
       "matched": false,
@@ -6213,7 +6213,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jojodomann|IND": {
       "matched": false,
@@ -6235,7 +6235,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "hamsahnasirildeen|NYJ": {
       "matched": false,
@@ -6257,7 +6257,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "taygowan|ARI": {
       "matched": false,
@@ -6279,7 +6279,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "tommyhill|MIN": {
       "matched": false,
@@ -6301,7 +6301,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "smokemonday|NO": {
       "matched": false,
@@ -6323,7 +6323,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jjmccarthy|MIN": {
       "matched": false,
@@ -6345,7 +6345,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "willlevis|TEN": {
       "matched": false,
@@ -6367,7 +6367,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "bhaysaultuten|JAX": {
       "matched": false,
@@ -6389,7 +6389,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "kimanividal|LAC": {
       "matched": false,
@@ -6411,7 +6411,7 @@
       "awr": null,
       "siteOvr": 77,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "brashardsmith|KC": {
       "matched": false,
@@ -6433,7 +6433,7 @@
       "awr": null,
       "siteOvr": 73,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "keatonmitchell|BAL": {
       "matched": false,
@@ -6455,7 +6455,7 @@
       "awr": null,
       "siteOvr": 75,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "troyfranklin|DEN": {
       "matched": false,
@@ -6477,7 +6477,7 @@
       "awr": null,
       "siteOvr": 79,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaylinlane|WAS": {
       "matched": false,
@@ -6499,7 +6499,7 @@
       "awr": null,
       "siteOvr": 74,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "xavierhutchinson|HOU": {
       "matched": false,
@@ -6521,7 +6521,7 @@
       "awr": null,
       "siteOvr": 72,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "justinshorter|BUF": {
       "matched": false,
@@ -6543,7 +6543,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "elijahbadger|KC": {
       "matched": false,
@@ -6565,7 +6565,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "mattlanders|SEA": {
       "matched": false,
@@ -6587,7 +6587,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "darnellwashington|PIT": {
       "matched": false,
@@ -6609,7 +6609,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "mitchellevans|CAR": {
       "matched": false,
@@ -6631,7 +6631,7 @@
       "awr": null,
       "siteOvr": 69,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "braydenwillis|SF": {
       "matched": false,
@@ -6653,7 +6653,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaheimbell|NE": {
       "matched": false,
@@ -6675,7 +6675,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "ozzytrapilo|CHI": {
       "matched": false,
@@ -6697,7 +6697,7 @@
       "awr": null,
       "siteOvr": 72,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "charlesgrant|LV": {
       "matched": false,
@@ -6719,7 +6719,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jacksonpowersjohnson|LV": {
       "matched": false,
@@ -6741,7 +6741,7 @@
       "awr": null,
       "siteOvr": 78,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "chandlerzavala|CAR": {
       "matched": false,
@@ -6763,7 +6763,7 @@
       "awr": null,
       "siteOvr": 64,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaelynduncan|TEN": {
       "matched": false,
@@ -6785,7 +6785,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "charlesturner|NE": {
       "matched": false,
@@ -6807,7 +6807,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jovaughngwyn|ATL": {
       "matched": false,
@@ -6829,7 +6829,7 @@
       "awr": null,
       "siteOvr": 58,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jacksawyer|PIT": {
       "matched": false,
@@ -6851,7 +6851,7 @@
       "awr": null,
       "siteOvr": 72,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "bralentrice|ATL": {
       "matched": false,
@@ -6873,7 +6873,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "owenpappoe|ARI": {
       "matched": false,
@@ -6895,7 +6895,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jahjoyner|LV": {
       "matched": false,
@@ -6917,7 +6917,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jalenredmond|CAR": {
       "matched": false,
@@ -6939,7 +6939,7 @@
       "awr": null,
       "siteOvr": 79,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "khristianboyd|NO": {
       "matched": false,
@@ -6961,7 +6961,7 @@
       "awr": null,
       "siteOvr": 70,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "ryliemills|SEA": {
       "matched": false,
@@ -6983,7 +6983,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "zeekbiggers|MIA": {
       "matched": false,
@@ -7005,7 +7005,7 @@
       "awr": null,
       "siteOvr": 65,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jordanmagee|WAS": {
       "matched": false,
@@ -7027,7 +7027,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jihaadcampbell|PHI": {
       "matched": true,
@@ -7049,7 +7049,7 @@
       "awr": null,
       "siteOvr": 80,
       "delta": 1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jeremiahtrotter|PHI": {
       "matched": false,
@@ -7071,7 +7071,7 @@
       "awr": null,
       "siteOvr": 67,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "kobeking|MIN": {
       "matched": false,
@@ -7093,7 +7093,7 @@
       "awr": null,
       "siteOvr": 66,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "nelsonceasar|SEA": {
       "matched": false,
@@ -7115,7 +7115,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "krisabramsdraine|DEN": {
       "matched": false,
@@ -7137,7 +7137,7 @@
       "awr": null,
       "siteOvr": 73,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jakorianbennett|LV": {
       "matched": false,
@@ -7159,7 +7159,7 @@
       "awr": null,
       "siteOvr": 73,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "joshnewton|CIN": {
       "matched": false,
@@ -7181,7 +7181,7 @@
       "awr": null,
       "siteOvr": 71,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "dwightmcglothern|MIN": {
       "matched": false,
@@ -7203,7 +7203,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "zyalexander|SEA": {
       "matched": false,
@@ -7225,7 +7225,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "dariusrush|IND": {
       "matched": false,
@@ -7247,7 +7247,7 @@
       "awr": null,
       "siteOvr": 50,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "brianbranch|DET": {
       "matched": true,
@@ -7269,7 +7269,7 @@
       "awr": null,
       "siteOvr": 91,
       "delta": -1,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "ronniehickman|CLE": {
       "matched": false,
@@ -7291,7 +7291,7 @@
       "awr": null,
       "siteOvr": 76,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "jaylenreed|HOU": {
       "matched": false,
@@ -7313,7 +7313,7 @@
       "awr": null,
       "siteOvr": 68,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "gabehall|PHI": {
       "matched": false,
@@ -7335,7 +7335,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "gabrielmurphy|MIN": {
       "matched": false,
@@ -7357,7 +7357,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     },
     "simeonbarrow|ATL": {
       "matched": false,
@@ -7379,7 +7379,7 @@
       "awr": null,
       "siteOvr": 0,
       "delta": null,
-      "updatedAt": "2026-07-10T12:38:26.801Z"
+      "updatedAt": "2026-07-13T12:43:04.583Z"
     }
   },
   "sampleSourceRatings": [
